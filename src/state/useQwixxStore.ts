@@ -1,5 +1,5 @@
 import { createSelectors } from '@/state/create-selector';
-import { devtools, persist } from 'zustand/middleware';
+import { devtools } from 'zustand/middleware';
 import { create, StateCreator } from 'zustand';
 import { calculateTotalPointsForRow } from '@/utils/calculate-total-points-for-row';
 import { BonusBox, bonusBoxes, Color, colors, TileModel, tiles } from '@/data/tiles';
@@ -24,7 +24,7 @@ interface Reducers {
 
 type Store = State & Reducers;
 
-type UserAction = { color: Color; value: number; bonus: boolean; } | { failed: boolean };
+type UserAction = { color: Color; value: number; bonus: false | number; } | { failed: boolean };
 
 const initialState: State  = {
   userActions: [],
@@ -43,7 +43,7 @@ const state: StateCreator<Store> = (set) => ({
   checkTile: (color: Color, bonus: boolean, value: number) => set((state): Partial<Store> => {
     return {
       ...checkTileRecursive(state, color, bonus, value),
-      userActions: [...state.userActions, { color, value, bonus }],
+      userActions: [...state.userActions, {color, value, bonus: bonus ? state.bonus.length : false}],
     };
   }),
 
@@ -79,29 +79,27 @@ const undo = (state: Store, undoAction: UserAction) => {
     }
   }
 
-  if (!undoAction.bonus) {
-    // TODO check if undone step is also bonus
-    const unSelect = state[undoAction.color].at(-1);
-    const undoTile = tiles[undoAction.color].find(({ value}) => value === unSelect) as TileModel;
-
+  if (undoAction.bonus === false) {
     return {
       [undoAction.color]: state[undoAction.color].slice(0,-1),
     }
   }
 
-  const bonusBox = state.bonus.at(-1) as BonusBox; // Cannot be undefined at this point
-
-  const newState = {
-    bonus: state.bonus.slice(0,-1),
-    [bonusBox.color]: state[bonusBox.color].slice(0, -1),
-  };
+  const newState = state.bonus
+    .filter((v, i) => i >= (undoAction.bonus as number))
+    .reduce((state, bonusBox) => ({
+      ...state,
+      bonus: removeAtIndex(state.bonus, undoAction.bonus as number),
+      [bonusBox.color]: state[bonusBox.color].slice(0, -1),
+    }), state);
 
   return {
     ...newState,
-    // TODO check if undone step is also bonus
     [undoAction.color]: newState[undoAction.color].slice(0,-1),
   }
 }
+
+const removeAtIndex = <T>(arr: T[], index: number): T[] => arr.filter((v, i) => i !== index);
 
 /**
  * Recursively trigger the tiles.
