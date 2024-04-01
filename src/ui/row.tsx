@@ -1,6 +1,6 @@
 import Tile from '@/ui/tile';
 import { cn } from '@/utils/cn';
-import React, { FC, HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes, useState } from 'react';
 import { TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
 import Lock from '@/ui/lock';

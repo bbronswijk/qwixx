@@ -1,6 +1,6 @@
 import { cn } from '@/utils/cn';
 import React, { HTMLAttributes } from 'react';
-import { CheckMarkIcon, LockedIcon, UnLockedIcon, XIcon } from '@/ui/icons';
+import { CheckMarkIcon, UnLockedIcon, XIcon } from '@/ui/icons';
 
 interface ComponentProps extends HTMLAttributes<HTMLButtonElement> {
   lockedBySomeoneElse: boolean;

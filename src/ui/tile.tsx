@@ -1,8 +1,6 @@
-import { HTMLAttributes, PropsWithChildren, useEffect } from 'react';
+import { HTMLAttributes, PropsWithChildren } from 'react';
 import { cn } from '@/utils/cn';
 import { CheckedIcon, SkippedIcon } from '@/ui/icons';
-import useQwixxStore from '@/state/useQwixxStore';
-import { BonusBoxState } from '@/ui/bonus-box';
 
 interface ComponentProps extends PropsWithChildren, HTMLAttributes<HTMLButtonElement> {
   bonus: boolean;

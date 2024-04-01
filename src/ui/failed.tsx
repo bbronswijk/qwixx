@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
 import useQwixxStore from '@/state/useQwixxStore';
