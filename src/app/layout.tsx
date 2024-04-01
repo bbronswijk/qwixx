@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import "../styles/globals.css";
+import '../styles/globals.css';
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+    <body className="h-svh w-screen min-w-[700px]">{children}</body>
     </html>
   );
 }
