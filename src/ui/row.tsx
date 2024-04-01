@@ -3,7 +3,6 @@ import { cn } from '@/utils/cn';
 import React, { FC, HTMLAttributes, useState } from 'react';
 import { TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
-import { calculateTotalPointsForRow } from '@/utils/calculate-total-points-for-row';
 import Lock from '@/ui/lock';
 import useQwixxStore, { useTotalForRowSelector } from '@/state/useQwixxStore';
 import { Color, TileModel, Tiles } from '@/data/tiles';
@@ -25,7 +24,7 @@ export default function Row({ color, tiles, className, ...props }: ComponentProp
   const lastItemIsSelected = selected.includes(last.value);
 
   return (
-    <section className={cn(className, 'flex py-2 pl-6 pr-2 gap-1 rounded-lg relative items-center')} {...props}>
+    <section className={cn(className, 'flex py-1.5 lg:py-2 pl-6 pr-2 gap-1 rounded-lg relative items-center')} {...props}>
       <TriangleIcon className="absolute h-8 w-8 top-1/2 -translate-y-1/2 text-black left-0 -ml-5"/>
 
       {tiles.map(({ value, bonus }) => {

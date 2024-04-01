@@ -33,7 +33,7 @@ export default function Tile({ children, disabled, onClick, bonus, checked, skip
     onClick={onClick}
     data-state={state}
     className={cn(
-      "hover:bg-white/90 rounded-lg text-4xl font-bold w-14 h-14 flex items-center justify-center relative",
+      "hover:bg-white/90 rounded-lg text-2xl lg:text-4xl font-bold w-10 h-10 lg:w-14 lg:h-14 flex items-center justify-center relative",
       checked && 'opacity-30',
       skipped && 'opacity-60',
       bonus ? 'ring-inset ring ring-offset-2 ring-black bg-white' : 'bg-white/90'

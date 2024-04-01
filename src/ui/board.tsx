@@ -13,7 +13,7 @@ export default function Board() {
   const userActions = useQwixxStore.use.userActions();
   const undo = useQwixxStore.use.undo();
 
-  return <div className="p-8 bg-slate-200 rounded-xl space-y-2">
+  return <div className="px-8 py-4 lg:p-8 bg-slate-200 rounded-xl space-y-2 m-3">
     <Row color={colors.red} tiles={tiles.red} className="bg-red-800 text-red-800"/>
     <Row color={colors.yellow} tiles={tiles.yellow} className="bg-yellow-500 text-yellow-600"/>
     <Row color={colors.green} tiles={tiles.green} className="bg-green-700 text-green-700"/>
@@ -21,7 +21,7 @@ export default function Board() {
 
     <Bonus/>
 
-    <footer className="flex items-center p-2 gap-4">
+    <footer className="flex items-center py-0 lg:py-2 gap-2 lg:gap-4">
       <Failed/>
 
       <button
@@ -32,9 +32,9 @@ export default function Board() {
         <UndoIcon className={cn("text-slate-700")}/>
       </button>
       <div
-        className="bg-white/70 rounded-lg text-4xl px-4 font-bold h-12 flex items-center justify-center">
-        <span className="text-slate-400 ml-auto font-bold text-xl">Totaal</span>
-        <span data-testid="score" className="text-black w-16 text-right">{useTotalSelector()}</span>
+        className="bg-white/70 rounded-lg px-4 font-bold h-12 flex items-center justify-center">
+        <span className="text-slate-400 ml-auto font-bold text-lg lg:text-xl">Totaal</span>
+        <span data-testid="score" className="text-black w-16 text-right text-2xl lg:text-4xl ">{useTotalSelector()}</span>
       </div>
     </footer>
   </div>
