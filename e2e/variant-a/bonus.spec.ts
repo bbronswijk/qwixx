@@ -1,13 +1,11 @@
-import { test, expect } from '@playwright/test';
-import { lockState } from '@/ui/lock';
-import { clickButton, expectButtonToHaveState } from './util';
+import { expect, test } from '@playwright/test';
+import { clickButton, expectButtonToHaveState, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/ui/bonus-box';
 
 
-
 test('should automatically select the first red box if the first bonus box is hit', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const bonus = page.getByTestId('bonus-box');
@@ -25,7 +23,7 @@ test('should automatically select the first red box if the first bonus box is hi
 
 
 test('should automatically create a chain reaction when a bonus box is hit', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const bonus = page.getByTestId('bonus-box');

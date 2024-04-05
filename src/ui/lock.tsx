@@ -37,7 +37,7 @@ export default function Lock({ lockedBySomeoneElse, completedRow, ...props }: Co
       disabled={completedRow}
       {...props}
       className={cn(
-        'bg-white/70 rounded-full h-8 w-8 p-1.5 mx-2 duration-300 relative',
+        'bg-white/70 rounded-full h-8 w-8 lg:h-12 lg:w-12 p-1.5 mx-2 duration-200 relative',
         lockedBySomeoneElse && 'opacity-20',
         !lockedBySomeoneElse && !completedRow && 'opacity-50 [transform:rotateY(180deg)]',
         completedRow && ''

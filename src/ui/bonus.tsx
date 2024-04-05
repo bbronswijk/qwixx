@@ -1,11 +1,13 @@
+'use client';
+
 import BonusBox from '@/ui/bonus-box';
 import { TriangleIcon } from '@/ui/icons';
 import React, { Fragment } from 'react';
-import { bonusBoxes } from '@/data/tiles';
-import useQwixxStore from '@/state/qwixx.store';
+import { bonusBoxes } from '@/app/variant-a/variant-a.config';
+import useVariantAStore from '@/app/variant-a/variant-a.store';
 
 export default function Bonus() {
-  const selected = useQwixxStore(({ bonus }) => bonus.map(({ id }) => id));
+  const selected = useVariantAStore(({bonus}) => bonus.map(({id}) => id));
 
   return (
     <div data-testid="bonus" className="flex border-2 border-slate-400 rounded-lg items-center p-2 lg:p-4">

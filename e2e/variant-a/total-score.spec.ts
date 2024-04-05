@@ -1,10 +1,9 @@
-import { test, expect } from '@playwright/test';
-import { lockState } from '@/ui/lock';
-import { clickButton } from './util';
+import { expect, test } from '@playwright/test';
+import { clickButton, routes } from '../util';
 
 
-test('should reflect the correct total score all selected cells', async ({ page }) => {
-  await page.goto('/');
+test('should reflect the correct total score all selected cells', async ({page}) => {
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);
@@ -13,7 +12,7 @@ test('should reflect the correct total score all selected cells', async ({ page 
   const blueRow = rows.nth(3);
 
   const totalScore = page.getByTestId('score');
-  const failedButton = page.getByRole('button', { name: 'Worp mislukt' });
+  const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
 
   await clickButton(redRow, 2);
   await clickButton(redRow, 3);

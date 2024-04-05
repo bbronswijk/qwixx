@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { lockState } from '@/ui/lock';
-import { clickButton } from './util';
+import { clickButton, routes } from '../util';
 
 
-test('should reflect the correct total count for the selected cells', async ({ page }) => {
-  await page.goto('/');
+test('should reflect the correct total count for the selected cells', async ({page}) => {
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const redRow = rows.first();

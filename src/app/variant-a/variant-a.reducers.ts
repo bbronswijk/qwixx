@@ -1,10 +1,12 @@
-import { Change, Store } from '@/state/qwix.model';
-import { bonusBoxes, Color, tiles } from '@/data/tiles';
+import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
+import { Change, VariantAStore } from '@/app/variant-a/variant-a.store';
+import { Color } from '@/data/color';
+import { tileType } from '@/data/tile.model';
 
 /**
  * Recursively trigger the tiles.
  */
-export const checkTile = (state: Store, color: Color, bonus: boolean, value: number, userAction: boolean): Partial<Store> => {
+export const checkTile = (state: VariantAStore, color: Color, bonus: boolean, value: number, userAction: boolean): Partial<VariantAStore> => {
   // Check next color if we have a normal tile.
   if (!bonus) {
     return {
@@ -27,8 +29,8 @@ export const checkTile = (state: Store, color: Color, bonus: boolean, value: num
 
   // Get next color to be checked
   const lastSelected = state[bonusBox.color].at(-1);
-  const lastSelectedIndex = lastSelected ? tiles[bonusBox.color].findIndex(({value}) => value === lastSelected) : -1;
-  const nextColor = tiles[bonusBox.color][lastSelectedIndex + 1];
+  const lastSelectedIndex = lastSelected ? variantATiles[bonusBox.color].findIndex(({value}) => value === lastSelected) : -1;
+  const nextColor = variantATiles[bonusBox.color][lastSelectedIndex + 1];
 
   // Return if there is nothing to check.
   if (!nextColor) {
@@ -36,13 +38,13 @@ export const checkTile = (state: Store, color: Color, bonus: boolean, value: num
   }
 
   // Pass next color data to next function in case next color is a bonus box.
-  return checkTile(state, bonusBox.color, nextColor.bonus, nextColor.value, false);
+  return checkTile(state, bonusBox.color, nextColor.type === tileType.bonus, nextColor.value, false);
 };
 
 /**
  * Recursively undo the last changes.
  */
-export const undo = (state: Store, change: Change): Store => {
+export const undo = (state: VariantAStore, change: Change): VariantAStore => {
   // Undo last change
   if ('failed' in change) {
     state = {

@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 import { lockState } from '@/ui/lock';
-import { clickButton } from './util';
+import { clickButton, routes } from '../util';
 
 
 test('should lock the entire row if another player completes a row', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routes.default);
 
   const rows = page.locator('section');
   const redRow = rows.first();
@@ -24,7 +24,7 @@ test('should lock the entire row if another player completes a row', async ({ pa
 });
 
 test('should not be able to unlock a row when all items are completed', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routes.default);
 
   const rows = page.locator('section');
   const redRow = rows.first();
@@ -32,7 +32,7 @@ test('should not be able to unlock a row when all items are completed', async ({
 
   await clickButton(redRow, 2);
   await clickButton(redRow, 3);
-  // Jump to 4 thanks to bonus
+  await clickButton(redRow, 4);
   await clickButton(redRow, 5);
   await clickButton(redRow, 6);
   await clickButton(redRow, 7);
@@ -46,7 +46,7 @@ test('should not be able to unlock a row when all items are completed', async ({
 });
 
 test('should toggle the state of the last item if another player completes a row', async ({ page }) => {
-  await page.goto('/');
+  await page.goto(routes.default);
 
   const rows = page.locator('section');
   const redRow = rows.first();
@@ -54,6 +54,7 @@ test('should toggle the state of the last item if another player completes a row
 
   await clickButton(redRow, 2);
   await clickButton(redRow, 3);
+  await clickButton(redRow, 4);
   await clickButton(redRow, 5);
   await clickButton(redRow, 6);
 

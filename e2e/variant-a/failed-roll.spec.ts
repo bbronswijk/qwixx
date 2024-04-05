@@ -1,9 +1,10 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from '@playwright/test';
+import { routes } from '../util';
 
-test('should reflect the correct total count for the failed roll', async ({ page }) => {
-  await page.goto('/');
+test('should reflect the correct total count for the failed roll', async ({page}) => {
+  await page.goto(routes.variantA);
 
-  const failedButton = page.getByRole('button', { name: 'Worp mislukt' });
+  const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
   const total = page.getByTestId('failed-total');
   const totalScore = page.getByTestId('score');
 
@@ -24,10 +25,10 @@ test('should reflect the correct total count for the failed roll', async ({ page
   await expect(totalScore).toHaveText('-20');
 });
 
-test('should be able to undo a failed roll', async ({ page }) => {
-  await page.goto('/');
+test('should be able to undo a failed roll', async ({page}) => {
+  await page.goto(routes.variantA);
 
-  const failedButton = page.getByRole('button', { name: 'Worp mislukt' });
+  const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
   const total = page.getByTestId('failed-total');
   const undoButton = page.getByTestId('undo');
 

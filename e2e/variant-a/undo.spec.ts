@@ -1,10 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState } from './util';
+import { clickButton, expectButtonToHaveState, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/ui/bonus-box';
 
-test('should be able to undo a checked bonus box', async ({ page }) => {
-  await page.goto('/');
+test('should be able to undo a checked bonus box', async ({page}) => {
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const bonus = page.getByTestId('bonus-box');
@@ -19,18 +19,15 @@ test('should be able to undo a checked bonus box', async ({ page }) => {
   await expectButtonToHaveState(redRow, 3, buttonState.checked);
   await expectButtonToHaveState(redRow, 4, buttonState.checked);
 
-  await undoButton.click()
+  await undoButton.click();
 
   await expectButtonToHaveState(redRow, 2, buttonState.unchecked);
   await expectButtonToHaveState(redRow, 3, buttonState.unchecked);
   await expectButtonToHaveState(redRow, 4, buttonState.unchecked);
 });
 
-/**
- * TODO this needs to be fixed in app
- */
-test('should be able to undo a chain reaction', async ({ page }) => {
-  await page.goto('/');
+test('should be able to undo a chain reaction', async ({page}) => {
+  await page.goto(routes.variantA);
 
   const rows = page.locator('section');
   const bonus = page.getByTestId('bonus-box');
