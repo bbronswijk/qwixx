@@ -17,7 +17,7 @@ export const lockState = {
 type LockState = keyof typeof lockState;
 
 export default function Lock({ lockedBySomeoneElse, completedRow, ...props }: ComponentProps) {
-  const iconClass = "h-6 w-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 absolute";
+  const iconClass = 'h-4 w-4 lg:h-6 lg:w-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 absolute';
 
   let icon = <UnLockedIcon className={cn(iconClass, '-rotate-12')}/>;
   let state: LockState = lockState.unlocked;
