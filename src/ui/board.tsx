@@ -28,13 +28,14 @@ export default function Board() {
         data-testid="undo"
         onClick={() => undo()}
         disabled={userActions.length === 0}
-        className={cn("bg-white h-10 w-10 rounded flex items-center justify-center ml-auto", userActions.length > 0 ? "hover:bg-white/50" : "opacity-30")}>
+        className={cn('bg-white h-8 w-8 lg:h-10 lg:w-10 rounded flex items-center justify-center ml-auto', userActions.length > 0 ? 'hover:bg-white/50' : 'opacity-30')}>
         <UndoIcon className={cn("text-slate-700")}/>
       </button>
       <div
-        className="bg-white/70 rounded-lg px-4 font-bold h-12 flex items-center justify-center">
+        className="bg-white/70 rounded-lg px-2 lg:px-4 font-bold h-8 lg:h-12 flex items-center justify-center">
         <span className="text-slate-400 ml-auto font-bold text-lg lg:text-xl">Totaal</span>
-        <span data-testid="score" className="text-black w-16 text-right text-2xl lg:text-4xl ">{useTotalSelector()}</span>
+        <span data-testid="score"
+              className="text-black w-12 lg:w-16 text-right text-xl lg:text-4xl ">{useTotalSelector()}</span>
       </div>
     </footer>
   </div>
