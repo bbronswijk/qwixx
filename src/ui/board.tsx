@@ -6,11 +6,12 @@ import Bonus from '@/ui/bonus';
 import Failed from '@/ui/failed';
 import { UndoIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
-import useQwixxStore, { useTotalSelector } from '@/state/useQwixxStore';
+import useQwixxStore from '@/state/qwixx.store';
 import { colors, tiles } from '@/data/tiles';
+import { useTotalSelector } from '@/state/qwixx.selectors';
 
 export default function Board() {
-  const userActions = useQwixxStore.use.userActions();
+  const userActions = useQwixxStore.use.changes();
   const undo = useQwixxStore.use.undo();
 
   return <div className="px-8 py-4 lg:p-8 bg-slate-200 rounded-xl space-y-2 m-3">

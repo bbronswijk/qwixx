@@ -1,7 +1,7 @@
 import React from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
-import useQwixxStore from '@/state/useQwixxStore';
+import useQwixxStore from '@/state/qwixx.store';
 
 export default function Failed() {
   const failed = useQwixxStore.use.failed();

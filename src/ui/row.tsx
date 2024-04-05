@@ -4,8 +4,9 @@ import React, { HTMLAttributes, useState } from 'react';
 import { TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
 import Lock from '@/ui/lock';
-import useQwixxStore, { useTotalForRowSelector } from '@/state/useQwixxStore';
+import useQwixxStore from '@/state/qwixx.store';
 import { Color, TileModel, Tiles } from '@/data/tiles';
+import { useTotalForRowSelector } from '@/state/qwixx.selectors';
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   color: Color;

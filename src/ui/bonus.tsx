@@ -2,7 +2,7 @@ import BonusBox from '@/ui/bonus-box';
 import { TriangleIcon } from '@/ui/icons';
 import React, { Fragment } from 'react';
 import { bonusBoxes } from '@/data/tiles';
-import useQwixxStore from '@/state/useQwixxStore';
+import useQwixxStore from '@/state/qwixx.store';
 
 export default function Bonus() {
   const selected = useQwixxStore(({ bonus }) => bonus.map(({ id }) => id));
