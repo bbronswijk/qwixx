@@ -5,6 +5,7 @@ import React from 'react';
 import { defaultTiles } from '@/app/default/default.config';
 import { useTotalSelector } from '@/app/default/default.selectors';
 import useDefaultStore from '@/app/default/default.store';
+import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
   const userActions = useDefaultStore.use.changes();
@@ -26,6 +27,7 @@ export default function Home() {
         undoClicked={() => undo()}
         totalScore={useTotalSelector()}>
       </Board>
+      <FullScreen/>
     </main>
   );
 }

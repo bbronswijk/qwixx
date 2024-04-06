@@ -6,6 +6,7 @@ import React from 'react';
 import useVariantAStore from '@/app/variant-a/variant-a.store';
 import { useTotalSelector } from '@/app/variant-a/variant-a.selectors';
 import { variantATiles } from '@/app/variant-a/variant-a.config';
+import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
   const userActions = useVariantAStore.use.changes();
@@ -28,6 +29,7 @@ export default function Home() {
         totalScore={useTotalSelector()}>
         <Bonus/>
       </Board>
+      <FullScreen/>
     </main>
   );
 }

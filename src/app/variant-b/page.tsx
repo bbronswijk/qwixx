@@ -6,6 +6,7 @@ import useVariantBStore from '@/app/variant-b/variant-b.store';
 import { useTotalSelector } from '@/app/variant-b/variant-b.selectors';
 import { variantBTiles } from '@/app/variant-b/variant-b.config';
 import ExtraPoints from '@/app/variant-b/extra/extra-points';
+import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
   const userActions = useVariantBStore.use.changes();
@@ -28,6 +29,7 @@ export default function Home() {
         totalScore={useTotalSelector()}>
         <ExtraPoints/>
       </Board>
+      <FullScreen/>
     </main>
   );
 }

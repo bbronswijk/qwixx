@@ -1,38 +1,40 @@
 import Link from 'next/link';
 import { ChevronRightIcon } from '@/ui/icons';
+import Image from 'next/image';
 
 export default function Home() {
   return (
-    <main className="h-full w-full flex justify-center items-center">
-      <div className="grid grid-cols-1 gap-3 w-full max-w-[600px]">
-        <Link className="flex border leading-none p-5 rounded hover:bg-slate-50 duration-300 items-center"
+    <div className="grid grid-cols-1 gap-3 p-4 w-full max-w-[600px] mx-auto">
+
+      <Link className="border rounded hover:shadow-xl duration-300"
               href="/default">
-          <div>
-            <h1 className="font-bold text-3xl">Qwixx</h1>
-            <small className="text-slate-500 text-lg">Standaard</small>
-          </div>
+        <Image src="/default.png" alt="default variant" width={600} height={271}/>
+        <div className="flex px-5 pb-5 items-center">
+          <h1 className="font-bold text-2xl">Standaard</h1>
           <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
+          </div>
         </Link>
 
-        <Link className="flex border leading-none p-5 rounded hover:bg-slate-50 duration-300 items-center"
+      <Link className="border rounded hover:shadow-xl duration-300"
               href="/variant-a">
-          <div>
-            <h1 className="font-bold text-3xl">Qwixx</h1>
-            <small className="text-slate-500 text-lg">Bonus versie A</small>
-          </div>
+        <Image src="/variant-a.png" alt="Bonus variant A" width={600} height={313}/>
+
+        <div className="flex px-5 pb-5 items-center">
+          <h1 className="font-bold text-2xl">Bonus variant A</h1>
           <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
+          </div>
         </Link>
 
-        <Link className="flex border leading-none p-5 rounded hover:bg-slate-50 duration-300 items-center"
+      <Link className="border rounded hover:shadow-xl duration-300"
               href="/variant-b">
-          <div>
-            <h1 className="font-bold text-3xl">Qwixx</h1>
-            <small className="text-slate-500 text-lg">Bonus versie B</small>
-          </div>
+        <Image src="/variant-b.png" alt="default variant" width={600} height={313}/>
+
+        <div className="flex px-5 pb-5 items-center">
+          <h1 className="font-bold text-2xl">Bonus variant B</h1>
           <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
+          </div>
         </Link>
 
       </div>
-    </main>
   );
 }

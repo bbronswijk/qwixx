@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import '../styles/globals.css';
-import FullScreen from '@/ui/full-screen';
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -16,7 +15,6 @@ export default function RootLayout({
     <html lang="en">
     <body className="h-svh w-screen min-w-[700px]">
     {children}
-    <FullScreen/>
     </body>
     </html>
   );
