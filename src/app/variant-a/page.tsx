@@ -1,7 +1,7 @@
 'use client';
 
 import Board from '@/ui/board';
-import Bonus from '@/ui/bonus';
+import Bonus from '@/app/variant-a/bonus';
 import React from 'react';
 import useVariantAStore from '@/app/variant-a/variant-a.store';
 import { useTotalSelector } from '@/app/variant-a/variant-a.selectors';

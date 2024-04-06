@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, routes } from '../util';
 import { buttonState } from '@/ui/tile';
-import { bonusBoxState } from '@/ui/bonus-box';
+import { bonusBoxState } from '@/app/variant-a/bonus-box';
 
 test('should be able to undo a checked bonus box', async ({page}) => {
   await page.goto(routes.variantA);

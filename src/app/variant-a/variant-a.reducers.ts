@@ -2,6 +2,7 @@ import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
 import { Change, VariantAStore } from '@/app/variant-a/variant-a.store';
 import { Color } from '@/data/color';
 import { tileType } from '@/data/tile.model';
+import { getNextTile } from '@/utils/get-next-tile';
 
 /**
  * Recursively trigger the tiles.
@@ -28,9 +29,7 @@ export const checkTile = (state: VariantAStore, color: Color, bonus: boolean, va
   };
 
   // Get next color to be checked
-  const lastSelected = state[bonusBox.color].at(-1);
-  const lastSelectedIndex = lastSelected ? variantATiles[bonusBox.color].findIndex(({value}) => value === lastSelected) : -1;
-  const nextColor = variantATiles[bonusBox.color][lastSelectedIndex + 1];
+  const nextColor = getNextTile(variantATiles[bonusBox.color], state[bonusBox.color]);
 
   // Return if there is nothing to check.
   if (!nextColor) {

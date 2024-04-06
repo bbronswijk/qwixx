@@ -9,6 +9,11 @@ export interface TileModel {
 export const tileType = {
   default: 'default',
   bonus: 'bonus',
+  checkTwoInLowestRow: 'checkTwoInLowestRow',
+  checkOneInAllRows: 'checkOneInAllRows',
+  lowestRowTimesTwo: 'lowestRowTimesTwo',
+  plusThirteen: 'plusThirteen',
+  failedRoundsDontCount: 'failedRoundsDontCount',
 } as const;
 
 export type TileType = keyof typeof tileType;

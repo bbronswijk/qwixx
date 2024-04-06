@@ -7,7 +7,7 @@ import Lock from '@/ui/lock';
 import { CheckTileFn } from '@/app/variant-a/variant-a.store';
 import { Color } from '@/data/color';
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
-import { TileModel, tileType } from '@/data/tile.model';
+import { TileModel } from '@/data/tile.model';
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   color: Color;
@@ -39,7 +39,7 @@ export default function Row({color, tiles, className, onCheckTile, selection, ..
             checked={checked}
             skipped={skipped || (locked && !selection.includes(tile.value))}
             disabled={checked || skipped || locked || lastItemButNotEnoughSelected}
-            bonus={tile.type === tileType.bonus}
+            type={tile.type}
             onClick={() => onCheckTile(tile)}>{tile.value}</Tile>
         )
       })}

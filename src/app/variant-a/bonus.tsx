@@ -1,6 +1,6 @@
 'use client';
 
-import BonusBox from '@/ui/bonus-box';
+import BonusBox from '@/app/variant-a/bonus-box';
 import { TriangleIcon } from '@/ui/icons';
 import React, { Fragment } from 'react';
 import { bonusBoxes } from '@/app/variant-a/variant-a.config';
