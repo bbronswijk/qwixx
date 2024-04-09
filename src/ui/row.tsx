@@ -4,7 +4,7 @@ import React, { HTMLAttributes, useState } from 'react';
 import { TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
 import Lock from '@/ui/lock';
-import { CheckTileFn } from '@/app/variant-a/variant-a.store';
+import { CheckTileFn } from '@/state/store';
 import { Color } from '@/data/color';
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
 import { TileModel } from '@/data/tile.model';

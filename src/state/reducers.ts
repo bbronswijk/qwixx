@@ -1,18 +1,18 @@
 import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
-import { Change, VariantAStore } from '@/app/variant-a/variant-a.store';
+import { Change, Store } from '@/state/store';
 import { Color } from '@/data/color';
-import { tileType } from '@/data/tile.model';
+import { TileType, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 
 /**
  * Recursively trigger the tiles.
  */
-export const checkTile = (state: VariantAStore, color: Color, bonus: boolean, value: number, userAction: boolean): Partial<VariantAStore> => {
+export const checkTile = (state: Store, color: Color, type: TileType, value: number, userAction: boolean): Partial<Store> => {
   // Check next color if we have a normal tile.
-  if (!bonus) {
+  if (type !== tileType.bonus) {
     return {
       ...state,
-      changes: [...state.changes, {color, value, bonus, userAction}],
+      changes: [...state.changes, {color, value, type, userAction}],
       [color]: [...state[color], value],
     };
   }
@@ -25,7 +25,7 @@ export const checkTile = (state: VariantAStore, color: Color, bonus: boolean, va
     ...state,
     [color]: [...state[color], value],
     bonus: [...state.bonus, bonusBox],
-    changes: [...state.changes, {color, value, bonus, userAction}],
+    changes: [...state.changes, {color, value, type, userAction}],
   };
 
   // Get next color to be checked
@@ -37,13 +37,13 @@ export const checkTile = (state: VariantAStore, color: Color, bonus: boolean, va
   }
 
   // Pass next color data to next function in case next color is a bonus box.
-  return checkTile(state, bonusBox.color, nextColor.type === tileType.bonus, nextColor.value, false);
+  return checkTile(state, bonusBox.color, nextColor.type, nextColor.value, false);
 };
 
 /**
  * Recursively undo the last changes.
  */
-export const undo = (state: VariantAStore, change: Change): VariantAStore => {
+export const undo = (state: Store, change: Change): Store => {
   // Undo last change
   if ('failed' in change) {
     state = {
@@ -56,7 +56,7 @@ export const undo = (state: VariantAStore, change: Change): VariantAStore => {
     state = {
       ...state,
       // If the change was caused by a bonus box uncheck the last bonus box.
-      ...change.bonus && {bonus: state.bonus.slice(0, -1)},
+      ...change.type === tileType.bonus && {bonus: state.bonus.slice(0, -1)},
       // Deselect last box in the row.
       [change.color]: state[change.color].slice(0, -1),
       // Undo last change.

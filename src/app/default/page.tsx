@@ -1,19 +1,24 @@
 'use client';
 
 import Board from '@/ui/board';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { defaultTiles } from '@/app/default/default.config';
-import { useTotalSelector } from '@/app/default/default.selectors';
-import useDefaultStore from '@/app/default/default.store';
+import { useTotalSelector } from '@/state/selectors';
+import QwixxStore from '@/state/store';
 import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
-  const userActions = useDefaultStore.use.changes();
-  const undo = useDefaultStore.use.undo();
-  const failedRounds = useDefaultStore.use.failed();
-  const onFailRound = useDefaultStore.use.roundFailed();
-  const onCheckTile = useDefaultStore.use.checkTile();
-  const selected = useDefaultStore();
+  const userActions = QwixxStore.use.changes();
+  const reset = QwixxStore.use.reset();
+  const undo = QwixxStore.use.undo();
+  const failedRounds = QwixxStore.use.failed();
+  const onFailRound = QwixxStore.use.roundFailed();
+  const onCheckTile = QwixxStore.use.checkTile();
+  const selected = QwixxStore();
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <main className="h-full w-full flex justify-center items-center">
@@ -25,7 +30,7 @@ export default function Home() {
         failedRounds={failedRounds}
         onFailRound={onFailRound}
         undoClicked={() => undo()}
-        totalScore={useTotalSelector()}>
+        totalScore={useTotalSelector(defaultTiles)}>
       </Board>
       <FullScreen/>
     </main>

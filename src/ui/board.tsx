@@ -4,7 +4,7 @@ import Failed from '@/ui/failed';
 import { UndoIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
 import { Color, colors } from '@/data/color';
-import { CheckTileFn } from '@/app/variant-a/variant-a.store';
+import { CheckTileFn } from '@/state/store';
 import { TileModel } from '@/data/tile.model';
 
 interface ComponentProps extends PropsWithChildren {

@@ -2,19 +2,24 @@
 
 import Board from '@/ui/board';
 import Bonus from '@/app/variant-a/bonus';
-import React from 'react';
-import useVariantAStore from '@/app/variant-a/variant-a.store';
-import { useTotalSelector } from '@/app/variant-a/variant-a.selectors';
+import React, { useEffect } from 'react';
+import QwixxStore from '@/state/store';
+import { useTotalSelector } from '@/state/selectors';
 import { variantATiles } from '@/app/variant-a/variant-a.config';
 import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
-  const userActions = useVariantAStore.use.changes();
-  const undo = useVariantAStore.use.undo();
-  const failedRounds = useVariantAStore.use.failed();
-  const onFailRound = useVariantAStore.use.roundFailed();
-  const onCheckTile = useVariantAStore.use.checkTile();
-  const selected = useVariantAStore();
+  const userActions = QwixxStore.use.changes();
+  const reset = QwixxStore.use.reset();
+  const undo = QwixxStore.use.undo();
+  const failedRounds = QwixxStore.use.failed();
+  const onFailRound = QwixxStore.use.roundFailed();
+  const onCheckTile = QwixxStore.use.checkTile();
+  const selected = QwixxStore();
+
+  useEffect(() => {
+    reset();
+  }, []);
 
   return (
     <main className="h-full w-full flex justify-center items-center">
@@ -26,7 +31,7 @@ export default function Home() {
         failedRounds={failedRounds}
         onFailRound={onFailRound}
         undoClicked={() => undo()}
-        totalScore={useTotalSelector()}>
+        totalScore={useTotalSelector(variantATiles)}>
         <Bonus/>
       </Board>
       <FullScreen/>

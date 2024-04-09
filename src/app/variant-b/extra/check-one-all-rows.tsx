@@ -2,14 +2,14 @@
 
 import React, { useEffect } from 'react';
 import { RotatedSquareIcon, XIcon } from '@/ui/icons';
-import useVariantBStore from '@/app/variant-b/variant-b.store';
+import QwixxStore from '@/state/store';
 
 interface ComponentProps {
   checked: boolean;
 }
 
 export default function CheckOneAllRows({checked}: ComponentProps) {
-  const checkOneInEachRow = useVariantBStore.use.checkOneInEachRow();
+  const checkOneInEachRow = QwixxStore.use.checkOneInEachRow();
 
   useEffect(() => {
     if (checked) {

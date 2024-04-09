@@ -4,10 +4,10 @@ import BonusBox from '@/app/variant-a/bonus-box';
 import { TriangleIcon } from '@/ui/icons';
 import React, { Fragment } from 'react';
 import { bonusBoxes } from '@/app/variant-a/variant-a.config';
-import useVariantAStore from '@/app/variant-a/variant-a.store';
+import QwixxStore from '@/state/store';
 
 export default function Bonus() {
-  const selected = useVariantAStore(({bonus}) => bonus.map(({id}) => id));
+  const selected = QwixxStore(({bonus}) => bonus.map(({id}) => id));
 
   return (
     <div data-testid="bonus" className="flex border-2 border-slate-400 rounded-lg items-center p-2 lg:p-4">

@@ -1,11 +1,12 @@
 import { createSelectors } from '@/utils/create-selector';
 import { devtools } from 'zustand/middleware';
 import { create, StateCreator } from 'zustand';
-import { BonusBox, variantBTiles } from '@/app/variant-b/variant-b.config';
+import { BonusBox } from '@/app/variant-a/variant-a.config';
+import { checkTile, undo } from '@/state/reducers';
 import { Color, colors } from '@/data/color';
 import { TileModel, TileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
-import { undo } from '@/app/variant-b/variant-b.reducers';
+import { variantBTiles } from '@/app/variant-b/variant-b.config';
 
 export interface State {
   changes: Change[];
@@ -21,13 +22,14 @@ export type CheckTileFn = (tile: TileModel) => void;
 
 interface Reducers {
   checkTile: CheckTileFn;
-  checkOneInEachRow: () => void;
-  checkLowestRowTwice: () => void;
+  reset: () => void;
   undo: () => void;
   roundFailed: () => void;
+  checkOneInEachRow: () => void;
+  checkLowestRowTwice: () => void;
 }
 
-export type VariantBStore = State & Reducers;
+export type Store = State & Reducers;
 
 export type Change = { color: Color; value: number; type: TileType; userAction: boolean } | {
   failed: boolean;
@@ -45,16 +47,28 @@ const initialState: State = {
   failed: 0,
 };
 
-const state: StateCreator<VariantBStore> = (set) => ({
+const state: StateCreator<Store> = (set) => ({
   ...initialState,
 
-  checkTile: ({color, type, value}) => set((state): Partial<VariantBStore> => ({
-    ...state,
-    changes: [...state.changes, {color, value, type, userAction: true}],
-    [color]: [...state[color], value],
+  reset: () => set((): Partial<Store> => ({
+    ...initialState
   })),
 
-  checkOneInEachRow: () => set((state): Partial<VariantBStore> => {
+  checkTile: ({color, type, value}) => set((state): Partial<Store> => {
+    return checkTile(state, color, type, value, true);
+  }),
+
+  roundFailed: () => set((state): Partial<Store> => ({
+    failed: state.failed + 1,
+    changes: [...state.changes, {failed: true, userAction: true,}],
+  })),
+
+  undo: () => set((state): Partial<Store> => {
+    return undo({...state,}, [...state.changes].at(-1) as Change);
+  }),
+
+
+  checkOneInEachRow: () => set((state): Partial<Store> => {
     const nextRed = getNextTile(variantBTiles.red, state.red);
     const nextYellow = getNextTile(variantBTiles.yellow, state.yellow);
     const nextGreen = getNextTile(variantBTiles.green, state.green);
@@ -84,7 +98,7 @@ const state: StateCreator<VariantBStore> = (set) => ({
     };
   }),
 
-  checkLowestRowTwice: () => set((state): Partial<VariantBStore> => {
+  checkLowestRowTwice: () => set((state): Partial<Store> => {
     const rows = [
       {color: colors.red, value: state.red.length},
       {color: colors.yellow, value: state.yellow.length},
@@ -110,21 +124,13 @@ const state: StateCreator<VariantBStore> = (set) => ({
     return {...state, [lowestRow.color]: [...state[lowestRow.color], secondCheck.value]};
   }),
 
-  roundFailed: () => set((state): Partial<VariantBStore> => ({
-    failed: state.failed + 1,
-    changes: [...state.changes, {failed: true, userAction: true,}],
-  })),
-
-  undo: () => set((state): Partial<VariantBStore> => {
-    return undo({...state,}, [...state.changes].at(-1) as Change);
-  }),
 });
 
-const useVariantBStore = createSelectors(create<VariantBStore>()(
+const QwixxStore = createSelectors(create<Store>()(
   // persist(
   devtools(state, {store: 'QwixxVariantAStore', enabled: true}),
   //   { name: 'QwixxStore' }
   // )
 ));
 
-export default useVariantBStore;
+export default QwixxStore;

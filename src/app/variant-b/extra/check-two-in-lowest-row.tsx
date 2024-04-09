@@ -2,14 +2,14 @@
 
 import React, { useEffect } from 'react';
 import { CircleIcon, XIcon } from '@/ui/icons';
-import useVariantBStore from '@/app/variant-b/variant-b.store';
+import QwixxStore from '@/state/store';
 
 interface ComponentProps {
   checked: boolean;
 }
 
 export default function CheckTwoInLowestRow({checked}: ComponentProps) {
-  const checkLowestRowTwice = useVariantBStore.use.checkLowestRowTwice();
+  const checkLowestRowTwice = QwixxStore.use.checkLowestRowTwice();
 
   useEffect(() => {
     if (checked) {
