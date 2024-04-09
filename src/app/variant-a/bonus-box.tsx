@@ -11,8 +11,6 @@ export const bonusBoxState = {
   unchecked: 'unchecked',
 } as const;
 
-export type BonusBoxState = keyof typeof bonusBoxState;
-
 export default function BonusBox({ checked, className }: ComponentProps) {
   return <div
     data-testid="bonus-box"

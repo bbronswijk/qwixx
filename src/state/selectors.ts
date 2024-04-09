@@ -2,7 +2,8 @@ import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score'
 import QwixxStore from '@/state/store';
 import { Color, colors } from '@/data/color';
 import { TileModel, tileType } from '@/data/tile.model';
-import { hasMetRequirements } from '@/app/variant-b/extra/extra-points';
+
+import { hasMetRequirements } from '@/utils/has-met-requirements';
 
 /**
  * Calculate the total score for a single row.

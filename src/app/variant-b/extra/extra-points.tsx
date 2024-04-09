@@ -6,10 +6,9 @@ import CheckOneInAllRows from '@/app/variant-b/extra/check-one-all-rows';
 import LowestRowTimesTwo from '@/app/variant-b/extra/lowest-row-times-two';
 import FailedRoundsDontCount from '@/app/variant-b/extra/failed-rounds-dont-count';
 import PlusThirteen from '@/app/variant-b/extra/plus-thirteen';
-import QwixxStore, { Change } from '@/state/store';
-import { tileType, TileType } from '@/data/tile.model';
-
-export const hasMetRequirements = (changes: Change[], type: TileType) => changes.filter((change) => 'type' in change && change.type === type).length === 2;
+import QwixxStore from '@/state/store';
+import { tileType } from '@/data/tile.model';
+import { hasMetRequirements } from '@/utils/has-met-requirements';
 
 export default function ExtraPoints() {
   const changes = QwixxStore.use.changes();
