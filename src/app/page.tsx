@@ -1,40 +1,46 @@
 import Link from 'next/link';
-import { ChevronRightIcon } from '@/ui/icons';
 import Image from 'next/image';
+import { ChevronRightIcon } from '@/ui/icons';
 
 export default function Home() {
   return (
-    <div className="grid grid-cols-1 gap-3 p-4 w-full max-w-[600px] mx-auto">
+    <main className="h-full w-full flex items-center justify-center gap-8 p-8">
+      <Link className="border rounded-xl hover:shadow-xl duration-300 overflow-hidden" href="/default">
+        <h1 className="text-slate-400 pt-6 text-center leading-none">Variant</h1>
+        <h1 className="font-bold text-lg text-center">Standaard</h1>
+        <div className="h-40 md:h-80 mb-8 flex items-center justify-center">
+          <Image src="/default.png" alt="default variant" width={600} height={271}/>
+        </div>
+        <button className="bg-slate-200 py-2 pl-4 pr-2 font-bold w-full flex items-center">
+          Start
+          <ChevronRightIcon className="ml-auto h-6 w-6 text-muted"/>
+        </button>
+      </Link>
 
-      <Link className="border rounded hover:shadow-xl duration-300"
-              href="/default">
-        <Image src="/default.png" alt="default variant" width={600} height={271}/>
-        <div className="flex px-5 pb-5 items-center">
-          <h1 className="font-bold text-2xl">Standaard</h1>
-          <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
-          </div>
-        </Link>
+      <Link className="border rounded-xl hover:shadow-xl duration-300 overflow-hidden" href="/variant-a">
+        <h1 className="text-slate-400 pt-6 text-center leading-none">Variant</h1>
+        <h1 className="font-bold text-lg md:text-xl text-center">Bonus variant A</h1>
+        <div className="h-40 md:h-80 mb-8 flex items-center justify-center">
+          <Image src="/variant-a.png" alt="Bonus variant A" width={600} height={313}/>
+        </div>
+        <button className="bg-slate-200 py-2 pl-4 pr-2 font-bold w-full flex items-center">
+          Start
+          <ChevronRightIcon className="ml-auto h-6 w-6 text-muted"/>
+        </button>
+      </Link>
 
-      <Link className="border rounded hover:shadow-xl duration-300"
-              href="/variant-a">
-        <Image src="/variant-a.png" alt="Bonus variant A" width={600} height={313}/>
-
-        <div className="flex px-5 pb-5 items-center">
-          <h1 className="font-bold text-2xl">Bonus variant A</h1>
-          <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
-          </div>
-        </Link>
-
-      <Link className="border rounded hover:shadow-xl duration-300"
-              href="/variant-b">
-        <Image src="/variant-b.png" alt="default variant" width={600} height={313}/>
-
-        <div className="flex px-5 pb-5 items-center">
-          <h1 className="font-bold text-2xl">Bonus variant B</h1>
-          <ChevronRightIcon className="ml-auto h-10 w-10 text-muted"/>
-          </div>
-        </Link>
-
-      </div>
-  );
+      <Link className="border rounded-xl hover:shadow-xl duration-300 overflow-hidden" href="/variant-b">
+        <h1 className="text-slate-400 pt-6 text-center leading-none">Variant</h1>
+        <h1 className="font-bold text-lg md:text-xl text-center">Bonus variant B</h1>
+        <div className="h-40 md:h-80 mb-8 flex items-center justify-center">
+          <Image src="/variant-b.png" alt="default variant" width={600} height={313}/>
+        </div>
+        <button className="bg-slate-200 py-2 pl-4 pr-2 font-bold w-full flex items-center">
+          Start
+          <ChevronRightIcon className="ml-auto h-6 w-6 text-muted"/>
+        </button>
+      </Link>
+    </main>
+  )
+    ;
 }
