@@ -5,7 +5,6 @@ import React, { useEffect } from 'react';
 import { defaultTiles } from '@/app/default/default.config';
 import { useTotalSelector } from '@/state/selectors';
 import QwixxStore from '@/state/store';
-import FullScreen from '@/ui/full-screen';
 
 export default function Home() {
   const userActions = QwixxStore.use.changes();
@@ -32,7 +31,6 @@ export default function Home() {
         undoClicked={() => undo()}
         totalScore={useTotalSelector(defaultTiles)}>
       </Board>
-      <FullScreen/>
     </main>
   );
 }

@@ -26,7 +26,7 @@ export const viewport: Viewport = {
   initialScale: 1,
   width: 'device-width',
   viewportFit: 'cover',
-};
+}
 
 export default function RootLayout({
   children,
@@ -35,7 +35,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <body>
+    <body className="h-svh w-screen">
     {children}
     </body>
     </html>
