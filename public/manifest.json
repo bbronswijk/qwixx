@@ -1,0 +1,17 @@
+{
+  "name": "Qwixx",
+  "short_name": "Qwixx",
+  "icons": [
+    {
+      "src": "256x256.jpg",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "landscape"
+}
