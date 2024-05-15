@@ -4,7 +4,7 @@ import { ChevronRightIcon } from '@/ui/icons';
 
 export default function Home() {
   return (
-    <main className="h-full w-full flex items-center justify-center gap-8 px-8">
+    <main className="h-full w-full flex items-center flex-col md:flex-row justify-center gap-8 px-8">
       <Link className="border rounded-xl hover:shadow-xl duration-300 overflow-hidden" href="/default">
         <h1 className="text-slate-400 pt-6 text-center leading-none">Variant</h1>
         <h1 className="font-bold text-lg text-center mb-2 block">Standaard</h1>
