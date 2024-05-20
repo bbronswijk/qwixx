@@ -24,6 +24,7 @@ export interface State {
 
   bonus: BonusBox[];
   failed: number,
+  showScore: boolean;
 }
 
 export type CheckTileFn = (tile: TileModel) => void;
@@ -36,6 +37,7 @@ interface Reducers {
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
   toggleRowLocked: (color: Color) => void;
+  toggleScoreVisibility: () => void;
 }
 
 export type Store = State & Reducers;
@@ -46,6 +48,7 @@ export type Change = { type: NumericTileType; color: Color; value: number; userA
 
 const initialState: State = {
   changes: [],
+
   [colors.red]: [],
   [colors.yellow]: [],
   [colors.green]: [],
@@ -60,6 +63,8 @@ const initialState: State = {
 
   bonus: [],
   failed: 0,
+
+  showScore: true,
 };
 
 const state: StateCreator<Store> = (set) => ({
@@ -147,6 +152,9 @@ const state: StateCreator<Store> = (set) => ({
     return {...state, [lowestRow.color]: [...state[lowestRow.color], secondCheck.value]};
   }),
 
+  toggleScoreVisibility: () => set((state): Partial<Store> => ({
+    showScore: !state.showScore,
+  })),
 });
 
 const QwixxStore = createSelectors(create<Store>()(

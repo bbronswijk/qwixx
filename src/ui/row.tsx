@@ -1,10 +1,10 @@
 import Tile from '@/ui/tile';
 import { cn } from '@/utils/cn';
 import React, { HTMLAttributes } from 'react';
-import { TriangleIcon } from '@/ui/icons';
+import { EyeOffIcon, TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
 import Lock from '@/ui/lock';
-import { CheckTileFn } from '@/state/store';
+import QwixxStore, { CheckTileFn } from '@/state/store';
 import { Color } from '@/data/color';
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
 import { TileModel } from '@/data/tile.model';
@@ -13,6 +13,7 @@ interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   color: Color;
   tiles: TileModel[];
   className: string
+  showScore: boolean;
   onCheckTile: CheckTileFn;
   onLockedIconClicked: (color: Color) => void;
   selection: number[];
@@ -25,6 +26,7 @@ export default function Row({
                               className,
                               onCheckTile,
                               selection,
+                              showScore,
                               locked,
                               onLockedIconClicked,
                               ...props
@@ -32,6 +34,7 @@ export default function Row({
   const last = tiles.at(-1) as TileModel;
   const lastSelected = selection.at(-1) as number;
   const lastItemIsSelected = selection.includes(last.value);
+  const toggleScoreVisibility = QwixxStore.use.toggleScoreVisibility();
 
   return (
     <section className={cn(className, 'flex py-1.5 lg:py-2 pl-6 pr-2 gap-1 rounded-lg relative items-center')} {...props}>
@@ -55,7 +58,8 @@ export default function Row({
 
       <Lock lockedBySomeoneElse={locked} completedRow={lastItemIsSelected} onClick={() => onLockedIconClicked(color)}/>
 
-      <Total>{calculateTotalPointsForRow(tiles, selection)}</Total>
+      <Total onClick={toggleScoreVisibility}>{showScore ? calculateTotalPointsForRow(tiles, selection) :
+        <EyeOffIcon className="h-4 w-4"/>}</Total>
     </section>
   );
 }
