@@ -4,7 +4,7 @@ import { create, StateCreator } from 'zustand';
 import { BonusBox } from '@/app/variant-a/variant-a.config';
 import { checkTile, undo } from '@/state/reducers';
 import { Color, colors } from '@/data/color';
-import { TileModel, TileType } from '@/data/tile.model';
+import { TileModel, tileType, TileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 import { variantBTiles } from '@/app/variant-b/variant-b.config';
 
@@ -14,6 +14,14 @@ export interface State {
   yellow: number[],
   green: number[],
   blue: number[],
+
+  locked: {
+    red: boolean;
+    yellow: boolean;
+    green: boolean;
+    blue: boolean;
+  },
+
   bonus: BonusBox[];
   failed: number,
 }
@@ -27,6 +35,7 @@ interface Reducers {
   roundFailed: () => void;
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
+  toggleRowLocked: (color: Color) => void;
 }
 
 export type Store = State & Reducers;
@@ -34,7 +43,7 @@ export type Store = State & Reducers;
 export type Change = { color: Color; value: number; type: TileType; userAction: boolean } | {
   failed: boolean;
   userAction: boolean
-};
+} | { color: Color; type: TileType; userAction: boolean };
 
 const initialState: State = {
   changes: [],
@@ -42,6 +51,13 @@ const initialState: State = {
   [colors.yellow]: [],
   [colors.green]: [],
   [colors.blue]: [],
+
+  locked: {
+    [colors.red]: false,
+    [colors.yellow]: false,
+    [colors.green]: false,
+    [colors.blue]: false,
+  },
 
   bonus: [],
   failed: 0,
@@ -52,6 +68,15 @@ const state: StateCreator<Store> = (set) => ({
 
   reset: () => set((): Partial<Store> => ({
     ...initialState
+  })),
+
+  toggleRowLocked: (color: Color) => set((state): Partial<Store> => ({
+    ...state,
+    changes: [...state.changes, {color, type: tileType.lock, userAction: true,}],
+    locked: {
+      ...state.locked,
+      [color]: !state.locked[color],
+    }
   })),
 
   checkTile: ({color, type, value}) => set((state): Partial<Store> => {
@@ -128,7 +153,7 @@ const state: StateCreator<Store> = (set) => ({
 
 const QwixxStore = createSelectors(create<Store>()(
   // persist(
-  devtools(state, {store: 'QwixxVariantAStore', enabled: true}),
+  devtools(state, {store: 'QwixxStore', enabled: true}),
   //   { name: 'QwixxStore' }
   // )
 ));

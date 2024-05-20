@@ -9,11 +9,13 @@ import { variantATiles } from '@/app/variant-a/variant-a.config';
 
 export default function Home() {
   const userActions = QwixxStore.use.changes();
+  const lockedState = QwixxStore.use.locked();
   const reset = QwixxStore.use.reset();
   const undo = QwixxStore.use.undo();
   const failedRounds = QwixxStore.use.failed();
   const onFailRound = QwixxStore.use.roundFailed();
   const onCheckTile = QwixxStore.use.checkTile();
+  const toggleRowLocked = QwixxStore.use.toggleRowLocked();
   const selected = QwixxStore();
 
   useEffect(() => {
@@ -23,13 +25,15 @@ export default function Home() {
   return (
     <main className="h-full w-full flex justify-center items-center">
       <Board
-        onCheckTile={onCheckTile}
         state={selected}
+        lockedState={lockedState}
+        onCheckTile={onCheckTile}
         config={variantATiles}
         hasMadeChanges={userActions.length > 0}
         failedRounds={failedRounds}
         onFailRound={onFailRound}
         undoClicked={() => undo()}
+        onLockedIconClicked={toggleRowLocked}
         totalScore={useTotalSelector(variantATiles)}>
         <Bonus/>
       </Board>

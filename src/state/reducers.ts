@@ -8,6 +8,10 @@ import { getNextTile } from '@/utils/get-next-tile';
  * Recursively trigger the tiles.
  */
 export const checkTile = (state: Store, color: Color, type: TileType, value: number, userAction: boolean): Partial<Store> => {
+  if (state.locked[color]) {
+    return state;
+  }
+
   // Check next color if we have a normal tile.
   if (type !== tileType.bonus) {
     return {
@@ -49,6 +53,16 @@ export const undo = (state: Store, change: Change): Store => {
     state = {
       ...state,
       failed: state.failed - 1,
+      // Undo last change.
+      changes: state.changes.slice(0, -1)
+    };
+  } else if (change.type === tileType.lock) {
+    state = {
+      ...state,
+      locked: {
+        ...state.locked,
+        [change.color]: !state.locked[change.color]
+      },
       // Undo last change.
       changes: state.changes.slice(0, -1)
     };

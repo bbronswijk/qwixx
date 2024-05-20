@@ -13,7 +13,9 @@ interface ComponentProps extends PropsWithChildren {
   hasMadeChanges: boolean;
   failedRounds: number;
   state: Record<Color, number[]>;
+  lockedState: Record<Color, boolean>;
   onCheckTile: CheckTileFn;
+  onLockedIconClicked: (color: Color) => void;
   undoClicked: () => void;
   onFailRound: () => void;
 }
@@ -26,29 +28,39 @@ export default function Board({
                                 failedRounds,
                                 onFailRound,
                                 state,
+                                lockedState,
                                 onCheckTile,
+                                onLockedIconClicked,
                                 children
                               }: ComponentProps) {
   return <div className="px-8 py-4 lg:p-8 bg-slate-200 rounded-xl space-y-2 m-3">
     <Row color={colors.red}
          tiles={config.red}
          selection={state[colors.red]}
+         locked={lockedState[colors.red]}
          onCheckTile={onCheckTile}
+         onLockedIconClicked={onLockedIconClicked}
          className="bg-red-800 text-red-800"/>
     <Row color={colors.yellow}
          tiles={config.yellow}
          selection={state[colors.yellow]}
+         locked={lockedState[colors.yellow]}
          onCheckTile={onCheckTile}
+         onLockedIconClicked={onLockedIconClicked}
          className="bg-yellow-500 text-yellow-600"/>
     <Row color={colors.green}
          tiles={config.green}
          selection={state[colors.green]}
+         locked={lockedState[colors.green]}
          onCheckTile={onCheckTile}
+         onLockedIconClicked={onLockedIconClicked}
          className="bg-green-700 text-green-700"/>
     <Row color={colors.blue}
          tiles={config.blue}
          selection={state[colors.blue]}
+         locked={lockedState[colors.blue]}
          onCheckTile={onCheckTile}
+         onLockedIconClicked={onLockedIconClicked}
          className="bg-blue-800 text-blue-800"/>
 
     {children}

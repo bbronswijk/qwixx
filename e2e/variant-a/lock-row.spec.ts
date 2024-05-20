@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 import { lockState } from '@/ui/lock';
-import { clickButton, routes } from '../util';
+import { clickButton, expectButtonToHaveState, routes } from '../util';
+import { buttonState } from '@/ui/tile';
+import { bonusBoxState } from '@/app/variant-a/bonus-box';
 
 
 test('should lock the entire row if another player completes a row', async ({page}) => {
@@ -13,7 +15,7 @@ test('should lock the entire row if another player completes a row', async ({pag
 
   await expect(total).toHaveText('0');
 
-  await lock.click(); // Lock rw
+  await lock.click(); // Lock row
   await expect(lock).toHaveAttribute('data-state', lockState.locked);
 
   await expect(redRow.getByRole('button', {name: '2', exact: true})).toBeDisabled();
@@ -65,4 +67,28 @@ test('should toggle the state of the last item if another player completes a row
   await lock.click(); // unlock row
 
   await expect(redRow.getByRole('button', {name: '12', exact: true})).not.toBeDisabled();
+});
+
+test('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
+  await page.goto(routes.variantA);
+
+  const rows = page.locator('section');
+  const bonus = page.getByTestId('bonus-box');
+  const redRow = rows.first();
+  const yellowRow = rows.nth(1);
+  const lock = redRow.getByTestId('lock');
+  const total = redRow.getByTestId('total');
+
+  await expect(total).toHaveText('0');
+
+  await lock.click(); // Lock row
+  await expect(lock).toHaveAttribute('data-state', lockState.locked);
+  await expectButtonToHaveState(yellowRow, 5, buttonState.unchecked);
+  await expect(bonus.nth(0)).toHaveAttribute('data-state', bonusBoxState.unchecked);
+
+  await clickButton(yellowRow, 5);
+
+  await expectButtonToHaveState(yellowRow, 5, buttonState.checked);
+  await expect(bonus.nth(0)).toHaveAttribute('data-state', bonusBoxState.checked);
+  await expect(total).toHaveText('0');
 });

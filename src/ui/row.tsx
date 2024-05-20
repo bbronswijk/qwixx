@@ -1,6 +1,6 @@
 import Tile from '@/ui/tile';
 import { cn } from '@/utils/cn';
-import React, { HTMLAttributes, useState } from 'react';
+import React, { HTMLAttributes } from 'react';
 import { TriangleIcon } from '@/ui/icons';
 import Total from '@/ui/total';
 import Lock from '@/ui/lock';
@@ -14,12 +14,21 @@ interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   tiles: TileModel[];
   className: string
   onCheckTile: CheckTileFn;
+  onLockedIconClicked: (color: Color) => void;
   selection: number[];
+  locked: boolean;
 }
 
-export default function Row({color, tiles, className, onCheckTile, selection, ...props}: ComponentProps) {
-  const [locked, setLocked] = useState(false);
-
+export default function Row({
+                              color,
+                              tiles,
+                              className,
+                              onCheckTile,
+                              selection,
+                              locked,
+                              onLockedIconClicked,
+                              ...props
+                            }: ComponentProps) {
   const last = tiles.at(-1) as TileModel;
   const lastSelected = selection.at(-1) as number;
   const lastItemIsSelected = selection.includes(last.value);
@@ -44,7 +53,7 @@ export default function Row({color, tiles, className, onCheckTile, selection, ..
         )
       })}
 
-      <Lock lockedBySomeoneElse={locked} completedRow={lastItemIsSelected} onClick={() => setLocked(!locked)}/>
+      <Lock lockedBySomeoneElse={locked} completedRow={lastItemIsSelected} onClick={() => onLockedIconClicked(color)}/>
 
       <Total>{calculateTotalPointsForRow(tiles, selection)}</Total>
     </section>

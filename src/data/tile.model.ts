@@ -8,6 +8,8 @@ export interface TileModel {
 
 export const tileType = {
   default: 'default',
+  lock: 'lock',
+  failed: 'failed',
   bonus: 'bonus',
   checkTwoInLowestRow: 'checkTwoInLowestRow',
   checkOneInAllRows: 'checkOneInAllRows',
