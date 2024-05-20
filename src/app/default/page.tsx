@@ -5,6 +5,7 @@ import React, { useEffect } from 'react';
 import { defaultTiles } from '@/app/default/default.config';
 import { useTotalSelector } from '@/state/selectors';
 import QwixxStore from '@/state/store';
+import BackButton from '@/ui/back-button';
 
 export default function Home() {
   const userActions = QwixxStore.use.changes();
@@ -35,6 +36,7 @@ export default function Home() {
         onLockedIconClicked={toggleRowLocked}
         totalScore={useTotalSelector(defaultTiles)}>
       </Board>
+      <BackButton/>
     </main>
   );
 }

@@ -6,6 +6,7 @@ import React, { useEffect } from 'react';
 import QwixxStore from '@/state/store';
 import { useTotalSelector } from '@/state/selectors';
 import { variantATiles } from '@/app/variant-a/variant-a.config';
+import BackButton from '@/ui/back-button';
 
 export default function Home() {
   const userActions = QwixxStore.use.changes();
@@ -37,6 +38,7 @@ export default function Home() {
         totalScore={useTotalSelector(variantATiles)}>
         <Bonus/>
       </Board>
+      <BackButton/>
     </main>
   );
 }
