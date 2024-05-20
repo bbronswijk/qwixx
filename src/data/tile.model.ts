@@ -3,8 +3,12 @@ import { Color } from '@/data/color';
 export interface TileModel {
   color: Color;
   value: number;
-  type: TileType;
+  type: NumericTileType;
 }
+
+export type NumericTileType = Exclude<TileType, 'failed' | 'lock'>;
+export type FailedTileType = Extract<TileType, 'failed'>;
+export type LockTileType = Extract<TileType, 'lock'>;
 
 export const tileType = {
   default: 'default',

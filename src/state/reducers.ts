@@ -1,13 +1,13 @@
 import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
 import { Change, Store } from '@/state/store';
 import { Color } from '@/data/color';
-import { TileType, tileType } from '@/data/tile.model';
+import { NumericTileType, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 
 /**
  * Recursively trigger the tiles.
  */
-export const checkTile = (state: Store, color: Color, type: TileType, value: number, userAction: boolean): Partial<Store> => {
+export const checkTile = (state: Store, color: Color, type: NumericTileType, value: number, userAction: boolean): Partial<Store> => {
   if (state.locked[color]) {
     return state;
   }
@@ -49,7 +49,7 @@ export const checkTile = (state: Store, color: Color, type: TileType, value: num
  */
 export const undo = (state: Store, change: Change): Store => {
   // Undo last change
-  if ('failed' in change) {
+  if (change.type === tileType.failed) {
     state = {
       ...state,
       failed: state.failed - 1,
@@ -78,6 +78,7 @@ export const undo = (state: Store, change: Change): Store => {
     };
   }
 
+  // Get next change.
   const nextChange = [...state.changes].at(-1);
 
   // If the change was triggered by a user finish undoing.

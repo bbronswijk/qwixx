@@ -4,7 +4,7 @@ import { create, StateCreator } from 'zustand';
 import { BonusBox } from '@/app/variant-a/variant-a.config';
 import { checkTile, undo } from '@/state/reducers';
 import { Color, colors } from '@/data/color';
-import { TileModel, tileType, TileType } from '@/data/tile.model';
+import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 import { variantBTiles } from '@/app/variant-b/variant-b.config';
 
@@ -40,10 +40,9 @@ interface Reducers {
 
 export type Store = State & Reducers;
 
-export type Change = { color: Color; value: number; type: TileType; userAction: boolean } | {
-  failed: boolean;
-  userAction: boolean
-} | { color: Color; type: TileType; userAction: boolean };
+export type Change = { type: NumericTileType; color: Color; value: number; userAction: boolean } |
+  { type: FailedTileType; userAction: true } |
+  { type: LockTileType; color: Color; userAction: true };
 
 const initialState: State = {
   changes: [],
@@ -85,13 +84,12 @@ const state: StateCreator<Store> = (set) => ({
 
   roundFailed: () => set((state): Partial<Store> => ({
     failed: state.failed + 1,
-    changes: [...state.changes, {failed: true, userAction: true,}],
+    changes: [...state.changes, {type: tileType.failed, userAction: true,}],
   })),
 
   undo: () => set((state): Partial<Store> => {
     return undo({...state,}, [...state.changes].at(-1) as Change);
   }),
-
 
   checkOneInEachRow: () => set((state): Partial<Store> => {
     const nextRed = getNextTile(variantBTiles.red, state.red);
@@ -99,7 +97,7 @@ const state: StateCreator<Store> = (set) => ({
     const nextGreen = getNextTile(variantBTiles.green, state.green);
     const nextBlue = getNextTile(variantBTiles.blue, state.blue);
 
-    const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile
+    const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.locked[nextTile.color]
         ? [
           ...changes,
           {
