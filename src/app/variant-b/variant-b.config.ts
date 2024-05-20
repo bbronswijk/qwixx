@@ -55,26 +55,3 @@ export const variantBTiles: Record<Color, TileModel[]> = {
     {color: colors.blue, value: 2, type: tileType.default}
   ]
 };
-
-export interface BonusBox {
-  id: number,
-  color: Color;
-  className: string;
-}
-
-export const bonusBoxes: BonusBox[] = [
-  {id: 0, color: colors.red, className: 'bg-red-800'},
-  {id: 1, color: colors.yellow, className: 'bg-yellow-500'},
-  {id: 2, color: colors.green, className: 'bg-green-700'},
-  {id: 3, color: colors.blue, className: 'bg-blue-800'},
-
-  {id: 4, color: colors.green, className: 'bg-green-700'},
-  {id: 5, color: colors.red, className: 'bg-red-800'},
-  {id: 6, color: colors.blue, className: 'bg-blue-800'},
-  {id: 7, color: colors.yellow, className: 'bg-yellow-500'},
-
-  {id: 8, color: colors.red, className: 'bg-red-800'},
-  {id: 9, color: colors.yellow, className: 'bg-yellow-500'},
-  {id: 10, color: colors.blue, className: 'bg-blue-800'},
-  {id: 11, color: colors.green, className: 'bg-green-700'},
-] as const;
