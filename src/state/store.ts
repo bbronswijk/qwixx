@@ -114,23 +114,23 @@ const state: StateCreator<Store> = (set) => ({
     return {
       ...state,
       changes,
-      ...nextRed && {red: [...state.red, nextRed.value]},
-      ...nextYellow && {yellow: [...state.yellow, nextYellow.value]},
-      ...nextGreen && {green: [...state.green, nextGreen.value]},
-      ...nextBlue && {blue: [...state.blue, nextBlue.value]},
+      ...(nextRed && !state.locked.red) && {red: [...state.red, nextRed.value]},
+      ...(nextYellow && !state.locked.yellow) && {yellow: [...state.yellow, nextYellow.value]},
+      ...(nextGreen && !state.locked.green) && {green: [...state.green, nextGreen.value]},
+      ...(nextBlue && !state.locked.blue) && {blue: [...state.blue, nextBlue.value]},
     };
   }),
 
   checkLowestRowTwice: () => set((state): Partial<Store> => {
-    const rows = [
+    const unLockedRows = [
       {color: colors.red, value: state.red.length},
       {color: colors.yellow, value: state.yellow.length},
       {color: colors.green, value: state.green.length},
       {color: colors.blue, value: state.blue.length},
-    ];
+    ].filter(({color}) => !state.locked[color]);
 
-    const lowestRow = rows.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, rows[0]);
-    const hasMultipleLowestRows = rows.filter(({value}) => value === lowestRow.value).length > 1;
+    const lowestRow = unLockedRows.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, unLockedRows[0]);
+    const hasMultipleLowestRows = unLockedRows.filter(({value}) => value === lowestRow.value).length > 1;
 
     if (hasMultipleLowestRows) {
       // TODO
