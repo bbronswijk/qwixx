@@ -36,10 +36,9 @@
   "display": "standalone",
   "orientation": "landscape",
   "handle_links": "preferred",
-  "intent_filters": {
-    "scope_url_scheme": "https",
-    "scope_url_host": "qwixx-eight.vercel.app",
-    "scope_url_path": "/"
-  },
-  "prefer_related_applications": true
+  "url_handlers": [
+    {
+      "origin": "https://qwixx-eight.vercel.app"
+    }
+  ]
 }
