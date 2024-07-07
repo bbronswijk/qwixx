@@ -2,7 +2,6 @@ import { expect, test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/app/variant-a/bonus-box';
-import { lockState } from '@/ui/lock';
 
 test('should be able to undo a checked bonus box', async ({page}) => {
   await page.goto(routes.variantA);
@@ -25,23 +24,6 @@ test('should be able to undo a checked bonus box', async ({page}) => {
   await expectButtonToHaveState(redRow, 2, buttonState.unchecked);
   await expectButtonToHaveState(redRow, 3, buttonState.unchecked);
   await expectButtonToHaveState(redRow, 4, buttonState.unchecked);
-});
-
-test('should be able to undo locking a row', async ({page}) => {
-  await page.goto(routes.variantA);
-
-  const rows = page.locator('section');
-  const redRow = rows.nth(0);
-  const lock = redRow.getByTestId('lock');
-  const undoButton = page.getByTestId('undo');
-
-  await lock.click(); // Lock row
-
-  await expect(lock).toHaveAttribute('data-state', lockState.locked);
-
-  await undoButton.click();
-
-  await expect(lock).toHaveAttribute('data-state', lockState.unlocked);
 });
 
 test('should be able to undo a chain reaction', async ({page}) => {

@@ -1,17 +1,16 @@
 import { EyeIcon, EyeOffIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
+import QwixxStore from "@/state/store";
 
-interface ComponentProps {
-  visible: boolean;
-  onClick: () => void;
-}
+export default function ToggleScoreButton() {
+  const showScore = QwixxStore.use.showScore();
+  const toggleScoreVisibility = QwixxStore.use.toggleScoreVisibility();
 
-export default function ToggleScoreButton({visible, onClick}: ComponentProps) {
   return (
     <button
-      onClick={onClick}
+      onClick={toggleScoreVisibility}
       className={cn('p-1.5 rounded-lg flex items-center justify-center bg-slate-200')}>
-      {visible ? <EyeOffIcon/> : <EyeIcon/>}
+      {showScore ? <EyeOffIcon/> : <EyeIcon/>}
     </button>
   );
 }

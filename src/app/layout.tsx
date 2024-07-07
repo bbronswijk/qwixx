@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
+import { Authenticate } from "@/app/auth/authenticate";
+import { CookiesProvider } from "next-client-cookies/server";
+import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -36,7 +39,12 @@ export default function RootLayout({
   return (
     <html lang="en">
     <body className="h-svh w-screen">
-    {children}
+    <CookiesProvider>
+      <Authenticate>
+        {children}
+      </Authenticate>
+    </CookiesProvider>
+    <Toaster/>
     </body>
     </html>
   );

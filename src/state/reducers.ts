@@ -1,5 +1,5 @@
 import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
-import { Change, Store } from '@/state/store';
+import { ActionType, Change, Store } from '@/state/store';
 import { Color } from '@/data/color';
 import { NumericTileType, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
@@ -7,7 +7,7 @@ import { getNextTile } from '@/utils/get-next-tile';
 /**
  * Recursively trigger the tiles.
  */
-export const checkTile = (state: Store, color: Color, type: NumericTileType, value: number, userAction: boolean): Partial<Store> => {
+export const checkTile = (state: Store, color: Color, type: NumericTileType, value: number, actionType: ActionType): Partial<Store> => {
   if (state.locked[color]) {
     return state;
   }
@@ -16,7 +16,7 @@ export const checkTile = (state: Store, color: Color, type: NumericTileType, val
   if (type !== tileType.bonus) {
     return {
       ...state,
-      changes: [...state.changes, {color, value, type, userAction}],
+      changes: [...state.changes, {color, value, type, actionType}],
       [color]: [...state[color], value],
     };
   }
@@ -29,7 +29,7 @@ export const checkTile = (state: Store, color: Color, type: NumericTileType, val
     ...state,
     [color]: [...state[color], value],
     bonus: [...state.bonus, bonusBox],
-    changes: [...state.changes, {color, value, type, userAction}],
+    changes: [...state.changes, {color, value, type, actionType}],
   };
 
   // Get next color to be checked
@@ -41,13 +41,19 @@ export const checkTile = (state: Store, color: Color, type: NumericTileType, val
   }
 
   // Pass next color data to next function in case next color is a bonus box.
-  return checkTile(state, bonusBox.color, nextColor.type, nextColor.value, false);
+  return checkTile(state, bonusBox.color, nextColor.type, nextColor.value, ActionType.game);
 };
 
 /**
  * Recursively undo the last changes.
  */
 export const undo = (state: Store, change: Change): Store => {
+  // If the last change came from pusher (from another user) undoing is disabled.
+  // TODO there might be a better location for this.
+  if (change.actionType === ActionType.pusher) {
+    return state;
+  }
+
   // Undo last change
   if (change.type === tileType.failed) {
     state = {
@@ -83,7 +89,7 @@ export const undo = (state: Store, change: Change): Store => {
 
   // If the change was triggered by a user finish undoing.
   // Or in case all changes have already been undone.
-  if (change.userAction || !nextChange) {
+  if ([ActionType.user, ActionType.pusher].includes(change.actionType) || !nextChange) {
     return state;
   }
 

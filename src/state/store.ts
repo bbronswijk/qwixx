@@ -36,15 +36,22 @@ interface Reducers {
   roundFailed: () => void;
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
-  toggleRowLocked: (color: Color) => void;
+  lockRow: (color: Color) => void;
   toggleScoreVisibility: () => void;
 }
 
 export type Store = State & Reducers;
 
-export type Change = { type: NumericTileType; color: Color; value: number; userAction: boolean } |
-  { type: FailedTileType; userAction: true } |
-  { type: LockTileType; color: Color; userAction: true };
+export enum ActionType {
+  user = 'user',
+  pusher = 'pusher',
+  game = 'game',
+}
+
+// TODO actionType / user/pusher/game
+export type Change = { type: NumericTileType; color: Color; value: number; actionType: ActionType } |
+  { type: FailedTileType; actionType: ActionType.user } |
+  { type: LockTileType; color: Color; actionType: ActionType };
 
 const initialState: State = {
   changes: [],
@@ -74,22 +81,22 @@ const state: StateCreator<Store> = (set) => ({
     ...initialState
   })),
 
-  toggleRowLocked: (color: Color) => set((state): Partial<Store> => ({
+  lockRow: (color: Color) => set((state): Partial<Store> => ({
     ...state,
-    changes: [...state.changes, {color, type: tileType.lock, userAction: true,}],
+    changes: [...state.changes, {color, type: tileType.lock, actionType: ActionType.pusher}],
     locked: {
       ...state.locked,
-      [color]: !state.locked[color],
+      [color]: true,
     }
   })),
 
   checkTile: ({color, type, value}) => set((state): Partial<Store> => {
-    return checkTile(state, color, type, value, true);
+    return checkTile(state, color, type, value, ActionType.user);
   }),
 
   roundFailed: () => set((state): Partial<Store> => ({
     failed: state.failed + 1,
-    changes: [...state.changes, {type: tileType.failed, userAction: true,}],
+    changes: [...state.changes, {type: tileType.failed, actionType: ActionType.user}],
   })),
 
   undo: () => set((state): Partial<Store> => {
@@ -109,7 +116,7 @@ const state: StateCreator<Store> = (set) => ({
             color: nextTile.color,
             value: nextTile.value,
             type: nextTile.type,
-            userAction: false
+            actionType: ActionType.game
           }
         ]
         : changes,
@@ -139,7 +146,7 @@ const state: StateCreator<Store> = (set) => ({
 
     if (hasMultipleLowestRows) {
       // TODO
-      alert('Kies zelf welke rij met het laagste aantal punten je kruisjes wilt zetten');
+      alert('Kies zelf in welke rij met het laagste aantal punten je kruisjes wilt zetten');
       return state;
     }
 

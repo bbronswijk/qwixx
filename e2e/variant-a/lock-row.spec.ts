@@ -4,27 +4,6 @@ import { clickButton, expectButtonToHaveState, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/app/variant-a/bonus-box';
 
-
-test('should lock the entire row if another player completes a row', async ({page}) => {
-  await page.goto(routes.variantA);
-
-  const rows = page.locator('section');
-  const redRow = rows.first();
-  const lock = redRow.getByTestId('lock');
-  const total = redRow.getByTestId('total');
-
-  await expect(total).toHaveText('0');
-
-  await lock.click(); // Lock row
-  await expect(lock).toHaveAttribute('data-state', lockState.locked);
-
-  await expect(redRow.getByRole('button', {name: '2', exact: true})).toBeDisabled();
-
-  await lock.click(); // unlock row
-
-  await expect(redRow.getByRole('button', {name: '2', exact: true})).not.toBeDisabled();
-});
-
 test('should not be able to unlock a row when all items are completed', async ({page}) => {
   await page.goto(routes.variantA);
 
@@ -47,29 +26,8 @@ test('should not be able to unlock a row when all items are completed', async ({
   await expect(lock).toBeDisabled();
 });
 
-test('should toggle the state of the last item if another player completes a row', async ({page}) => {
-  await page.goto(routes.variantA);
-
-  const rows = page.locator('section');
-  const redRow = rows.first();
-  const lock = redRow.getByTestId('lock');
-
-  await clickButton(redRow, 2);
-  await clickButton(redRow, 3);
-  await clickButton(redRow, 5);
-  await clickButton(redRow, 6);
-
-  await lock.click(); // Lock rw
-  await expect(lock).toHaveAttribute('data-state', lockState.locked);
-
-  await expect(redRow.getByRole('button', {name: '12', exact: true})).toBeDisabled();
-
-  await lock.click(); // unlock row
-
-  await expect(redRow.getByRole('button', {name: '12', exact: true})).not.toBeDisabled();
-});
-
-test('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
+// TODO this is a useful test however I need to figure out how to trigger the locking of the row using pusher in playwright.
+test.skip('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
   await page.goto(routes.variantA);
 
   const rows = page.locator('section');

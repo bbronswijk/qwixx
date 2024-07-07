@@ -5,7 +5,6 @@ import { CheckMarkIcon, UnLockedIcon, XIcon } from '@/ui/icons';
 interface ComponentProps extends HTMLAttributes<HTMLButtonElement> {
   lockedBySomeoneElse: boolean;
   completedRow: boolean;
-  onClick: () => void;
 }
 
 export const lockState = {

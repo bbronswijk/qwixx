@@ -1,13 +1,12 @@
 import React from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
+import QwixxStore from "@/state/store";
 
-interface ComponentProps {
-  onFailRound: () => void;
-  failedRounds: number;
-}
+export default function Failed() {
+  const failedRounds = QwixxStore.use.failed();
+  const onFailRound = QwixxStore.use.roundFailed();
 
-export default function Failed({onFailRound, failedRounds}: ComponentProps) {
   const disabled = failedRounds >= 4;
 
   return (

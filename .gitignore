@@ -40,3 +40,5 @@ next-env.d.ts
 /playwright/.cache/
 
 .idea/
+
+e2e/.auth/auth.json

@@ -1,7 +1,17 @@
 import withPWA from 'next-pwa';
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'avatar.iran.liara.run',
+                port: '',
+            },
+        ],
+    }
+};
 
 // Configuration object tells the next-pwa plugin
 const withPWAConfig = withPWA({
