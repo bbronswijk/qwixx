@@ -1,4 +1,4 @@
-import { bonusBoxes, variantATiles } from '@/app/variant-a/variant-a.config';
+import { bonusBoxes, variantATiles } from '@/app/[roomId]/variant-a/variant-a.config';
 import { ActionType, Change, Store } from '@/state/store';
 import { Color } from '@/data/color';
 import { NumericTileType, tileType } from '@/data/tile.model';

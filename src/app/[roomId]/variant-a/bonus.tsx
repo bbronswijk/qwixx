@@ -1,9 +1,9 @@
 'use client';
 
-import BonusBox from '@/app/variant-a/bonus-box';
+import BonusBox from '@/app/[roomId]/variant-a/bonus-box';
 import { TriangleIcon } from '@/ui/icons';
 import React, { Fragment } from 'react';
-import { bonusBoxes } from '@/app/variant-a/variant-a.config';
+import { bonusBoxes } from '@/app/[roomId]/variant-a/variant-a.config';
 import QwixxStore from '@/state/store';
 
 export default function Bonus() {

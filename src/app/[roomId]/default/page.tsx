@@ -2,7 +2,7 @@
 
 import Board from '@/ui/board';
 import React, { useEffect } from 'react';
-import { defaultTiles } from '@/app/default/default.config';
+import { defaultTiles } from '@/app/[roomId]/default/default.config';
 import { useTotalSelector } from '@/state/selectors';
 import QwixxStore from '@/state/store';
 import BackButton from '@/ui/back-button';
@@ -24,7 +24,7 @@ export default function Home() {
         <UndoButton/>
         <ToggleScoreButton/>
       </header>
-      <Members/>
+      <Members className="space-y-2"/>
       <Board
         config={defaultTiles}
         totalScore={useTotalSelector(defaultTiles)}>

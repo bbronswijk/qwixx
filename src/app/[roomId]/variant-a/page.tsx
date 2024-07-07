@@ -1,14 +1,15 @@
 'use client';
 
 import Board from '@/ui/board';
+import Bonus from '@/app/[roomId]/variant-a/bonus';
 import React, { useEffect } from 'react';
 import QwixxStore from '@/state/store';
 import { useTotalSelector } from '@/state/selectors';
-import { variantBTiles } from '@/app/variant-b/variant-b.config';
-import ExtraPoints from '@/app/variant-b/extra/extra-points';
+import { variantATiles } from '@/app/[roomId]/variant-a/variant-a.config';
 import BackButton from '@/ui/back-button';
 import UndoButton from '@/ui/undo-button';
 import ToggleScoreButton from '@/ui/toggle-score-button';
+import { Members } from "@/components/ui/members";
 
 export default function Page() {
   const reset = QwixxStore.use.reset();
@@ -24,10 +25,11 @@ export default function Page() {
         <UndoButton/>
         <ToggleScoreButton/>
       </header>
+      <Members className="space-y-2"/>
       <Board
-        config={variantBTiles}
-        totalScore={useTotalSelector(variantBTiles)}>
-        <ExtraPoints/>
+        config={variantATiles}
+        totalScore={useTotalSelector(variantATiles)}>
+        <Bonus/>
       </Board>
     </main>
   );

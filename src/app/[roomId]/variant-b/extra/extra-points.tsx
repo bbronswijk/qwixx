@@ -1,11 +1,11 @@
 'use client';
 
 import React from 'react';
-import CheckTwoInLowestRow from '@/app/variant-b/extra/check-two-in-lowest-row';
-import CheckOneInAllRows from '@/app/variant-b/extra/check-one-all-rows';
-import LowestRowTimesTwo from '@/app/variant-b/extra/lowest-row-times-two';
-import FailedRoundsDontCount from '@/app/variant-b/extra/failed-rounds-dont-count';
-import PlusThirteen from '@/app/variant-b/extra/plus-thirteen';
+import CheckTwoInLowestRow from '@/app/[roomId]/variant-b/extra/check-two-in-lowest-row';
+import CheckOneInAllRows from '@/app/[roomId]/variant-b/extra/check-one-all-rows';
+import LowestRowTimesTwo from '@/app/[roomId]/variant-b/extra/lowest-row-times-two';
+import FailedRoundsDontCount from '@/app/[roomId]/variant-b/extra/failed-rounds-dont-count';
+import PlusThirteen from '@/app/[roomId]/variant-b/extra/plus-thirteen';
 import QwixxStore from '@/state/store';
 import { tileType } from '@/data/tile.model';
 import { hasMetRequirements } from '@/utils/has-met-requirements';

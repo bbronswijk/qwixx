@@ -1,12 +1,12 @@
 import { createSelectors } from '@/utils/create-selector';
 import { devtools } from 'zustand/middleware';
 import { create, StateCreator } from 'zustand';
-import { BonusBox } from '@/app/variant-a/variant-a.config';
+import { BonusBox } from '@/app/[roomId]/variant-a/variant-a.config';
 import { checkTile, undo } from '@/state/reducers';
 import { Color, colors } from '@/data/color';
 import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
-import { variantBTiles } from '@/app/variant-b/variant-b.config';
+import { variantBTiles } from '@/app/[roomId]/variant-b/variant-b.config';
 
 export interface State {
   changes: Change[];
