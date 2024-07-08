@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+'use client'
+
+import { createContext, PropsWithChildren, useContext, useEffect, useState } from "react";
 import { pusherClient } from "@/pusher/pusher.client";
 import { PresenceChannel } from "pusher-js";
 import { useAuth } from "@/app/auth/authentication.context";
@@ -8,7 +10,24 @@ import { PusherEvent, PusherLockRowPayload } from "@/pusher/pusher.model";
 import QwixxStore from "@/state/store";
 import { useParams } from "next/navigation";
 
+interface PusherContextValue {
+  members: MemberInfo[];
+}
+
+export const PusherContext = createContext<PusherContextValue | null>(null);
+
 export const usePusher = () => {
+  const context = useContext(PusherContext);
+
+  if (!context) {
+    throw new Error('MemberContext has not been initialized.');
+  }
+
+  return context;
+};
+
+
+export const Pusher = ({children}: PropsWithChildren) => {
   const [members, setMembers] = useState<MemberInfo[]>([])
   const {userName} = useAuth();
   const {toast} = useToast();
@@ -17,7 +36,7 @@ export const usePusher = () => {
 
   // Move to custom hook
   useEffect(() => {
-    if (!userName) {
+    if (!userName || !roomId) {
       return;
     }
 
@@ -37,6 +56,7 @@ export const usePusher = () => {
       toast({description: `${member.info.nickname} left the game`});
     });
     channel.bind(PusherEvent.lockRow, ({color}: PusherLockRowPayload) => {
+      console.log()
       lockRow(color);
     })
 
@@ -44,7 +64,11 @@ export const usePusher = () => {
       channel.unbind_all();
       channel.unsubscribe();
     };
-  }, [toast, userName]);
+  }, [toast, roomId, userName]);
 
-  return {members}
+  return (
+    <PusherContext.Provider value={{members}}>
+      {children}
+    </PusherContext.Provider>
+  );
 }

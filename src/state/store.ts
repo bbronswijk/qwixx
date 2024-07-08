@@ -71,7 +71,7 @@ const initialState: State = {
   bonus: [],
   failed: 0,
 
-  showScore: true,
+  showScore: false,
 };
 
 const state: StateCreator<Store> = (set) => ({

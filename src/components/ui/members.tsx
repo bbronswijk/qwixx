@@ -1,6 +1,6 @@
 'use client';
 
-import { usePusher } from "@/pusher/use-pusher.hook";
+import { usePusher } from "@/pusher/pusher.context";
 import Image from 'next/image';
 import { cn } from "@/utils/cn";
 

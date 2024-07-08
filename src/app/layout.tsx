@@ -3,6 +3,7 @@ import '../styles/globals.css';
 import { Authenticate } from "@/app/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
 import { Toaster } from "@/components/ui/toaster";
+import { Pusher } from "@/pusher/pusher.context";
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -41,7 +42,9 @@ export default function RootLayout({
     <body className="h-svh w-screen">
     <CookiesProvider>
       <Authenticate>
-        {children}
+        <Pusher>
+          {children}
+        </Pusher>
       </Authenticate>
     </CookiesProvider>
     <Toaster/>
