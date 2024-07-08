@@ -5,9 +5,9 @@ import { PusherEvent, PusherLockRowPayload } from '@/pusher/pusher.model';
 
 export async function triggerLockAction(socketId: string, roomId: string | undefined, payload: PusherLockRowPayload) {
   if (!roomId) {
-    return;
+    throw new Error('No room id provided');
   }
 
-  pusher.trigger(`presence-${roomId}`, PusherEvent.lockRow, payload, {socket_id: socketId});
+  await pusher.trigger(`presence-${roomId}`, PusherEvent.lockRow, payload, {socket_id: socketId});
 }
 
