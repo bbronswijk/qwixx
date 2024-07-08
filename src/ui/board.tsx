@@ -19,8 +19,8 @@ interface ComponentProps extends PropsWithChildren {
 }
 
 export default function Board({config, totalScore, children}: ComponentProps) {
-  // TODO move gameCompleted to zustand state
-  const [gameCompleted, setGameCompleted] = React.useState<boolean>(false);
+  const gameCompleted = QwixxStore.use.gameCompleted();
+  const setGameCompleted = QwixxStore.use.setGameCompleted();
   const lockedState = QwixxStore.use.locked();
   const redSelection = QwixxStore.use.red();
   const yellowSelection = QwixxStore.use.yellow();
@@ -31,9 +31,11 @@ export default function Board({config, totalScore, children}: ComponentProps) {
   const {roomId} = useParams<{ roomId: string }>()
   const {userName} = useAuth()
 
+  // TODO can this be moved to the pusher context?
+  //  we need to access useTotalSelector(defaultTiles) somehow
   useEffect(() => {
     channel?.bind(PusherEvent.endGame, () => {
-      setGameCompleted(true);
+      setGameCompleted();
       shareScoreAction(roomId, {score: totalScore, nickname: userName as string})
     });
 

@@ -6,10 +6,12 @@ import Image from "next/image";
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
+import QwixxStore from "@/state/store";
 
 export const GameOverDialogContent = () => {
   const {members} = usePusher();
   const router = useRouter();
+  const reset = QwixxStore.use.reset();
 
   return (
     <DialogContent>
@@ -29,8 +31,8 @@ export const GameOverDialogContent = () => {
           </div>
         ))}
       <Button onClick={() => {
-        // TODO uncomplete game in zustand state
-        router.back()
+        router.back();
+        reset();
       }} className="w-full" type="submit">Finish game</Button>
     </DialogContent>
   );

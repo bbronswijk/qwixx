@@ -9,6 +9,7 @@ import { getNextTile } from '@/utils/get-next-tile';
 import { variantBTiles } from '@/app/[roomId]/variant-b/variant-b.config';
 
 export interface State {
+  gameCompleted: boolean;
   changes: Change[];
   red: number[],
   yellow: number[],
@@ -30,6 +31,7 @@ export interface State {
 export type CheckTileFn = (tile: TileModel) => void;
 
 interface Reducers {
+  setGameCompleted: () => void;
   checkTile: CheckTileFn;
   reset: () => void;
   undo: () => void;
@@ -48,12 +50,12 @@ export enum ActionType {
   game = 'game',
 }
 
-// TODO actionType / user/pusher/game
 export type Change = { type: NumericTileType; color: Color; value: number; actionType: ActionType } |
   { type: FailedTileType; actionType: ActionType.user } |
   { type: LockTileType; color: Color; actionType: ActionType };
 
 const initialState: State = {
+  gameCompleted: false,
   changes: [],
 
   [colors.red]: [],
@@ -76,6 +78,10 @@ const initialState: State = {
 
 const state: StateCreator<Store> = (set) => ({
   ...initialState,
+
+  setGameCompleted: () => set((): Partial<Store> => ({
+    gameCompleted: true
+  })),
 
   reset: () => set((): Partial<Store> => ({
     ...initialState
