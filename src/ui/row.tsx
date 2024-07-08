@@ -8,7 +8,7 @@ import QwixxStore from '@/state/store';
 import { Color } from '@/data/color';
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
 import { TileModel } from '@/data/tile.model';
-import { triggerLockAction } from '@/app/actions/lock-row.actions';
+import { triggerLockAction } from '@/app/actions/pusher.actions';
 import { pusherClient } from "@/pusher/pusher.client";
 import { useParams } from "next/navigation";
 

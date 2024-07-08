@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
 import QwixxStore from "@/state/store";
+import { endGameAction } from "@/app/actions/pusher.actions";
+import { useParams } from "next/navigation";
 
 export default function Failed() {
   const failedRounds = QwixxStore.use.failed();
   const onFailRound = QwixxStore.use.roundFailed();
-
+  const {roomId} = useParams<{ roomId: string }>()
   const disabled = failedRounds >= 4;
+
+  useEffect(() => {
+    if (failedRounds >= 4) {
+      endGameAction(roomId);
+    }
+  }, [roomId, failedRounds]);
 
   return (
     <>

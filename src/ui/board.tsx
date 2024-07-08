@@ -1,10 +1,17 @@
 import Row from '@/ui/row';
-import React, { PropsWithChildren } from 'react';
+import React, { PropsWithChildren, useEffect } from 'react';
 import Failed from '@/ui/failed';
 import { Color, colors } from '@/data/color';
 import QwixxStore from '@/state/store';
 import { TileModel } from '@/data/tile.model';
 import { cn } from '@/utils/cn';
+import { Dialog } from "@/components/ui/dialog";
+import { usePusher } from "@/pusher/pusher.context";
+import { GameOverDialogContent } from "@/components/game-over-dialog-content";
+import { endGameAction, shareScoreAction } from "@/app/actions/pusher.actions";
+import { useParams } from "next/navigation";
+import { useAuth } from "@/app/auth/authentication.context";
+import { PusherEvent } from "@/pusher/pusher.model";
 
 interface ComponentProps extends PropsWithChildren {
   config: Record<Color, TileModel[]>;
@@ -12,12 +19,35 @@ interface ComponentProps extends PropsWithChildren {
 }
 
 export default function Board({config, totalScore, children}: ComponentProps) {
+  // TODO move gameCompleted to zustand state
+  const [gameCompleted, setGameCompleted] = React.useState<boolean>(false);
   const lockedState = QwixxStore.use.locked();
   const redSelection = QwixxStore.use.red();
   const yellowSelection = QwixxStore.use.yellow();
   const greenSelection = QwixxStore.use.green();
   const blueSelection = QwixxStore.use.blue();
+  const {channel} = usePusher();
   const showScore = QwixxStore.use.showScore();
+  const {roomId} = useParams<{ roomId: string }>()
+  const {userName} = useAuth()
+
+  useEffect(() => {
+    channel?.bind(PusherEvent.endGame, () => {
+      setGameCompleted(true);
+      shareScoreAction(roomId, {score: totalScore, nickname: userName as string})
+    });
+
+    return () => {
+      channel?.unbind(PusherEvent.endGame);
+    }
+  }, [totalScore, channel]);
+
+  useEffect(() => {
+    if (Object.values(lockedState).filter(Boolean).length >= 2 && !gameCompleted) {
+      endGameAction(roomId);
+    }
+  }, [roomId, lockedState]);
+
 
   return <div className="px-8 py-4 lg:p-8 bg-slate-200 rounded-xl space-y-2 m-3">
     <Row color={colors.red}
@@ -54,5 +84,9 @@ export default function Board({config, totalScore, children}: ComponentProps) {
         </span>
       </div>
     </footer>
+
+    <Dialog open={gameCompleted}>
+      <GameOverDialogContent/>
+    </Dialog>
   </div>
 }

@@ -2,11 +2,15 @@ import { Color } from '@/data/color';
 
 export enum PusherEvent {
   lockRow = 'lock-row',
-  unlockRow = 'unlock-row',
-  gameEnd = 'game-end',
-  sendScore = 'send-score',
+  endGame = 'game-end',
+  shareScore = 'send-score',
 }
 
 export interface PusherLockRowPayload {
   color: Color;
+}
+
+export interface PusherShareScorePayload {
+  score: number;
+  nickname: string;
 }

@@ -6,4 +6,5 @@ export interface Member {
 export interface MemberInfo {
   nickname: string;
   avatar: string;
+  score?: number;
 }
