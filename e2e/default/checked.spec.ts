@@ -8,9 +8,12 @@ test('should reflect the correct total count for the selected cells', async ({ p
 
   const rows = page.locator('section');
   const redRow = rows.first();
+  const toggleScoreVisibility = page.getByTestId('toggle-score-visibility');
   const lock = redRow.getByTestId('lock');
   const total = redRow.getByTestId('total');
   const undoButton = page.getByTestId('undo');
+
+  await toggleScoreVisibility.click();
 
   await clickButton(redRow, 2);
   await expect(total).toHaveText('1');

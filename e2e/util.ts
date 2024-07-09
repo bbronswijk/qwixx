@@ -7,7 +7,7 @@ export const expectButtonToHaveState = (row: Locator, name: number, state: Butto
 
 export const routes = {
   signIn: 'sign-in',
-  default: '/default',
-  variantA: '/variant-a',
-  variantB: '/variant-b',
+  default: '/1234/default',
+  variantA: '/1234//variant-a',
+  variantB: '/1234//variant-b',
 } as const;

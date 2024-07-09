@@ -8,6 +8,7 @@ export default function ToggleScoreButton() {
 
   return (
     <button
+      data-testid="toggle-score-visibility"
       onClick={toggleScoreVisibility}
       className={cn('p-1.5 rounded-lg flex items-center justify-center bg-slate-200')}>
       {showScore ? <EyeOffIcon/> : <EyeIcon/>}

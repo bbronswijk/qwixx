@@ -10,7 +10,6 @@ function generateGamePin(): number {
   return Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
 }
 
-// TODO just use regular routing (and a back button) for this.
 export default function Page() {
   const {userName} = useAuth();
   const newGamePin = generateGamePin();
