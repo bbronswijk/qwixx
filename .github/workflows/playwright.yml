@@ -4,6 +4,10 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+env:
+  PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
+  NEXT_PUBLIC_PUSHER_APP_KEY: ${{ secrets.NEXT_PUBLIC_PUSHER_APP_KEY }}
+  PUSHER_APP_SECRET: ${{ secrets.PUSHER_APP_SECRET }}
 jobs:
   test:
     timeout-minutes: 60
