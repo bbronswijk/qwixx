@@ -2,13 +2,13 @@
 
 import React, { useEffect, useRef } from 'react';
 import { useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { Button } from "@/ui/button";
+import { Input } from "@/ui/input";
 import { z } from "zod";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/ui/form";
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAuth } from "@/app/auth/authentication.context";
+import { useAuth } from "@/auth/authentication.context";
 import Image from 'next/image';
 
 const formSchema = z.object({

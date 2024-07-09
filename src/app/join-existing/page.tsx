@@ -1,8 +1,8 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Button } from "@/components/ui/button";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/ui/input-otp';
+import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import BackButton from "@/ui/back-button";
 

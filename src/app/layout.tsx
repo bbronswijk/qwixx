@@ -1,8 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
-import { Authenticate } from "@/app/auth/authenticate";
+import { Authenticate } from "@/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/ui/toaster";
 import { Pusher } from "@/pusher/pusher.context";
 
 export const metadata: Metadata = {

@@ -3,8 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import { PropsWithChildren, useCallback, useEffect, useState } from "react";
 import { useCookies } from "next-client-cookies";
-import { AuthenticationContext } from "@/app/auth/authentication.context";
-import { NICKNAME_COOKIE_KEY } from "@/app/auth/nickname-cookie.key";
+import { AuthenticationContext } from "@/auth/authentication.context";
+import { NICKNAME_COOKIE_KEY } from "@/auth/nickname-cookie.key";
 
 export const Authenticate = ({children}: PropsWithChildren) => {
   const {replace} = useRouter();

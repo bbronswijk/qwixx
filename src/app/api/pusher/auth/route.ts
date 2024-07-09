@@ -1,7 +1,7 @@
 import { pusher } from '@/pusher/pusher';
 import { PresenceChannelData } from "pusher";
 import { cookies } from "next/headers";
-import { NICKNAME_COOKIE_KEY } from "@/app/auth/nickname-cookie.key";
+import { NICKNAME_COOKIE_KEY } from "@/auth/nickname-cookie.key";
 import { MemberInfo } from "@/pusher/member.model";
 
 export async function POST(req: Request) {

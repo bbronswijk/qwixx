@@ -1,10 +1,10 @@
 'use client';
 
 import { usePusher } from "@/pusher/pusher.context";
-import { DialogContent } from "@/components/ui/dialog";
+import { DialogContent } from "@/ui/dialog";
 import Image from "next/image";
 import React from "react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import QwixxStore from "@/state/store";
 

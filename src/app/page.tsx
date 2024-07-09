@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { useAuth } from "@/app/auth/authentication.context";
-import { Button } from "@/components/ui/button";
+import { useAuth } from "@/auth/authentication.context";
+import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 

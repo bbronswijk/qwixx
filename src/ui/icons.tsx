@@ -1,13 +1,6 @@
 import { HTMLAttributes } from 'react';
 import { cn } from '@/utils/cn';
 
-export const ChevronRightIcon = ({className, ...props}: HTMLAttributes<SVGSVGElement>) => (
-  <svg className={cn(className)} {...props} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-       strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M9 18l6-6-6-6"/>
-  </svg>
-);
-
 export const ChevronLeftIcon = ({className, ...props}: HTMLAttributes<SVGSVGElement>) => (
   <svg className={cn(className)} {...props} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

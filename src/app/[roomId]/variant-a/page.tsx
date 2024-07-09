@@ -9,7 +9,7 @@ import { variantATiles } from '@/app/[roomId]/variant-a/variant-a.config';
 import BackButton from '@/ui/back-button';
 import UndoButton from '@/ui/undo-button';
 import ToggleScoreButton from '@/ui/toggle-score-button';
-import { Members } from "@/components/ui/members";
+import { Members } from "@/ui/members";
 
 export default function Page() {
   const reset = QwixxStore.use.reset();

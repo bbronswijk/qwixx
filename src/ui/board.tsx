@@ -5,12 +5,12 @@ import { Color, colors } from '@/data/color';
 import QwixxStore from '@/state/store';
 import { TileModel } from '@/data/tile.model';
 import { cn } from '@/utils/cn';
-import { Dialog } from "@/components/ui/dialog";
+import { Dialog } from "@/ui/dialog";
 import { usePusher } from "@/pusher/pusher.context";
-import { GameOverDialogContent } from "@/components/game-over-dialog-content";
-import { endGameAction, shareScoreAction } from "@/app/actions/pusher.actions";
+import { GameOverDialogContent } from "@/ui/game-over-dialog-content";
+import { endGameAction, shareScoreAction } from "@/actions/pusher.actions";
 import { useParams } from "next/navigation";
-import { useAuth } from "@/app/auth/authentication.context";
+import { useAuth } from "@/auth/authentication.context";
 import { PusherEvent } from "@/pusher/pusher.model";
 
 interface ComponentProps extends PropsWithChildren {

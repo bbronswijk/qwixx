@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
 import QwixxStore from "@/state/store";
-import { endGameAction } from "@/app/actions/pusher.actions";
+import { endGameAction } from "@/actions/pusher.actions";
 import { useParams } from "next/navigation";
 
 export default function Failed() {

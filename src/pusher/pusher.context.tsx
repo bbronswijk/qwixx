@@ -3,9 +3,9 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useRef, useState } from "react";
 import { pusherClient } from "@/pusher/pusher.client";
 import { PresenceChannel } from "pusher-js";
-import { useAuth } from "@/app/auth/authentication.context";
+import { useAuth } from "@/auth/authentication.context";
 import { Member, MemberInfo } from "@/pusher/member.model";
-import { useToast } from "@/components/ui/use-toast";
+import { useToast } from "@/ui/use-toast";
 import { PusherEvent, PusherLockRowPayload, PusherShareScorePayload } from "@/pusher/pusher.model";
 import QwixxStore from "@/state/store";
 import { useParams } from "next/navigation";
