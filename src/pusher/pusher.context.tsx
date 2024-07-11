@@ -33,7 +33,7 @@ export const Pusher = ({children}: PropsWithChildren) => {
   const channel = useRef<PresenceChannel>();
   const {userName} = useAuth();
   const {toast} = useToast();
-  const lockRow = QwixxStore.use.lockRow();
+  const lockRow = QwixxStore.use.rowGotLockedBySomeoneElse();
   const {roomId} = useParams<{ roomId: string }>()
 
   // Move to custom hook
@@ -57,9 +57,6 @@ export const Pusher = ({children}: PropsWithChildren) => {
       toast({description: `${member.info.nickname} left the game`});
     });
     channel.current.bind(PusherEvent.lockRow, ({color}: PusherLockRowPayload) => {
-      lockRow(color);
-    })
-    channel.current.bind(PusherEvent.endGame, ({color}: PusherLockRowPayload) => {
       lockRow(color);
     })
     channel.current.bind(PusherEvent.shareScore, ({nickname, score}: PusherShareScorePayload) => {

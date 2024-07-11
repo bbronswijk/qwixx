@@ -12,6 +12,7 @@ import { endGameAction, shareScoreAction } from "@/actions/pusher.actions";
 import { useParams } from "next/navigation";
 import { useAuth } from "@/auth/authentication.context";
 import { PusherEvent } from "@/pusher/pusher.model";
+import { userCompleted2RowsSelector } from "@/state/selectors";
 
 interface ComponentProps extends PropsWithChildren {
   config: Record<Color, TileModel[]>;
@@ -21,13 +22,14 @@ interface ComponentProps extends PropsWithChildren {
 export default function Board({config, totalScore, children}: ComponentProps) {
   const gameCompleted = QwixxStore.use.gameCompleted();
   const setGameCompleted = QwixxStore.use.setGameCompleted();
-  const lockedState = QwixxStore.use.locked();
+  const lockedState = QwixxStore.use.lockedBySomeoneElse();
   const redSelection = QwixxStore.use.red();
   const yellowSelection = QwixxStore.use.yellow();
   const greenSelection = QwixxStore.use.green();
   const blueSelection = QwixxStore.use.blue();
   const {channel} = usePusher();
   const showScore = QwixxStore.use.showScore();
+  const userCompleted2Rows = QwixxStore(userCompleted2RowsSelector);
   const {roomId} = useParams<{ roomId: string }>()
   const {userName} = useAuth()
 
@@ -45,10 +47,10 @@ export default function Board({config, totalScore, children}: ComponentProps) {
   }, [totalScore, channel]);
 
   useEffect(() => {
-    if (Object.values(lockedState).filter(Boolean).length >= 2 && !gameCompleted) {
+    if (userCompleted2Rows) {
       endGameAction(roomId);
     }
-  }, [roomId, lockedState]);
+  }, [roomId, userCompleted2Rows]);
 
 
   return <div className="px-8 py-4 lg:p-8 bg-slate-200 rounded-xl space-y-2 m-3">

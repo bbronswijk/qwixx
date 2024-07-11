@@ -5,6 +5,20 @@ import { TileModel, tileType } from '@/data/tile.model';
 import { hasMetRequirements } from '@/utils/has-met-requirements';
 
 /**
+ * Check if the user completed 2 rows, so we can end the game.
+ */
+export const userCompleted2RowsSelector = (state: Store): boolean => {
+  const completionCounts = [
+    state.red.includes(12),
+    state.yellow.includes(12),
+    state.green.includes(2),
+    state.blue.includes(2)
+  ].filter(isComplete => isComplete).length;
+
+  return completionCounts >= 2;
+};
+
+/**
  * Return all rows that are not locked by someone else.
  */
 export const unLockedRowsSelector = (state: Store): { color: Color, value: number }[] => [
