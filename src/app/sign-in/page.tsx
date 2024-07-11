@@ -31,8 +31,7 @@ export default function Page() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log('Redirecting to home page')
-      replace('/'); // TODO join room?
+      replace('/');
     }
   }, [isAuthenticated, replace]);
 

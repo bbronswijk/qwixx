@@ -45,8 +45,8 @@ export const Pusher = ({children}: PropsWithChildren) => {
     // TODO include qwixx variant???
     channel.current = pusherClient.subscribe(`presence-${roomId}`) as PresenceChannel;
 
-    channel.current.bind("pusher:subscription_succeeded", () => {
-      setMembers(Object.values(channel.current?.members.members));
+    channel.current.bind("pusher:error", ({message}: { message: string }) => {
+      toast({description: message, variant: 'destructive'})
     });
     channel.current.bind("pusher:member_added", (member: Member) => {
       setMembers((members) => [...members, member.info]);
