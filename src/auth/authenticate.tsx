@@ -19,6 +19,12 @@ export const Authenticate = ({children}: PropsWithChildren) => {
     setUserName(value);
   }, [cookies]);
 
+  // Remove the username cookie.
+  const logOut = useCallback(() => {
+    cookies.remove(NICKNAME_COOKIE_KEY);
+    setUserName(undefined);
+  }, [cookies]);
+
   // Guard the routes that require authentication.
   useEffect(() => {
     if (!isAuthenticated && pathName !== '/sign-in') {
@@ -28,7 +34,7 @@ export const Authenticate = ({children}: PropsWithChildren) => {
 
 
   return (
-    <AuthenticationContext.Provider value={{authenticate, isAuthenticated, userName}}>
+    <AuthenticationContext.Provider value={{authenticate, logOut, isAuthenticated, userName}}>
       {!isAuthenticated && pathName !== '/sign-in' ? null : children}
     </AuthenticationContext.Provider>
   );

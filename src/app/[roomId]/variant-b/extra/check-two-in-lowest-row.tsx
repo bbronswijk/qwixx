@@ -35,7 +35,6 @@ export default function CheckTwoInLowestRow({checked}: ComponentProps) {
     }
   }, [checked]);
 
-
   return (
     <div className="flex items-center gap-1">
       <div className="h-6 w-6 lg:h-10 lg:w-10 relative">

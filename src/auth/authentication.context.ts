@@ -2,6 +2,7 @@ import { createContext, useContext } from "react";
 
 interface AuthenticationContextValue {
   authenticate: (userName: string) => void;
+  logOut: () => void;
   isAuthenticated: boolean;
   userName: string | undefined;
 }
