@@ -8,7 +8,7 @@ import { getNextTile } from '@/utils/get-next-tile';
  * Recursively trigger the tiles.
  */
 export const checkTile = (state: Store, color: Color, type: NumericTileType, value: number, actionType: ActionType): Partial<Store> => {
-  if (state.locked[color]) {
+  if (state.lockedBySomeoneElse[color]) {
     return state;
   }
 
@@ -65,9 +65,9 @@ export const undo = (state: Store, change: Change): Store => {
   } else if (change.type === tileType.lock) {
     state = {
       ...state,
-      locked: {
-        ...state.locked,
-        [change.color]: !state.locked[change.color]
+      lockedBySomeoneElse: {
+        ...state.lockedBySomeoneElse,
+        [change.color]: !state.lockedBySomeoneElse[change.color]
       },
       // Undo last change.
       changes: state.changes.slice(0, -1)

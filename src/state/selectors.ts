@@ -1,9 +1,36 @@
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
-import QwixxStore from '@/state/store';
+import QwixxStore, { Store } from '@/state/store';
 import { Color, colors } from '@/data/color';
 import { TileModel, tileType } from '@/data/tile.model';
-
 import { hasMetRequirements } from '@/utils/has-met-requirements';
+
+/**
+ * Return all rows that are not locked by someone else.
+ */
+export const unLockedRowsSelector = (state: Store): { color: Color, value: number }[] => [
+  {color: colors.red, value: state.red.length},
+  {color: colors.yellow, value: state.yellow.length},
+  {color: colors.green, value: state.green.length},
+  {color: colors.blue, value: state.blue.length},
+].filter(({color}) => !state.lockedBySomeoneElse[color])
+
+/**
+ * Return the first lowest row.
+ * There could possibly be more.
+ */
+export const lowestRowSelector = (state: Store): { color: Color, value: number } => {
+  const unLockedRows = unLockedRowsSelector(state);
+  return unLockedRows.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, unLockedRows[0]);
+}
+
+/**
+ * Return all rows with the lowest amount of checks.
+ */
+export const allRowsWithLeastChecksSelector = (state: Store): { color: Color, value: number }[] => {
+  const unLockedRows = unLockedRowsSelector(state);
+  const rowWithLeastChecks = lowestRowSelector(state);
+  return unLockedRows.filter(({value}) => value === rowWithLeastChecks.value);
+}
 
 /**
  * Calculate the total score for a single row.

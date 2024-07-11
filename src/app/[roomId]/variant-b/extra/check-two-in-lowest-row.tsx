@@ -3,17 +3,35 @@
 import React, { useEffect } from 'react';
 import { CircleIcon, XIcon } from '@/ui/icons';
 import QwixxStore from '@/state/store';
+import { allRowsWithLeastChecksSelector } from "@/state/selectors";
+import { useToast } from "@/ui/use-toast";
 
 interface ComponentProps {
   checked: boolean;
 }
 
+/**
+ * Return
+ * Red, Green or Blue
+ * Red or Green
+ */
+const chain = (items: string[]): string => `${items.slice(0, -1).join(', ')} or ${items[items.length - 1]}`;
+
 export default function CheckTwoInLowestRow({checked}: ComponentProps) {
   const checkLowestRowTwice = QwixxStore.use.checkLowestRowTwice();
+  const allRowsWithLeastChecks = QwixxStore(allRowsWithLeastChecksSelector);
+  const {toast} = useToast()
 
   useEffect(() => {
     if (checked) {
-      checkLowestRowTwice();
+      if (allRowsWithLeastChecks.length > 1) {
+        toast({
+          title: 'You may add two checks to one of the lowest rows',
+          description: `Choose either the ${chain(allRowsWithLeastChecks.map(({color}) => color))} row`,
+        })
+      } else {
+        checkLowestRowTwice();
+      }
     }
   }, [checked]);
 

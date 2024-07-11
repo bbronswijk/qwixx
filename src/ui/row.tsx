@@ -11,6 +11,7 @@ import { TileModel } from '@/data/tile.model';
 import { triggerLockAction } from '@/actions/pusher.actions';
 import { pusherClient } from "@/pusher/pusher.client";
 import { useParams } from "next/navigation";
+import { useToast } from "@/ui/use-toast";
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   color: Color;
@@ -35,6 +36,7 @@ export default function Row({
   const onCheckTile = QwixxStore.use.checkTile();
   const showScore = QwixxStore.use.showScore();
   const {roomId} = useParams<{ roomId: string }>()
+  const {toast} = useToast()
 
   return (
     <section className={cn(className, 'flex py-1.5 lg:py-2 pl-6 pr-2 gap-1 rounded-lg relative items-center')} {...props}>
@@ -43,21 +45,27 @@ export default function Row({
       {tiles.map((tile: TileModel, index) => {
         const checked = selection.includes(tile.value);
         const skipped = !selection.includes(tile.value) && tiles.findIndex(({value}) => value === lastSelected) > tiles.findIndex(({value}) => tile.value === value);
-        const lastItemButNotEnoughSelected = last.value === tile.value && selection.length < 5;
+        const isLastItem = last.value === tile.value
+        const motEnoughSelected = isLastItem && selection.length < 5;
 
         return (
           <Tile
             key={tile.value}
             checked={checked}
             skipped={skipped || (locked && !selection.includes(tile.value))}
-            disabled={checked || skipped || locked || lastItemButNotEnoughSelected}
+            disabled={checked || skipped || locked}
             type={tile.type}
             onClick={() => {
-              onCheckTile(tile)
+              if (isLastItem) {
+                if (motEnoughSelected) {
+                  toast({title: 'You need to select at least 5 tiles!', variant: 'destructive'})
+                  return;
+                }
 
-              if (index === tiles.length - 1) {
                 triggerLockAction(pusherClient.connection.socket_id, roomId, {color})
               }
+
+              onCheckTile(tile)
             }}>{tile.value}</Tile>
         )
       })}

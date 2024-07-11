@@ -7,6 +7,7 @@ import { Color, colors } from '@/data/color';
 import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 import { variantBTiles } from '@/app/[roomId]/variant-b/variant-b.config';
+import { lowestRowSelector } from "@/state/selectors";
 
 export interface State {
   gameCompleted: boolean;
@@ -16,7 +17,7 @@ export interface State {
   green: number[],
   blue: number[],
 
-  locked: {
+  lockedBySomeoneElse: {
     red: boolean;
     yellow: boolean;
     green: boolean;
@@ -38,7 +39,7 @@ interface Reducers {
   roundFailed: () => void;
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
-  lockRow: (color: Color) => void;
+  rowGotLockedBySomeoneElse: (color: Color) => void;
   toggleScoreVisibility: () => void;
 }
 
@@ -63,7 +64,7 @@ const initialState: State = {
   [colors.green]: [],
   [colors.blue]: [],
 
-  locked: {
+  lockedBySomeoneElse: {
     [colors.red]: false,
     [colors.yellow]: false,
     [colors.green]: false,
@@ -87,11 +88,11 @@ const state: StateCreator<Store> = (set) => ({
     ...initialState
   })),
 
-  lockRow: (color: Color) => set((state): Partial<Store> => ({
+  rowGotLockedBySomeoneElse: (color: Color) => set((state): Partial<Store> => ({
     ...state,
     changes: [...state.changes, {color, type: tileType.lock, actionType: ActionType.pusher}],
-    locked: {
-      ...state.locked,
+    lockedBySomeoneElse: {
+      ...state.lockedBySomeoneElse,
       [color]: true,
     }
   })),
@@ -115,7 +116,7 @@ const state: StateCreator<Store> = (set) => ({
     const nextGreen = getNextTile(variantBTiles.green, state.green);
     const nextBlue = getNextTile(variantBTiles.blue, state.blue);
 
-    const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.locked[nextTile.color]
+    const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.lockedBySomeoneElse[nextTile.color]
         ? [
           ...changes,
           {
@@ -132,29 +133,15 @@ const state: StateCreator<Store> = (set) => ({
     return {
       ...state,
       changes,
-      ...(nextRed && !state.locked.red) && {red: [...state.red, nextRed.value]},
-      ...(nextYellow && !state.locked.yellow) && {yellow: [...state.yellow, nextYellow.value]},
-      ...(nextGreen && !state.locked.green) && {green: [...state.green, nextGreen.value]},
-      ...(nextBlue && !state.locked.blue) && {blue: [...state.blue, nextBlue.value]},
+      ...(nextRed && !state.lockedBySomeoneElse.red) && {red: [...state.red, nextRed.value]},
+      ...(nextYellow && !state.lockedBySomeoneElse.yellow) && {yellow: [...state.yellow, nextYellow.value]},
+      ...(nextGreen && !state.lockedBySomeoneElse.green) && {green: [...state.green, nextGreen.value]},
+      ...(nextBlue && !state.lockedBySomeoneElse.blue) && {blue: [...state.blue, nextBlue.value]},
     };
   }),
 
   checkLowestRowTwice: () => set((state): Partial<Store> => {
-    const unLockedRows = [
-      {color: colors.red, value: state.red.length},
-      {color: colors.yellow, value: state.yellow.length},
-      {color: colors.green, value: state.green.length},
-      {color: colors.blue, value: state.blue.length},
-    ].filter(({color}) => !state.locked[color]);
-
-    const lowestRow = unLockedRows.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, unLockedRows[0]);
-    const hasMultipleLowestRows = unLockedRows.filter(({value}) => value === lowestRow.value).length > 1;
-
-    if (hasMultipleLowestRows) {
-      // TODO
-      alert('Kies zelf in welke rij met het laagste aantal punten je kruisjes wilt zetten');
-      return state;
-    }
+    const lowestRow = lowestRowSelector(state);
 
     const firstCheck = getNextTile(variantBTiles[lowestRow.color], state[lowestRow.color]) as TileModel; // Cannot be undefined
 
