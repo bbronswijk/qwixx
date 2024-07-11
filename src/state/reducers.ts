@@ -49,7 +49,6 @@ export const checkTile = (state: Store, color: Color, type: NumericTileType, val
  */
 export const undo = (state: Store, change: Change): Store => {
   // If the last change came from pusher (from another user) undoing is disabled.
-  // TODO there might be a better location for this.
   if (change.actionType === ActionType.pusher) {
     return state;
   }
