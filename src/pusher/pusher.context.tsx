@@ -42,12 +42,15 @@ export const Pusher = ({children}: PropsWithChildren) => {
       return;
     }
 
+    pusherClient.bind("pusher:error", ({code, message}: { code: number | null; message: string }) => {
+      if (code) {
+        toast({description: message, variant: 'destructive'})
+      }
+    });
+
     // TODO include qwixx variant???
     channel.current = pusherClient.subscribe(`presence-${roomId}`) as PresenceChannel;
 
-    channel.current.bind("pusher:error", ({message}: { message: string }) => {
-      toast({description: message, variant: 'destructive'})
-    });
     channel.current.bind("pusher:member_added", (member: Member) => {
       setMembers((members) => [...members, member.info]);
       toast({description: `${member.info.nickname} joined the game`});
