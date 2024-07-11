@@ -12,6 +12,7 @@ import { triggerLockAction } from '@/actions/pusher.actions';
 import { pusherClient } from "@/pusher/pusher.client";
 import { useParams } from "next/navigation";
 import { useToast } from "@/ui/use-toast";
+import { useVariant } from "@/pusher/variant.context";
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   color: Color;
@@ -37,6 +38,7 @@ export default function Row({
   const showScore = QwixxStore.use.showScore();
   const {roomId} = useParams<{ roomId: string }>()
   const {toast} = useToast()
+  const variant = useVariant()
 
   return (
     <section className={cn(className, 'flex py-1.5 lg:py-2 pl-6 pr-2 gap-1 rounded-lg relative items-center')} {...props}>
@@ -62,7 +64,7 @@ export default function Row({
                   return;
                 }
 
-                triggerLockAction(pusherClient.connection.socket_id, roomId, {color})
+                triggerLockAction(pusherClient.connection.socket_id, variant, roomId, {color})
               }
 
               onCheckTile(tile)

@@ -13,6 +13,7 @@ import { useParams } from "next/navigation";
 import { useAuth } from "@/auth/authentication.context";
 import { PusherEvent } from "@/pusher/pusher.model";
 import { userCompleted2RowsSelector } from "@/state/selectors";
+import { useVariant } from "@/pusher/variant.context";
 
 interface ComponentProps extends PropsWithChildren {
   config: Record<Color, TileModel[]>;
@@ -32,13 +33,14 @@ export default function Board({config, totalScore, children}: ComponentProps) {
   const userCompleted2Rows = QwixxStore(userCompleted2RowsSelector);
   const {roomId} = useParams<{ roomId: string }>()
   const {userName} = useAuth()
+  const variant = useVariant();
 
   // TODO can this be moved to the pusher context?
   //  we need to access useTotalSelector(defaultTiles) somehow
   useEffect(() => {
     channel?.bind(PusherEvent.endGame, () => {
       setGameCompleted();
-      shareScoreAction(roomId, {score: totalScore, nickname: userName as string})
+      shareScoreAction(variant, roomId, {score: totalScore, nickname: userName as string})
     });
 
     return () => {
@@ -48,7 +50,7 @@ export default function Board({config, totalScore, children}: ComponentProps) {
 
   useEffect(() => {
     if (userCompleted2Rows) {
-      endGameAction(roomId);
+      endGameAction(variant, roomId);
     }
   }, [roomId, userCompleted2Rows]);
 

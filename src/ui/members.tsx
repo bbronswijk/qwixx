@@ -10,11 +10,9 @@ export const Members = ({className}: { className?: string }) => {
   return (
     <footer className={cn(className, "gap-2")}>
       {members.map((member) => (
-        <div key={member.nickname} className="relative">
-          <span className="absolute h-3 w-3 bg-green-500 rounded-full right-0"></span>
-          <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname}
-                 height={40} width={40}/>
-        </div>
+        <Image key={member.nickname} className="relative h-10 w-10 md:h-12 md:w-12"
+               src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname}
+               height={48} width={48}/>
       ))}
     </footer>
   )

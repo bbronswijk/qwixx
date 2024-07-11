@@ -4,16 +4,19 @@ import { cn } from '@/utils/cn';
 import QwixxStore from "@/state/store";
 import { endGameAction } from "@/actions/pusher.actions";
 import { useParams } from "next/navigation";
+import { useVariant } from "@/pusher/variant.context";
 
 export default function Failed() {
   const failedRounds = QwixxStore.use.failed();
   const onFailRound = QwixxStore.use.roundFailed();
   const {roomId} = useParams<{ roomId: string }>()
+  const variant = useVariant();
   const disabled = failedRounds >= 4;
+
 
   useEffect(() => {
     if (failedRounds >= 4) {
-      endGameAction(roomId);
+      endGameAction(variant, roomId);
     }
   }, [roomId, failedRounds]);
 
