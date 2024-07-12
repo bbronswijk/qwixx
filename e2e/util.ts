@@ -13,6 +13,8 @@ export const routes = {
   variantB: '/1234/variant-b',
 } as const;
 
+export type Routes = typeof routes[keyof typeof routes];
+
 export enum selectors {
   ROWS = 'section',
   VISIBILITY_TOGGLE = 'toggle-score-visibility',
@@ -31,14 +33,14 @@ export const login = async (page: Page, userName = 'superman') => {
   await page.waitForURL('/');
 }
 
-export const lockRowInAnotherBrowser = async () => {
+export const lockRowInAnotherBrowser = async (variant: Routes = routes.variantA) => {
   // Use firefox to not use auth state.
   const browseB = await chromium.launch();
   const page = await browseB.newPage();
   await page.context().clearCookies();
 
   await login(page, 'batman');
-  await page.goto(routes.variantA)
+  await page.goto(variant)
 
   const rows = page.locator('section');
   const redRow = rows.first();
@@ -48,5 +50,12 @@ export const lockRowInAnotherBrowser = async () => {
   // Jump to 4 thanks to bonus
   await clickButton(redRow, 5);
   await clickButton(redRow, 6);
+  await clickButton(redRow, 7);
   await clickButton(redRow, 12);
+}
+
+export const expectToast = async (page: Page, content: string) => {
+  const toast = page.getByRole('status').last();
+
+  await expect(toast).toContainText(content);
 }

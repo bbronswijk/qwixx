@@ -1,5 +1,5 @@
-import { expect, test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState, lockRowInAnotherBrowser, routes } from '../util';
+import { test } from '@playwright/test';
+import { clickButton, expectButtonToHaveState, expectToast, lockRowInAnotherBrowser, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 
 
@@ -47,10 +47,8 @@ test('should not automatically add 2 checks if there are multiple rows with the 
   await expectButtonToHaveState(blueRow, 12, buttonState.unchecked);
   await expectButtonToHaveState(blueRow, 11, buttonState.unchecked);
 
-  const toast = page.getByRole('status').last();
-
-  await expect(toast).toContainText('You may add two checks to one of the lowest rows');
-  await expect(toast).toContainText('Choose either the red or blue row');
+  await expectToast(page, 'You may add two checks to one of the lowest rows');
+  await expectToast(page, 'Choose either the red or blue row');
 });
 
 test('should not lock the lowest row when it is locked', async ({page}) => {
