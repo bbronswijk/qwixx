@@ -33,14 +33,14 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {name: 'setup', testMatch: /.*\.setup\.ts/},
+    // {name: 'setup', testMatch: /.*\.setup\.ts/},
     {
       name: 'chromium',
       use: {
         ...devices['Desktop Chrome'],
         storageState: 'e2e/.auth/auth.json',
       },
-      dependencies: ['setup'],
+      // dependencies: ['setup'],
     },
   ],
 

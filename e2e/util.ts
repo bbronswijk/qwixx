@@ -1,4 +1,4 @@
-import { expect, Locator } from '@playwright/test';
+import { chromium, expect, Locator, Page } from '@playwright/test';
 import { ButtonState } from '@/ui/tile';
 
 export const clickButton = (row: Locator, name: number) => row.getByRole('button', { name: name.toString(), exact: true }).click();
@@ -7,6 +7,7 @@ export const expectButtonToHaveState = (row: Locator, name: number, state: Butto
 
 export const routes = {
   signIn: 'sign-in',
+  game: '/1234',
   default: '/1234/default',
   variantA: '/1234/variant-a',
   variantB: '/1234/variant-b',
@@ -18,4 +19,34 @@ export enum selectors {
   LOCK = 'lock',
   TOTAL = 'total',
   UNDO = 'undo',
+}
+
+export const login = async (page: Page, userName = 'superman') => {
+  await page.goto(routes.default);
+  await page.waitForURL(routes.signIn);
+
+  await page.getByPlaceholder('Enter your name').fill(userName);
+  await page.getByRole('button', {name: 'Join the game'}).click();
+
+  await page.waitForURL('/');
+}
+
+export const lockRowInAnotherBrowser = async () => {
+  // Use firefox to not use auth state.
+  const browseB = await chromium.launch();
+  const page = await browseB.newPage();
+  await page.context().clearCookies();
+
+  await login(page, 'batman');
+  await page.goto(routes.variantA)
+
+  const rows = page.locator('section');
+  const redRow = rows.first();
+
+  await clickButton(redRow, 2);
+  await clickButton(redRow, 3);
+  // Jump to 4 thanks to bonus
+  await clickButton(redRow, 5);
+  await clickButton(redRow, 6);
+  await clickButton(redRow, 12);
 }

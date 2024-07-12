@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { lockState } from '@/ui/lock';
 import { clickButton, routes, selectors } from '../util';
+import { lockState } from "@/ui/lock";
 
 
 test('should reflect the correct total count for the selected cells', async ({ page }) => {

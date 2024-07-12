@@ -1,5 +1,5 @@
-import { test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState, routes } from '../util';
+import { expect, test } from '@playwright/test';
+import { clickButton, expectButtonToHaveState, lockRowInAnotherBrowser, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 
 
@@ -46,21 +46,23 @@ test('should not automatically add 2 checks if there are multiple rows with the 
 
   await expectButtonToHaveState(blueRow, 12, buttonState.unchecked);
   await expectButtonToHaveState(blueRow, 11, buttonState.unchecked);
+
+  const toast = page.getByRole('status').last();
+
+  await expect(toast).toContainText('You may add two checks to one of the lowest rows');
+  await expect(toast).toContainText('Choose either the red or blue row');
 });
 
-// TODO this is a useful test however I need to figure out how to trigger the locking of the row using pusher in playwright.
-test.skip('should not lock the lowest row when it is locked', async ({page}) => {
+test('should not lock the lowest row when it is locked', async ({page}) => {
   await page.goto(routes.variantB);
+
+  await lockRowInAnotherBrowser();
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
   const greenRow = rows.nth(2);
   const blueRow = rows.nth(3);
-
-  const lock = redRow.getByTestId('lock');
-
-  await lock.click(); // Lock red row
 
   // Add points to other rows
   await clickButton(yellowRow, 2);

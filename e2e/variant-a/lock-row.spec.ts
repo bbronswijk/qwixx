@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { lockState } from '@/ui/lock';
-import { clickButton, expectButtonToHaveState, routes } from '../util';
+import { clickButton, expectButtonToHaveState, lockRowInAnotherBrowser, routes } from '../util';
 import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/app/[roomId]/variant-a/bonus-box';
 
@@ -26,9 +26,10 @@ test('should not be able to unlock a row when all items are completed', async ({
   await expect(lock).toBeDisabled();
 });
 
-// TODO this is a useful test however I need to figure out how to trigger the locking of the row using pusher in playwright.
-test.skip('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
+test('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
   await page.goto(routes.variantA);
+
+  await lockRowInAnotherBrowser();
 
   const toggleScoreVisibility = page.getByTestId('toggle-score-visibility');
   const rows = page.locator('section');
@@ -42,7 +43,6 @@ test.skip('should not be able to add bonus boxes when the row is locked by anoth
 
   await expect(total).toHaveText('0');
 
-  await lock.click(); // Lock row
   await expect(lock).toHaveAttribute('data-state', lockState.locked);
   await expectButtonToHaveState(yellowRow, 5, buttonState.unchecked);
   await expect(bonus.nth(0)).toHaveAttribute('data-state', bonusBoxState.unchecked);

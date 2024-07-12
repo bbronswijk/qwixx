@@ -6,7 +6,6 @@ test('should be able to undo a checked tile', async ({page}) => {
   await page.goto(routes.default);
 
   const rows = page.locator('section');
-  const bonus = page.getByTestId('bonus-box');
   const redRow = rows.nth(0);
   const undoButton = page.getByTestId('undo');
 
