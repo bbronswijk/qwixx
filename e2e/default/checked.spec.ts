@@ -1,17 +1,17 @@
 import { expect, test } from '@playwright/test';
 import { lockState } from '@/ui/lock';
-import { clickButton, routes } from '../util';
+import { clickButton, routes, selectors } from '../util';
 
 
 test('should reflect the correct total count for the selected cells', async ({ page }) => {
   await page.goto(routes.default);
 
-  const rows = page.locator('section');
+  const rows = page.locator(selectors.ROWS);
   const redRow = rows.first();
-  const toggleScoreVisibility = page.getByTestId('toggle-score-visibility');
-  const lock = redRow.getByTestId('lock');
-  const total = redRow.getByTestId('total');
-  const undoButton = page.getByTestId('undo');
+  const toggleScoreVisibility = page.getByTestId(selectors.VISIBILITY_TOGGLE);
+  const lock = redRow.getByTestId(selectors.LOCK);
+  const total = redRow.getByTestId(selectors.TOTAL);
+  const undoButton = page.getByTestId(selectors.UNDO);
 
   await toggleScoreVisibility.click();
 

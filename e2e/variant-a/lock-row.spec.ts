@@ -30,12 +30,15 @@ test('should not be able to unlock a row when all items are completed', async ({
 test.skip('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
   await page.goto(routes.variantA);
 
+  const toggleScoreVisibility = page.getByTestId('toggle-score-visibility');
   const rows = page.locator('section');
   const bonus = page.getByTestId('bonus-box');
   const redRow = rows.first();
   const yellowRow = rows.nth(1);
   const lock = redRow.getByTestId('lock');
   const total = redRow.getByTestId('total');
+
+  toggleScoreVisibility.click()
 
   await expect(total).toHaveText('0');
 
