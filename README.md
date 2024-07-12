@@ -1,5 +1,7 @@
 # Qwixx
 
+![e2e Tests](https://github.com/bbronswijk/qwixx/actions/workflows/playwright.yml/badge.svg)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ![screenshot.png](screenshot.png)
