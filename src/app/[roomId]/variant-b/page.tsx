@@ -1,8 +1,7 @@
 'use client';
 
 import Board from '@/ui/board';
-import React, { useEffect } from 'react';
-import QwixxStore from '@/state/store';
+import React from 'react';
 import { useTotalSelector } from '@/state/selectors';
 import { variantBTiles } from '@/app/[roomId]/variant-b/variant-b.config';
 import ExtraPoints from '@/app/[roomId]/variant-b/extra/extra-points';
@@ -14,12 +13,6 @@ import { Pusher } from "@/pusher/pusher.context";
 import { Variant, VariantContext } from '@/pusher/variant.context';
 
 export default function Page() {
-  const reset = QwixxStore.use.reset();
-
-  useEffect(() => {
-    reset();
-  }, []);
-
   return (
     <VariantContext.Provider value={Variant.VARIANT_B}>
       <Pusher>

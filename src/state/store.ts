@@ -1,5 +1,5 @@
 import { createSelectors } from '@/utils/create-selector';
-import { devtools } from 'zustand/middleware';
+import { devtools, persist } from 'zustand/middleware';
 import { create, StateCreator } from 'zustand';
 import { BonusBox } from '@/app/[roomId]/variant-a/variant-a.config';
 import { checkTile, undo } from '@/state/reducers';
@@ -158,10 +158,10 @@ const state: StateCreator<Store> = (set) => ({
 });
 
 const QwixxStore = createSelectors(create<Store>()(
-  // persist(
-  devtools(state, {store: 'QwixxStore', enabled: true}),
-  //   { name: 'QwixxStore' }
-  // )
+  persist(
+    devtools(state, {store: 'QwixxStore', enabled: true}),
+    {name: 'QwixxStore'}
+  )
 ));
 
 export default QwixxStore;

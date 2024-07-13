@@ -1,10 +1,9 @@
 'use client';
 
 import Board from '@/ui/board';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { defaultTiles } from '@/app/[roomId]/default/default.config';
 import { useTotalSelector } from '@/state/selectors';
-import QwixxStore from '@/state/store';
 import BackButton from '@/ui/back-button';
 import UndoButton from '@/ui/undo-button';
 import ToggleScoreButton from '@/ui/toggle-score-button';
@@ -13,12 +12,6 @@ import { Pusher } from "@/pusher/pusher.context";
 import { Variant, VariantContext } from "@/pusher/variant.context";
 
 export default function Home() {
-  const reset = QwixxStore.use.reset();
-
-  useEffect(() => {
-    reset();
-  }, []);
-
   return (
     <VariantContext.Provider value={Variant.DEFAULT}>
       <Pusher>
