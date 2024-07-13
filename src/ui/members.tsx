@@ -2,13 +2,12 @@
 
 import { usePusher } from "@/pusher/pusher.context";
 import Image from 'next/image';
-import { cn } from "@/utils/cn";
 
-export const Members = ({className}: { className?: string }) => {
+export const Members = () => {
   const {members} = usePusher();
 
   return (
-    <footer className={cn(className, "gap-2")}>
+    <footer className="space-y-2 gap-2 w-12">
       {members.map((member) => (
         <Image key={member.nickname} className="relative h-10 w-10 md:h-12 md:w-12"
                src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname}

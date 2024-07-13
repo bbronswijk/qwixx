@@ -21,7 +21,7 @@ export default function Home() {
             <UndoButton/>
             <ToggleScoreButton/>
           </header>
-          <Members className="space-y-2"/>
+          <Members/>
           <Board
             config={defaultTiles}
             totalScore={useTotalSelector(defaultTiles)}>

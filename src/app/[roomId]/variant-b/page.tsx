@@ -22,7 +22,7 @@ export default function Page() {
             <UndoButton/>
             <ToggleScoreButton/>
           </header>
-          <Members className="space-y-2"/>
+          <Members/>
           <Board
             config={variantBTiles}
             totalScore={useTotalSelector(variantBTiles)}>
