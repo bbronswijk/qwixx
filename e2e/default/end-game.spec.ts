@@ -68,7 +68,7 @@ test('Should show a dialog that the game has ended when the user failed 4 turns 
 test('Should end the game a soon as someone else completes a row and the current user completes another row', async ({page}) => {
   await page.goto(routes.variantB);
 
-  const pageB = await lockRowInAnotherBrowser();
+  await lockRowInAnotherBrowser();
 
   const rows = page.locator('section');
   const yellowRow = rows.nth(1);
@@ -82,6 +82,4 @@ test('Should end the game a soon as someone else completes a row and the current
   await clickButton(yellowRow, 12);
 
   await expect(page.getByText('Game over')).toBeVisible();
-
-  pageB.close();
 });

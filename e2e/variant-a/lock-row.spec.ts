@@ -29,7 +29,7 @@ test('should not be able to unlock a row when all items are completed', async ({
 test('should not be able to add bonus boxes when the row is locked by another user', async ({page}) => {
   await page.goto(routes.variantA);
 
-  const pageB = await lockRowInAnotherBrowser();
+  await lockRowInAnotherBrowser();
 
   const toggleScoreVisibility = page.getByTestId('toggle-score-visibility');
   const rows = page.locator('section');
@@ -52,8 +52,6 @@ test('should not be able to add bonus boxes when the row is locked by another us
   await expectButtonToHaveState(yellowRow, 5, buttonState.checked);
   await expect(bonus.nth(0)).toHaveAttribute('data-state', bonusBoxState.checked);
   await expect(total).toHaveText('0');
-
-  await pageB.close();
 });
 
 test('should lock a row if another users bonus box locks the row', async ({page}) => {

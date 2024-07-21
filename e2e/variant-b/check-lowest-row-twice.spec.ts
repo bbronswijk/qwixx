@@ -55,7 +55,7 @@ test('should not automatically add 2 checks if there are multiple rows with the 
 test('should not lock the lowest row when it is locked', async ({page}) => {
   await page.goto(routes.variantB);
 
-  const pageB = await lockRowInAnotherBrowser();
+  await lockRowInAnotherBrowser();
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);
@@ -80,7 +80,5 @@ test('should not lock the lowest row when it is locked', async ({page}) => {
 
   await expectButtonToHaveState(blueRow, 11, buttonState.checked);
   await expectButtonToHaveState(blueRow, 10, buttonState.checked);
-
-  await pageB.close();
 });
 

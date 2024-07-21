@@ -23,7 +23,7 @@ test('it should not be able to undo an action when another user already locked t
 
   await expectButtonToHaveState(yellowRow, 3, buttonState.checked);
 
-  const pageB = await lockRowInAnotherBrowser(routes.default);
+  await lockRowInAnotherBrowser(routes.default);
 
   await expectButtonToHaveState(redRow, 2, buttonState.skipped);
   await expectButtonToHaveState(redRow, 12, buttonState.skipped);
@@ -34,6 +34,4 @@ test('it should not be able to undo an action when another user already locked t
   await expectToast(page, 'Someone else already locked a row after your turn');
 
   await expectButtonToHaveState(yellowRow, 3, buttonState.checked);
-
-  await pageB.close();
 });
