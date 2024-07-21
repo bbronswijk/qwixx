@@ -23,3 +23,9 @@ export const tileType = {
 } as const;
 
 export type TileType = keyof typeof tileType;
+
+export const buttonState = {
+  unchecked: 'unchecked',
+  checked: 'checked',
+  skipped: 'skipped',
+} as const;

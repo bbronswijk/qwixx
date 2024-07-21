@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, lockRowInAnotherBrowser, routes } from '../util';
-import { buttonState } from '@/ui/tile';
+
+import { buttonState } from "@/data/tile.model";
 
 
 test('should automatically select one box in each row', async ({page}) => {
@@ -24,7 +25,7 @@ test('should automatically select one box in each row', async ({page}) => {
 test('should not toggle the state of locked rows', async ({page}) => {
   await page.goto(routes.variantB);
 
-  await lockRowInAnotherBrowser();
+  const pageB = await lockRowInAnotherBrowser();
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);
@@ -41,4 +42,6 @@ test('should not toggle the state of locked rows', async ({page}) => {
   await expectButtonToHaveState(greenRow, 12, buttonState.checked);
   await expectButtonToHaveState(blueRow, 6, buttonState.checked);
   await expectButtonToHaveState(redRow, 2, buttonState.skipped);
+
+  await pageB.close();
 });

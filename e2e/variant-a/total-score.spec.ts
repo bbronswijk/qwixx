@@ -32,6 +32,7 @@ test('should reflect the correct total score all selected cells', async ({page})
   await failedButton.click();
   await failedButton.click();
 
-  await expect(totalScore).toHaveText(((78 + 2) - 20).toString());
+  await expect(page.getByText('Game over')).toBeVisible();
+  await expect(page.getByText('60 punten')).toBeVisible();
 });
 

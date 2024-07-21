@@ -4,7 +4,7 @@ import { cn } from '@/utils/cn';
 import QwixxStore from "@/state/store";
 import { endGameAction } from "@/actions/pusher.actions";
 import { useParams } from "next/navigation";
-import { useVariant } from "@/pusher/variant.context";
+import { useVariant } from "@/context/variant.context";
 
 export default function Failed() {
   const failedRounds = QwixxStore.use.failed();
@@ -22,9 +22,10 @@ export default function Failed() {
 
   return (
     <>
-      <button onClick={() => onFailRound()} disabled={disabled} className={
-        cn('border-2 lg:border-4 border-slate-400 text-slate-400 font-bold h-8 lg:h-10 whitespace-nowrap px-2 lg:px-5 rounded', disabled && 'opacity-40')
+      <button onClick={onFailRound} disabled={disabled} className={
+        cn('border-2 lg:border-4 border-slate-600 text-slate-600 font-bold h-8 lg:h-10 whitespace-nowrap px-2 lg:px-5 rounded', disabled && 'opacity-40')
       }>Worp mislukt</button>
+
       {[1, 2, 3, 4].map((points) => (
         <div key={points}
              data-testid="failed-button"

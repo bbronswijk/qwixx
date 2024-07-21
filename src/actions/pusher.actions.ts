@@ -2,7 +2,7 @@
 
 import { pusher } from '@/pusher/pusher';
 import { PusherEvent, PusherLockRowPayload, PusherShareScorePayload } from '@/pusher/pusher.model';
-import { Variant } from "@/pusher/variant.context";
+import { Variant } from "@/context/variant.context";
 
 export async function triggerLockAction(socketId: string, variant: Variant, roomId: string | undefined, payload: PusherLockRowPayload) {
   if (!roomId) {
@@ -11,7 +11,6 @@ export async function triggerLockAction(socketId: string, variant: Variant, room
 
   await pusher.trigger(`presence-${roomId}-${variant}`, PusherEvent.lockRow, payload, {socket_id: socketId});
 }
-
 
 export async function endGameAction(variant: Variant, roomId: string | undefined) {
   if (!roomId) {

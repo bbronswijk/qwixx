@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, expectToast, lockRowInAnotherBrowser, routes } from '../util';
-import { buttonState } from '@/ui/tile';
+
+import { buttonState } from "@/data/tile.model";
 
 
 test('should automatically add 2 checks to the row with the lowest points', async ({page}) => {
@@ -54,7 +55,7 @@ test('should not automatically add 2 checks if there are multiple rows with the 
 test('should not lock the lowest row when it is locked', async ({page}) => {
   await page.goto(routes.variantB);
 
-  await lockRowInAnotherBrowser();
+  const pageB = await lockRowInAnotherBrowser();
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);
@@ -70,7 +71,7 @@ test('should not lock the lowest row when it is locked', async ({page}) => {
   await expectButtonToHaveState(blueRow, 11, buttonState.unchecked);
   await expectButtonToHaveState(blueRow, 10, buttonState.unchecked);
 
-  // Trigger bonus boc
+  // Trigger bonus box
   await clickButton(yellowRow, 11);
   await clickButton(greenRow, 9);
 
@@ -79,5 +80,7 @@ test('should not lock the lowest row when it is locked', async ({page}) => {
 
   await expectButtonToHaveState(blueRow, 11, buttonState.checked);
   await expectButtonToHaveState(blueRow, 10, buttonState.checked);
+
+  await pageB.close();
 });
 

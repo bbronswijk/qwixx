@@ -1,8 +1,9 @@
 import { test } from "@playwright/test";
 import { clickButton, expectButtonToHaveState, expectToast, lockRowInAnotherBrowser, routes } from "../util";
-import { buttonState } from "@/ui/tile";
 
-test('it should not be able to undo an action when the ', async ({page}) => {
+import { buttonState } from "@/data/tile.model";
+
+test('it should not be able to undo an action when another user already locked the row', async ({page}) => {
   await page.goto(routes.default);
 
   const rows = page.locator('section');
@@ -22,7 +23,7 @@ test('it should not be able to undo an action when the ', async ({page}) => {
 
   await expectButtonToHaveState(yellowRow, 3, buttonState.checked);
 
-  await lockRowInAnotherBrowser(routes.default);
+  const pageB = await lockRowInAnotherBrowser(routes.default);
 
   await expectButtonToHaveState(redRow, 2, buttonState.skipped);
   await expectButtonToHaveState(redRow, 12, buttonState.skipped);
@@ -33,4 +34,6 @@ test('it should not be able to undo an action when the ', async ({page}) => {
   await expectToast(page, 'Someone else already locked a row after your turn');
 
   await expectButtonToHaveState(yellowRow, 3, buttonState.checked);
+
+  await pageB.close();
 });

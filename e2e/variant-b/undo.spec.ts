@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, routes } from '../util';
-import { buttonState } from '@/ui/tile';
+
+import { buttonState } from "@/data/tile.model";
 
 test('should be able to undo a checked tile', async ({page}) => {
   await page.goto(routes.default);

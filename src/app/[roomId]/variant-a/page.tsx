@@ -10,7 +10,7 @@ import UndoButton from '@/ui/undo-button';
 import ToggleScoreButton from '@/ui/toggle-score-button';
 import { Members } from "@/ui/members";
 import { Pusher } from "@/pusher/pusher.context";
-import { Variant, VariantContext } from "@/pusher/variant.context";
+import { Variant, VariantContext } from "@/context/variant.context";
 
 export default function Page() {
   return (

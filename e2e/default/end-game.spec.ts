@@ -1,5 +1,5 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, routes, selectors } from '../util';
+import { clickButton, lockRowInAnotherBrowser, routes, selectors } from '../util';
 
 test('Should show a dialog that the game has ended when the user completed 2 rows', async ({page}) => {
   await page.goto(routes.default);
@@ -62,4 +62,26 @@ test('Should show a dialog that the game has ended when the user failed 4 turns 
   await page.getByTestId(selectors.VISIBILITY_TOGGLE).click();
 
   await expect(page.getByTestId('failed-total')).toHaveText('0');
+});
+
+
+test('Should end the game a soon as someone else completes a row and the current user completes another row', async ({page}) => {
+  await page.goto(routes.variantB);
+
+  const pageB = await lockRowInAnotherBrowser();
+
+  const rows = page.locator('section');
+  const yellowRow = rows.nth(1);
+
+  // Complete yellow row
+  await clickButton(yellowRow, 2);
+  await clickButton(yellowRow, 3);
+  await clickButton(yellowRow, 4);
+  await clickButton(yellowRow, 5);
+  await clickButton(yellowRow, 6);
+  await clickButton(yellowRow, 12);
+
+  await expect(page.getByText('Game over')).toBeVisible();
+
+  pageB.close();
 });

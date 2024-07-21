@@ -4,6 +4,8 @@ import { Color, colors } from '@/data/color';
 import { TileModel, tileType } from '@/data/tile.model';
 import { hasMetRequirements } from '@/utils/has-met-requirements';
 
+export const selectionForRow = (color: Color) => (state: Store): number[] => state[color];
+
 /**
  * Check if the user completed 2 rows, so we can end the game.
  */
@@ -15,7 +17,9 @@ export const userCompleted2RowsSelector = (state: Store): boolean => {
     state.blue.includes(2)
   ].filter(isComplete => isComplete).length;
 
-  return completionCounts >= 2;
+  const lockedBySomeoneElse = Object.values(state.lockedBySomeoneElse).filter(locked => locked).length;
+
+  return (completionCounts + lockedBySomeoneElse) >= 2;
 };
 
 /**

@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { pusher } from '@/pusher/pusher';
 import { PresenceChannelData } from "pusher";
 import { cookies } from "next/headers";

@@ -33,7 +33,7 @@ export const login = async (page: Page, userName = 'superman') => {
   await page.waitForURL('/');
 }
 
-export const lockRowInAnotherBrowser = async (variant: Routes = routes.variantA) => {
+export const lockRowInAnotherBrowser = async (variant: Routes = routes.variantA): Promise<Page> => {
   // Use firefox to not use auth state.
   const browseB = await chromium.launch();
   const page = await browseB.newPage();
@@ -52,6 +52,8 @@ export const lockRowInAnotherBrowser = async (variant: Routes = routes.variantA)
   await clickButton(redRow, 6);
   await clickButton(redRow, 7);
   await clickButton(redRow, 12);
+
+  return page;
 }
 
 export const expectToast = async (page: Page, content: string) => {

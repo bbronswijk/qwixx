@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test';
 import { clickButton, expectButtonToHaveState, routes } from '../util';
-import { buttonState } from '@/ui/tile';
 import { bonusBoxState } from '@/app/[roomId]/variant-a/bonus-box';
+import { buttonState } from "@/data/tile.model";
 
 
 test('should automatically select the first red box if the first bonus box is hit', async ({ page }) => {

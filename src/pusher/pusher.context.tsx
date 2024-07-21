@@ -8,7 +8,7 @@ import { useToast } from "@/ui/use-toast";
 import { PusherEvent, PusherLockRowPayload, PusherShareScorePayload } from "@/pusher/pusher.model";
 import QwixxStore from "@/state/store";
 import { useParams } from "next/navigation";
-import { useVariant } from "@/pusher/variant.context";
+import { useVariant } from "@/context/variant.context";
 
 interface PusherContextValue {
   members: MemberInfo[];
