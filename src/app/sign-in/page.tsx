@@ -10,22 +10,43 @@ import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useAuth } from "@/auth/authentication.context";
 import Image from 'next/image';
+import { NICKNAME_COOKIE_KEY } from "@/auth/nickname-cookie.key";
 
 const formSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-})
+});
+
+const useLocalStorage = () => {
+  // const setItem = useCallback((key: string, value: string) => localStorage.setItem(key, value), []);
+  // const getItem = useCallback((key: string) => localStorage.getItem(key), []);
+  const setItem = (key: string, value: string): void => localStorage.setItem(key, value);
+  const getItem = (key: string): string | null => localStorage.getItem(key);
+
+  // Check window to avoid SSR error
+  if (typeof window === 'undefined') {
+    return {
+      getItem: () => null,
+      setItem: () => {
+      },
+    };
+  }
+
+  return {getItem, setItem};
+}
 
 export default function Page() {
   const ref = useRef<HTMLInputElement | null>(null);
   const {isAuthenticated, authenticate} = useAuth();
   const {replace} = useRouter();
+  const {getItem, setItem} = useLocalStorage();
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      username: getItem(NICKNAME_COOKIE_KEY) ?? '',
     },
   })
 
@@ -41,6 +62,7 @@ export default function Page() {
 
   const onSubmit = ({username}: z.infer<typeof formSchema>) => {
     authenticate(username);
+    setItem(NICKNAME_COOKIE_KEY, username)
   }
 
   return (
