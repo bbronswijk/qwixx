@@ -8,6 +8,15 @@ import { Members } from "@/ui/members";
 import { Pusher } from "@/pusher/pusher.context";
 import { Variant, VariantContext } from "@/context/variant.context";
 import { GameHeader } from "@/ui/game-header";
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: 'black',
+  minimumScale: 1,
+  initialScale: 1,
+  width: 'device-width',
+  viewportFit: 'cover',
+}
 
 export default function Home() {
   const totalScore = useTotalSelector(defaultTiles);

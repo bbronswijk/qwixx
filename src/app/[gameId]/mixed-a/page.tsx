@@ -8,6 +8,15 @@ import { Pusher } from "@/pusher/pusher.context";
 import { Variant, VariantContext } from "@/context/variant.context";
 import { mixedATiles } from "@/app/[gameId]/mixed-a/mixed-a.config";
 import { GameHeader } from "@/ui/game-header";
+import type { Viewport } from "next";
+
+export const viewport: Viewport = {
+  themeColor: 'black',
+  minimumScale: 1,
+  initialScale: 1,
+  width: 'device-width',
+  viewportFit: 'cover',
+}
 
 export default function Home() {
   const totalScore = useTotalSelector(mixedATiles);

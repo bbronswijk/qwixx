@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/ui/input-otp';
 import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
@@ -16,6 +16,10 @@ export default function Page() {
   const {nickname} = useAuth()
   const {toast} = useToast()
   const reset = QwixxStore.use.reset();
+
+  useEffect(() => {
+    ref.current?.focus();
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,11 +71,11 @@ export default function Page() {
   }
 
   return (
-    <main className="h-full w-full flex flex-col p-4 justify-center items-center bg-slate-100">
+    <main className="h-full w-full flex flex-col p-4 justify-center items-center bg-slate-100 p-4">
       <header className="fixed top-3 left-3 right-3 gap-3 flex items-center justify-between">
         <BackButton/>
       </header>
-      <form onSubmit={handleSubmit} className="border rounded-2xl p-8 bg-white max-w-96 space-y-6">
+      <form onSubmit={handleSubmit} className="border rounded-2xl p-8 bg-white w-full max-w-96 space-y-6">
         <h1 className="text-2xl text-center">Join an existing game</h1>
         <div className="flex justify-center flex-wrap">
           <InputOTP ref={ref} maxLength={4} onChange={handleChange}>

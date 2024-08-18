@@ -66,9 +66,8 @@ export default function Page() {
   }
 
   return (
-    <main className="h-full w-full flex justify-center items-center bg-slate-100">
-      <div className="border rounded-2xl p-8 bg-white w-96">
-
+    <main className="h-full w-full flex justify-center items-center bg-slate-100 p-4">
+      <div className="border rounded-2xl p-8 bg-white w-full max-w-96">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 text-center">
             <Image src="/icons/256.png" height={100} width={100} alt="qwixx logo" className="mx-auto rounded-2xl"/>
