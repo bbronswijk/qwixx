@@ -17,6 +17,7 @@ import {
   AlertDialogTitle
 } from "@/ui/alert-dialog";
 import { DialogHeader } from "@/ui/dialog";
+import { GamePadIcon } from "@/ui/icons";
 
 type ComponentProps = {
   image: string;
@@ -31,11 +32,12 @@ export default function Home() {
   const [variant, setVariant] = useState<Variant | undefined>()
 
   const createGame = async (variant: Variant) => {
+    setVariant(variant);
+
     const game = await createGameAction(variant, nickname as string);
     reset();
 
     setPin(game.pin);
-    setVariant(variant);
   }
 
   return (
@@ -53,7 +55,9 @@ export default function Home() {
         <GameCard onClick={() => createGame(Variant.MIXED_A)} image="/mixed-a.png" title="Mix variant A"/>
       </section>
 
-      <GamePinDialog pin={pin} variant={variant}/>
+      <AlertDialog open={!!variant}>
+        <GamePinDialog pin={pin} variant={variant}/>
+      </AlertDialog>
     </main>
   );
 }
@@ -70,30 +74,32 @@ const GameCard = ({onClick, image, title}: ComponentProps) => (
 
 const GamePinDialog = ({pin, variant}: { pin: number | null; variant: Variant | undefined }) => {
   const router = useRouter();
-  const [showDialog, setShowDialog] = useState(true);
 
-  if (!pin || !variant) {
-    return null;
+  if (!pin) {
+    return (
+      <AlertDialogContent>
+        <DialogHeader>
+          <GamePadIcon className="h-20 w-20 mx-auto animate-bounce"/>
+          <AlertDialogTitle className="text-center">Creating {variant} game</AlertDialogTitle>
+          <AlertDialogDescription className="text-center">One moment please...</AlertDialogDescription>
+        </DialogHeader>
+      </AlertDialogContent>
+    );
   }
 
   return (
-    <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-      <AlertDialogContent>
-        <DialogHeader>
-          <AlertDialogTitle className="text-center">Game created!</AlertDialogTitle>
-          <AlertDialogDescription className="text-center">Players can join your game with the pin
-            below</AlertDialogDescription>
-        </DialogHeader>
-        <h1 className="font-bold text-8xl text-center">{pin}</h1>
-        <AlertDialogFooter>
-          <AlertDialogAction onClick={() => {
-            router.push(`/${pin}/${variant}`);
-            setShowDialog(false);
-          }}>
-            Start game
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <AlertDialogContent>
+      <DialogHeader>
+        <AlertDialogTitle className="text-center">Game created!</AlertDialogTitle>
+        <AlertDialogDescription className="text-center">Players can join your game with the pin
+          below</AlertDialogDescription>
+      </DialogHeader>
+      <h1 className="font-bold text-8xl text-center">{pin}</h1>
+      <AlertDialogFooter>
+        <AlertDialogAction onClick={() => router.push(`/${pin}/${variant}`)}>
+          Start game
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
   )
 }
