@@ -34,7 +34,7 @@ export default function Row({row, tiles, ...props}: ComponentProps) {
         <TriangleIcon className="absolute h-8 w-8 top-1/2 -translate-y-1/2 text-black left-0 -ml-5"/>
       </div>
 
-      {tiles.map((tile: TileModel, index) => {
+      {tiles.map((tile: TileModel) => {
         const locked = lockedState[tile.color];
         const checked = selection.includes(tile.value);
         const tileIndex = tiles.findIndex(({value}) => tile.value === value);

@@ -38,7 +38,7 @@ export const Pusher = ({children}: PropsWithChildren) => {
   useEffect(() => {
     channel.current = pusherClient.subscribe(`presence-${pin}-${variant}`) as PresenceChannel;
 
-    channel.current.bind("pusher:error", ({code, message}: { code: number | null; message: string }) => {
+    channel.current.bind("pusher:error", ({message}: { code: number | null; message: string }) => {
       toast({description: message, variant: 'destructive'})
     }).bind("pusher:subscription_succeeded", () => {
       setMembers(Object.values(channel.current?.members.members));

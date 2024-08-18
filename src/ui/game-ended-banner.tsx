@@ -20,7 +20,6 @@ export const GameEndedBanner = ({totalScore}: { totalScore: number }) => {
 
   useEffect(() => {
     if (gameCompleted) {
-      // TODO move to state
       notifyScoreSharedAction(variant, pin, store, totalScore, nickname as string);
       setShowScoreDialog(true);
     }
