@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import '../styles/globals.css';
 import { Authenticate } from "@/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
@@ -22,6 +22,14 @@ export const metadata: Metadata = {
     {rel: 'icon', url: '256x256.jpg'},
   ],
 };
+
+export const viewport: Viewport = {
+  themeColor: 'black',
+  minimumScale: 1,
+  initialScale: 1,
+  width: 'device-width',
+  viewportFit: 'cover',
+}
 
 export default function RootLayout({
   children,
