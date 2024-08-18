@@ -43,3 +43,5 @@ next-env.d.ts
 .idea/
 
 e2e/.auth/auth.json
+# Sentry Config File
+.env.sentry-build-plugin
