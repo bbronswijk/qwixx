@@ -1,7 +1,6 @@
 import Pusher from 'pusher';
 import { env } from '@/env';
 
-
 const pusherSingleton = () => new Pusher({
   appId: env.PUSHER_APP_ID,
   key: env.NEXT_PUBLIC_PUSHER_APP_KEY,

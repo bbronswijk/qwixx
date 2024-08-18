@@ -1,10 +1,10 @@
 import { createContext, useContext } from "react";
 
 interface AuthenticationContextValue {
-  authenticate: (userName: string) => void;
+  authenticate: (nickname: string) => void;
   logOut: () => void;
   isAuthenticated: boolean;
-  userName: string | undefined;
+  nickname: string | undefined;
 }
 
 export const AuthenticationContext = createContext<AuthenticationContextValue | null>(null);

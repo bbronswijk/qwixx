@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, routes } from '../util';
+import { clickButton, startGame } from '../util';
+import { Variant } from "@/context/variant.context";
 
 test('should not be able to unlock a row when all items are completed', async ({ page }) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator('section');
   const redRow = rows.first();

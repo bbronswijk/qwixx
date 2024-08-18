@@ -2,19 +2,14 @@
 
 import React from 'react';
 import { useAuth } from "@/auth/authentication.context";
-import { Button } from "@/ui/button";
-import { useRouter } from "next/navigation";
+import { buttonVariants } from "@/ui/button";
 import Image from "next/image";
 import { ChevronLeftIcon } from "@/ui/icons";
-
-function generateGamePin(): number {
-  return Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
-}
+import Link from "next/link";
+import { cn } from "@/utils/cn";
 
 export default function Page() {
-  const {userName} = useAuth();
-  const newGamePin = generateGamePin();
-  const router = useRouter();
+  const {nickname} = useAuth();
   const {logOut} = useAuth();
 
   return (
@@ -28,11 +23,13 @@ export default function Page() {
 
       <div className="border rounded-2xl p-8 bg-white w-96 space-y-2">
         <Image src="/icons/256.png" height={100} width={100} alt="qwixx logo" className="mx-auto rounded-2xl"/>
-        <h1 className="text-3xl font-bold text-center py-4">Welcome {userName}!</h1>
-        <Button onClick={() => router.push(`/${newGamePin}`)} className="w-full" type="submit">Create new
-          game</Button>
-        <Button variant="outline" onClick={() => router.push('/join-existing')} className="w-full" type="submit">Or
-          join an existing game</Button>
+        <h1 className="text-3xl font-bold text-center py-4">Welcome {nickname}!</h1>
+        <Link href="/create" className={cn(buttonVariants({variant: "default"}), 'w-full')} type="submit">Create new
+          game
+        </Link>
+        <Link href="/join-existing" className={cn(buttonVariants({variant: "outline"}), 'w-full')} type="submit">Or
+          join an existing game
+        </Link>
       </div>
     </main>
   );

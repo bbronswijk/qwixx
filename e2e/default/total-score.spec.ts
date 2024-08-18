@@ -1,9 +1,10 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, routes, selectors } from '../util';
+import { clickButton, selectors, startGame } from '../util';
+import { Variant } from "@/context/variant.context";
 
 
 test('should reflect the correct total score all selected cells', async ({ page }) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const toggleScoreVisibility = page.getByTestId(selectors.VISIBILITY_TOGGLE);
   const rows = page.locator(selectors.ROWS);

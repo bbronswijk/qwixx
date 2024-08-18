@@ -1,6 +1,7 @@
 import { cn } from '@/utils/cn';
 import React, { HTMLAttributes } from 'react';
 import { CheckMarkIcon, UnLockedIcon, XIcon } from '@/ui/icons';
+import QwixxStore from "@/state/store";
 
 interface ComponentProps extends HTMLAttributes<HTMLButtonElement> {
   lockedBySomeoneElse: boolean;
@@ -16,6 +17,7 @@ export const lockState = {
 type LockState = keyof typeof lockState;
 
 export default function Lock({ lockedBySomeoneElse, completedRow, ...props }: ComponentProps) {
+  const gameCompleted = QwixxStore.use.gameCompleted();
   const iconClass = 'h-4 w-4 lg:h-6 lg:w-6 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 absolute';
 
   let icon = <UnLockedIcon className={cn(iconClass, '-rotate-12')}/>;
@@ -33,7 +35,7 @@ export default function Lock({ lockedBySomeoneElse, completedRow, ...props }: Co
     <button
       data-testid="lock"
       data-state={state}
-      disabled={completedRow}
+      disabled={completedRow || gameCompleted}
       {...props}
       className={cn(
         'bg-white/70 rounded-full h-8 w-8 lg:h-12 lg:w-12 p-1.5 mx-2 duration-200 relative',

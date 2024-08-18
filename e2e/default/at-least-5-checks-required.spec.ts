@@ -1,8 +1,9 @@
 import { test } from "@playwright/test";
-import { clickButton, expectToast, routes } from "../util";
+import { clickButton, expectToast, startGame } from "../util";
+import { Variant } from "@/context/variant.context";
 
 test('shows a toast when the user tries to lock a row without 5 checks', async ({page}) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator('section');
   const yellowRow = rows.nth(1);

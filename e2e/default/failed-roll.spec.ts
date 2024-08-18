@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { routes } from '../util';
+import { startGame } from '../util';
+import { Variant } from "@/context/variant.context";
 
 test('should reflect the correct total count for the failed roll', async ({ page }) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const failedButton = page.getByRole('button', { name: 'Worp mislukt' });
   const total = page.getByTestId('failed-total');
@@ -26,7 +27,7 @@ test('should reflect the correct total count for the failed roll', async ({ page
 });
 
 test('should be able to undo a failed roll', async ({ page }) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT)
 
   const failedButton = page.getByRole('button', { name: 'Worp mislukt' });
   const total = page.getByTestId('failed-total');

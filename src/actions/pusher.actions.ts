@@ -1,30 +1,21 @@
 'use server'
 
 import { pusher } from '@/pusher/pusher';
-import { PusherEvent, PusherLockRowPayload, PusherShareScorePayload } from '@/pusher/pusher.model';
+import { PusherEvent } from '@/pusher/pusher.model';
 import { Variant } from "@/context/variant.context";
+import { State } from "@/state/store";
+import { endGameAction, saveScore } from "@/actions/game.actions";
 
-export async function triggerLockAction(socketId: string, variant: Variant, roomId: string | undefined, payload: PusherLockRowPayload) {
-  if (!roomId) {
-    throw new Error('No room id provided');
-  }
 
-  await pusher.trigger(`presence-${roomId}-${variant}`, PusherEvent.lockRow, payload, {socket_id: socketId});
+export async function notifyImmediateEndOfGameAction(variant: Variant, gamePin: number) {
+  await endGameAction(gamePin);
+
+  await pusher.trigger(`presence-${gamePin}-${variant}`, PusherEvent.endGame, {ended: true});
 }
 
-export async function endGameAction(variant: Variant, roomId: string | undefined) {
-  if (!roomId) {
-    throw new Error('No room id provided');
-  }
+export async function notifyScoreSharedAction(variant: Variant, pin: number, store: State, score: number, nickname: string) {
+  await saveScore(pin, nickname, score, store);
 
-  await pusher.trigger(`presence-${roomId}-${variant}`, PusherEvent.endGame, {ended: true});
-}
-
-export async function shareScoreAction(variant: Variant, roomId: string | undefined, payload: PusherShareScorePayload) {
-  if (!roomId) {
-    throw new Error('No room id provided');
-  }
-
-  await pusher.trigger(`presence-${roomId}-${variant}`, PusherEvent.shareScore, payload);
+  await pusher.trigger(`presence-${pin}-${variant}`, PusherEvent.shareScore, {nickname, score});
 }
 

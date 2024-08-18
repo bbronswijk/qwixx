@@ -10,19 +10,19 @@ export const Authenticate = ({children}: PropsWithChildren) => {
   const {replace} = useRouter();
   const pathName = usePathname();
   const cookies = useCookies();
-  const [userName, setUserName] = useState<string | undefined>(cookies.get(NICKNAME_COOKIE_KEY));
-  const isAuthenticated = !!userName;
+  const [nickname, setNickname] = useState<string | undefined>(cookies.get(NICKNAME_COOKIE_KEY));
+  const isAuthenticated = !!nickname;
 
   // Store the username in the cookie.
   const authenticate = useCallback((value: string) => {
     cookies.set(NICKNAME_COOKIE_KEY, value);
-    setUserName(value);
+    setNickname(value);
   }, [cookies]);
 
   // Remove the username cookie.
   const logOut = useCallback(() => {
     cookies.remove(NICKNAME_COOKIE_KEY);
-    setUserName(undefined);
+    setNickname(undefined);
   }, [cookies]);
 
   // Guard the routes that require authentication.
@@ -34,7 +34,7 @@ export const Authenticate = ({children}: PropsWithChildren) => {
 
 
   return (
-    <AuthenticationContext.Provider value={{authenticate, logOut, isAuthenticated, userName}}>
+    <AuthenticationContext.Provider value={{authenticate, logOut, isAuthenticated, nickname}}>
       {!isAuthenticated && pathName !== '/sign-in' ? null : children}
     </AuthenticationContext.Provider>
   );

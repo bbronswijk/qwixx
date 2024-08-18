@@ -1,10 +1,11 @@
 import { test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState, routes } from '../util';
+import { clickButton, expectButtonToHaveState, startGame } from '../util';
 
 import { buttonState } from "@/data/tile.model";
+import { Variant } from "@/context/variant.context";
 
 test('should be able to undo a checked tile', async ({page}) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator('section');
   const redRow = rows.nth(0);

@@ -5,14 +5,13 @@ import { pusherClient } from "@/pusher/pusher.client";
 import { PresenceChannel } from "pusher-js";
 import { Member, MemberInfo } from "@/pusher/member.model";
 import { useToast } from "@/ui/use-toast";
-import { PusherEvent, PusherLockRowPayload, PusherShareScorePayload } from "@/pusher/pusher.model";
+import { PusherEvent } from "@/pusher/pusher.model";
 import QwixxStore from "@/state/store";
-import { useParams } from "next/navigation";
 import { useVariant } from "@/context/variant.context";
+import { useGamePin } from "@/utils/use-game-pin.hook";
 
 interface PusherContextValue {
   members: MemberInfo[];
-  channel: PresenceChannel | undefined;
 }
 
 export const PusherContext = createContext<PusherContextValue | null>(null);
@@ -32,11 +31,12 @@ export const Pusher = ({children}: PropsWithChildren) => {
   const channel = useRef<PresenceChannel>();
   const {toast} = useToast();
   const variant = useVariant();
-  const lockRow = QwixxStore.use.rowGotLockedBySomeoneElse();
-  const {roomId} = useParams<{ roomId: string }>()
+  const markAsGameCompleted = QwixxStore.use.markAsGameCompleted();
+  const fetchScore = QwixxStore.use.fetchScore();
+  const pin = useGamePin();
 
   useEffect(() => {
-    channel.current = pusherClient.subscribe(`presence-${roomId}-${variant}`) as PresenceChannel;
+    channel.current = pusherClient.subscribe(`presence-${pin}-${variant}`) as PresenceChannel;
 
     channel.current.bind("pusher:error", ({code, message}: { code: number | null; message: string }) => {
       toast({description: message, variant: 'destructive'})
@@ -46,16 +46,9 @@ export const Pusher = ({children}: PropsWithChildren) => {
       setMembers((members) => [...members, member.info]);
     }).bind("pusher:member_removed", (member: Member) => {
       setMembers((members) => members.filter((m: MemberInfo) => m.nickname !== member.info.nickname));
-    }).bind(PusherEvent.lockRow, ({color}: PusherLockRowPayload) => {
-      lockRow(color);
-    }).bind(PusherEvent.shareScore, ({nickname, score}: PusherShareScorePayload) => {
-      setMembers((members) => members.map((member) => {
-        if (member.nickname === nickname) {
-          return {...member, score};
-        }
-        return member;
-      }));
-    });
+    })
+      .bind(PusherEvent.shareScore, () => fetchScore(pin))
+      .bind(PusherEvent.endGame, () => markAsGameCompleted());
 
     return () => {
       channel.current?.unbind_all();
@@ -64,7 +57,7 @@ export const Pusher = ({children}: PropsWithChildren) => {
   }, []);
 
   return (
-    <PusherContext.Provider value={{members, channel: channel.current}}>
+    <PusherContext.Provider value={{members}}>
       {children}
     </PusherContext.Provider>
   );

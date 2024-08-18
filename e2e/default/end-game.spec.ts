@@ -1,8 +1,9 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, lockRowInAnotherBrowser, routes, selectors } from '../util';
+import { clickButton, selectors, startGame } from '../util';
+import { Variant } from "@/context/variant.context";
 
 test('Should show a dialog that the game has ended when the user completed 2 rows', async ({page}) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator(selectors.ROWS);
   const redRow = rows.first();
@@ -36,10 +37,8 @@ test('Should show a dialog that the game has ended when the user completed 2 row
   await expect(page.getByText('156 punten')).toBeVisible();
 });
 
-test('Should show a dialog that the game has ended when the user failed 4 turns and reset the game after clicking the finish button', async ({page}) => {
-  await page.goto(routes.game);
-
-  await page.getByText('Standaard').click();
+test('Should show a dialog that the game has ended when the user failed 4 turns', async ({page}) => {
+  await startGame(page, Variant.DEFAULT);
 
   const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
 
@@ -50,28 +49,18 @@ test('Should show a dialog that the game has ended when the user failed 4 turns 
 
   await expect(page.getByText('Game over')).toBeVisible();
   await expect(page.getByText('-20 punten')).toBeVisible();
-
-  await page.getByRole('button', {name: 'Finish game'}).click();
-
-  await page.waitForURL(/\/1234/)
-
-  await page.getByText('Standaard').click();
-
-  await page.waitForURL(/\/1234\/default/)
-
-  await page.getByTestId(selectors.VISIBILITY_TOGGLE).click();
-
-  await expect(page.getByTestId('failed-total')).toHaveText('0');
 });
 
 
 test('Should end the game a soon as someone else completes a row and the current user completes another row', async ({page}) => {
-  await page.goto(routes.variantB);
-
-  await lockRowInAnotherBrowser();
+  await startGame(page, Variant.BONUS_B);
 
   const rows = page.locator('section');
+  const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
+  const lock = redRow.getByTestId('lock');
+
+  await lock.click();
 
   // Complete yellow row
   await clickButton(yellowRow, 2);

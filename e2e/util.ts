@@ -1,5 +1,7 @@
-import { chromium, expect, Locator, Page } from '@playwright/test';
+import { expect, Locator, Page } from '@playwright/test';
 import { ButtonState } from '@/ui/tile';
+import { humanReadableVariant } from "@/utils/human-readable-variant";
+import { Variant } from "@/context/variant.context";
 
 export const clickButton = (row: Locator, name: number) => row.getByRole('button', { name: name.toString(), exact: true }).click();
 
@@ -7,13 +9,8 @@ export const expectButtonToHaveState = (row: Locator, name: number, state: Butto
 
 export const routes = {
   signIn: 'sign-in',
-  game: '/1234',
-  default: '/1234/default',
-  variantA: '/1234/variant-a',
-  variantB: '/1234/variant-b',
+  create: 'create',
 } as const;
-
-export type Routes = typeof routes[keyof typeof routes];
 
 export enum selectors {
   ROWS = 'section',
@@ -23,37 +20,19 @@ export enum selectors {
   UNDO = 'undo',
 }
 
-export const login = async (page: Page, userName = 'superman') => {
-  await page.goto(routes.default);
-  await page.waitForURL(routes.signIn);
+export const startGame = async (page: Page, variant: Variant) => {
+  await page.goto(routes.create);
+  await page.getByText(humanReadableVariant(variant)).click();
+  await page.getByText('Start game').click();
+}
 
-  await page.getByPlaceholder('Enter your name').fill(userName);
+export const login = async (page: Page, nickname = 'superman') => {
+  await page.goto(routes.signIn);
+
+  await page.getByPlaceholder('Enter your name').fill(nickname);
   await page.getByRole('button', {name: 'Join the game'}).click();
 
   await page.waitForURL('/');
-}
-
-export const lockRowInAnotherBrowser = async (variant: Routes = routes.variantA) => {
-  // Use firefox to not use auth state.
-  const browseB = await chromium.launch();
-  const page = await browseB.newPage();
-  await page.context().clearCookies();
-
-  await login(page, 'batman');
-  await page.goto(variant)
-
-  const rows = page.locator('section');
-  const redRow = rows.first();
-
-  await clickButton(redRow, 2);
-  await clickButton(redRow, 3);
-  // Jump to 4 thanks to bonus
-  await clickButton(redRow, 5);
-  await clickButton(redRow, 6);
-  await clickButton(redRow, 7);
-  await clickButton(redRow, 12);
-
-  await page.close();
 }
 
 export const expectToast = async (page: Page, content: string) => {

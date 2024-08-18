@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Game {
+  id         String            @id @default(uuid()) @db.Uuid
+  pin        Int
+  variant    String
+  createdAt  DateTime          @default(now())
+  finishedAt DateTime?
+  scores     PlayerGameScore[]
+}
+
+model PlayerGameScore {
+  id       String @id @default(uuid()) @db.Uuid
+  gameId   String @db.Uuid
+  nickname String
+  score    Int?
+  state    Json?
+  Game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@unique([gameId, nickname], name: "unique_player_game")
+}

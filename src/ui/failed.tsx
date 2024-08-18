@@ -2,23 +2,24 @@ import React, { useEffect } from 'react';
 import { XIcon } from '@/ui/icons';
 import { cn } from '@/utils/cn';
 import QwixxStore from "@/state/store";
-import { endGameAction } from "@/actions/pusher.actions";
-import { useParams } from "next/navigation";
+import { notifyImmediateEndOfGameAction } from "@/actions/pusher.actions";
 import { useVariant } from "@/context/variant.context";
+import { useGamePin } from "@/utils/use-game-pin.hook";
 
 export default function Failed() {
   const failedRounds = QwixxStore.use.failed();
   const onFailRound = QwixxStore.use.roundFailed();
-  const {roomId} = useParams<{ roomId: string }>()
+  const pin = useGamePin();
   const variant = useVariant();
-  const disabled = failedRounds >= 4;
+  const gameCompleted = QwixxStore.use.gameCompleted();
+  const disabled = failedRounds >= 4 || gameCompleted;
 
 
   useEffect(() => {
     if (failedRounds >= 4) {
-      endGameAction(variant, roomId);
+      notifyImmediateEndOfGameAction(variant, pin);
     }
-  }, [roomId, failedRounds]);
+  }, [pin, failedRounds]);
 
   return (
     <>

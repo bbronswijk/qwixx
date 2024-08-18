@@ -1,10 +1,11 @@
 import { expect, test } from '@playwright/test';
-import { clickButton, routes, selectors } from '../util';
+import { clickButton, selectors, startGame } from '../util';
 import { lockState } from "@/ui/lock";
+import { Variant } from "@/context/variant.context";
 
 
 test('should reflect the correct total count for the selected cells', async ({ page }) => {
-  await page.goto(routes.default);
+  await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator(selectors.ROWS);
   const redRow = rows.first();

@@ -4,8 +4,10 @@ import { createContext, useContext } from "react";
 
 export enum Variant {
   DEFAULT = 'default',
-  VARIANT_A = 'variant-a',
-  VARIANT_B = 'variant-b',
+  BONUS_A = 'bonus-a',
+  BONUS_B = 'bonus-b',
+  MIXED_A = 'mixed-a',
+  MIXED_B = 'mixed-b',
 }
 
 export const VariantContext = createContext<Variant | null>(null);
