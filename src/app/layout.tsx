@@ -30,7 +30,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <body className="h-svh max-w-screen">
+    <body className="h-svh">
     <CookiesProvider>
       <Authenticate>
         {children}
