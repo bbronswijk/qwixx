@@ -41,3 +41,16 @@ export const colorToRow = (color: Color): Row => {
       return rows.d;
   }
 }
+
+export const rowToColor = (row: Row): Color => {
+  switch (row) {
+    case rows.a:
+      return colors.red;
+    case rows.b:
+      return colors.yellow;
+    case rows.c:
+      return colors.green;
+    case rows.d:
+      return colors.blue;
+  }
+}

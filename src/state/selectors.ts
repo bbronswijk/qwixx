@@ -1,6 +1,6 @@
 import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
 import QwixxStore, { State, Store } from '@/state/store';
-import { Color, colors, Row, rows } from '@/data/color';
+import { Row, rows } from '@/data/color';
 import { tileType } from '@/data/tile.model';
 import { hasMetRequirements } from '@/utils/has-met-requirements';
 import { Config } from "@/data/config.model";
@@ -42,28 +42,28 @@ export const usersCompleted2RowsSelector = (state: Store): boolean => {
 /**
  * Return all rows that are not locked by someone else.
  */
-export const unLockedColorsSelector = (state: Store): { color: Color, value: number }[] => [
-  {color: colors.red, value: state.selection.a.length},
-  {color: colors.yellow, value: state.selection.b.length},
-  {color: colors.green, value: state.selection.c.length},
-  {color: colors.blue, value: state.selection.d.length},
-].filter(({color}) => !state.locked[color])
+export const unLockedRowsSelector = (state: Store): { row: Row, value: number }[] => [
+  {row: rows.a, value: state.selection.a.length},
+  {row: rows.b, value: state.selection.b.length},
+  {row: rows.c, value: state.selection.c.length},
+  {row: rows.d, value: state.selection.d.length},
+].filter(({row}) => !state.locked[row])
 
 /**
  * Return the first lowest color.
  * There could possibly be more.
  */
-export const lowestColorSelector = (state: Store): { color: Color, value: number } => {
-  const unLockedColors = unLockedColorsSelector(state);
+export const lowestRowSelector = (state: Store): { row: Row, value: number } => {
+  const unLockedColors = unLockedRowsSelector(state);
   return unLockedColors.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, unLockedColors[0]);
 }
 
 /**
  * Return all rows with the lowest amount of checks.
  */
-export const allColorsWithLeastChecksSelector = (state: Store): { color: Color, value: number }[] => {
-  const unLockedRows = unLockedColorsSelector(state);
-  const rowWithLeastChecks = lowestColorSelector(state);
+export const allRowsWithLeastChecksSelector = (state: Store): { row: Row, value: number }[] => {
+  const unLockedRows = unLockedRowsSelector(state);
+  const rowWithLeastChecks = lowestRowSelector(state);
   return unLockedRows.filter(({value}) => value === rowWithLeastChecks.value);
 }
 

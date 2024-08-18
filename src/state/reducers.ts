@@ -4,13 +4,13 @@ import { Color, colorToRow, Row } from '@/data/color';
 import { NumericTileType, TileModel, tileType } from '@/data/tile.model';
 import { getNextTile } from '@/utils/get-next-tile';
 import { variantBTiles } from "@/app/[gameId]/bonus-b/variant-b.config";
-import { lowestColorSelector } from "@/state/selectors";
+import { lowestRowSelector } from "@/state/selectors";
 
 /**
  * Recursively trigger the tiles.
  */
 export const checkTile = (state: Store, color: Color, row: Row, type: NumericTileType, value: number, actionType: ActionType): Partial<Store> => {
-  if (state.locked[color]) {
+  if (state.locked[row]) {
     return state;
   }
 
@@ -74,7 +74,7 @@ export const undo = (state: Store, change: Change): Store => {
       ...state,
       locked: {
         ...state.locked,
-        [change.color]: !state.locked[change.color]
+        [change.row]: !state.locked[change.row]
       },
       // Undo last change.
       changes: state.changes.slice(0, -1)
@@ -117,7 +117,7 @@ export const checkOneInEachRow = (state: Store): Store => {
   const nextGreen = getNextTile(variantBTiles.c, state.selection.c);
   const nextBlue = getNextTile(variantBTiles.d, state.selection.d);
 
-  const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.locked[nextTile.color]
+  const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.locked[colorToRow(nextTile.color)]
       ? [
         ...changes,
         {
@@ -137,10 +137,10 @@ export const checkOneInEachRow = (state: Store): Store => {
     changes,
     selection: {
       ...state.selection,
-      ...(nextRed && !state.locked.red) && {a: [...state.selection.a, nextRed.value]},
-      ...(nextYellow && !state.locked.yellow) && {b: [...state.selection.b, nextYellow.value]},
-      ...(nextGreen && !state.locked.green) && {c: [...state.selection.c, nextGreen.value]},
-      ...(nextBlue && !state.locked.blue) && {d: [...state.selection.d, nextBlue.value]},
+      ...(nextRed && !state.locked.a) && {a: [...state.selection.a, nextRed.value]},
+      ...(nextYellow && !state.locked.b) && {b: [...state.selection.b, nextYellow.value]},
+      ...(nextGreen && !state.locked.c) && {c: [...state.selection.c, nextGreen.value]},
+      ...(nextBlue && !state.locked.d) && {d: [...state.selection.d, nextBlue.value]},
     },
   };
 }
@@ -149,25 +149,25 @@ export const checkOneInEachRow = (state: Store): Store => {
  * Only used by bonus variant B.
  */
 export const checkLowestRowTwice = (state: Store): Store => {
-  const lowestRow = lowestColorSelector(state);
+  const lowestRow = lowestRowSelector(state);
 
-  const firstCheck = getNextTile(variantBTiles[colorToRow(lowestRow.color)], state.selection[colorToRow(lowestRow.color)]) as TileModel; // Cannot be undefined
+  const firstCheck = getNextTile(variantBTiles[lowestRow.row], state.selection[lowestRow.row]) as TileModel; // Cannot be undefined
 
   state = {
     ...state,
     selection: {
       ...state.selection,
-      [colorToRow(lowestRow.color)]: [...state.selection[colorToRow(lowestRow.color)], firstCheck.value]
+      [lowestRow.row]: [...state.selection[lowestRow.row], firstCheck.value]
     }
   };
 
-  const secondCheck = getNextTile(variantBTiles[colorToRow(lowestRow.color)], state.selection[colorToRow(lowestRow.color)]) as TileModel; // Cannot be undefined;
+  const secondCheck = getNextTile(variantBTiles[lowestRow.row], state.selection[lowestRow.row]) as TileModel; // Cannot be undefined;
 
   return {
     ...state,
     selection: {
       ...state.selection,
-      [colorToRow(lowestRow.color)]: [...state.selection[colorToRow(lowestRow.color)], secondCheck.value]
+      [lowestRow.row]: [...state.selection[lowestRow.row], secondCheck.value]
     }
   };
 }

@@ -10,7 +10,6 @@ import { getColorClasses, Row as RowType } from '@/data/color';
 import { TileModel } from '@/data/tile.model';
 import QwixxStore from "@/state/store";
 import { selectionForRow } from "@/state/selectors";
-import { completedColor } from "@/utils/completed-color";
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   row: RowType;
@@ -18,15 +17,15 @@ interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Row({row, tiles, ...props}: ComponentProps) {
-  const selectionState = QwixxStore(({selection}) => selection);
   const selection = QwixxStore(selectionForRow(row));
   const lockedState = QwixxStore.use.locked();
   const last = tiles.at(-1) as TileModel;
   const lastSelected = selection.at(-1) as number;
   const lastItemIsSelected = selection.includes(last.value);
   const lastSelectedIndex = tiles.findIndex(({value}) => value === lastSelected);
-  const lockColor = QwixxStore.use.lockColor();
+  const lockRow = QwixxStore.use.lockRow();
   const gameCompleted = QwixxStore.use.gameCompleted();
+  const lockedBySomeoneElse = lockedState[row];
 
   return (
     <section className="flex relative" {...props}>
@@ -35,12 +34,11 @@ export default function Row({row, tiles, ...props}: ComponentProps) {
       </div>
 
       {tiles.map((tile: TileModel) => {
-        const locked = lockedState[tile.color];
         const checked = selection.includes(tile.value);
         const tileIndex = tiles.findIndex(({value}) => tile.value === value);
-        const skipped = !selection.includes(tile.value) && (lastSelectedIndex > tileIndex || completedColor(selectionState, tile.color));
+        const skipped = !selection.includes(tile.value) && lastSelectedIndex > tileIndex;
         const isLastItem = last.value === tile.value
-        const disabled = checked || skipped || locked || gameCompleted;
+        const disabled = checked || skipped || lockedBySomeoneElse || gameCompleted;
 
         return (
           <Tile
@@ -48,7 +46,7 @@ export default function Row({row, tiles, ...props}: ComponentProps) {
             tile={tile}
             row={row}
             checked={checked}
-            skipped={skipped || (locked && !checked)}
+            skipped={skipped || (lockedBySomeoneElse && !checked)}
             disabled={disabled}
             isLastItem={isLastItem}
             color={tile.color}>{tile.value}</Tile>
@@ -56,8 +54,8 @@ export default function Row({row, tiles, ...props}: ComponentProps) {
       })}
 
       <div className={cn(getColorClasses(last.color), 'flex self-stretch items-center pr-2 rounded-r-lg')}>
-        <Lock lockedBySomeoneElse={lockedState[last.color]} completedRow={lastItemIsSelected}
-              onClick={() => lockColor(last.color)}/>
+        <Lock lockedBySomeoneElse={lockedBySomeoneElse} completedRow={lastItemIsSelected}
+              onClick={() => lockRow(row)}/>
         <TotalRowScore tiles={tiles} selection={selection}/>
       </div>
     </section>

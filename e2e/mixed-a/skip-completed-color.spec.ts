@@ -20,13 +20,13 @@ test('should marked the red cells as skipped when another user completed the fir
   await expectButtonToHaveState(firstRow, 12, 'skipped');
   await expectButtonToHaveState(secondRow, 2, 'skipped');
   await expectButtonToHaveState(secondRow, 3, 'checked');
-  await expectButtonToHaveState(thirdRow, 6, 'skipped');
-  await expectButtonToHaveState(thirdRow, 5, 'skipped');
-  await expectButtonToHaveState(thirdRow, 4, 'skipped');
-  await expectButtonToHaveState(fourthRow, 10, 'skipped');
-  await expectButtonToHaveState(fourthRow, 9, 'skipped');
-  await expectButtonToHaveState(fourthRow, 8, 'skipped');
-  await expectButtonToHaveState(fourthRow, 7, 'skipped');
+  await expectButtonToHaveState(thirdRow, 6, 'unchecked');
+  await expectButtonToHaveState(thirdRow, 5, 'unchecked');
+  await expectButtonToHaveState(thirdRow, 4, 'unchecked');
+  await expectButtonToHaveState(fourthRow, 10, 'unchecked');
+  await expectButtonToHaveState(fourthRow, 9, 'unchecked');
+  await expectButtonToHaveState(fourthRow, 8, 'unchecked');
+  await expectButtonToHaveState(fourthRow, 7, 'unchecked');
 
   // Complete the third row
   await clickButton(thirdRow, 12);

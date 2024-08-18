@@ -3,8 +3,9 @@
 import React, { useEffect } from 'react';
 import { CircleIcon, XIcon } from '@/ui/icons';
 import QwixxStore from '@/state/store';
-import { allColorsWithLeastChecksSelector } from "@/state/selectors";
+import { allRowsWithLeastChecksSelector } from "@/state/selectors";
 import { useToast } from "@/ui/use-toast";
+import { rowToColor } from "@/data/color";
 
 interface ComponentProps {
   checked: boolean;
@@ -19,7 +20,7 @@ const chain = (items: string[]): string => `${items.slice(0, -1).join(', ')} or 
 
 export default function CheckTwoInLowestRow({checked}: ComponentProps) {
   const checkLowestRowTwice = QwixxStore.use.checkLowestRowTwice();
-  const allRowsWithLeastChecks = QwixxStore(allColorsWithLeastChecksSelector);
+  const allRowsWithLeastChecks = QwixxStore(allRowsWithLeastChecksSelector);
   const {toast} = useToast()
 
   useEffect(() => {
@@ -27,7 +28,7 @@ export default function CheckTwoInLowestRow({checked}: ComponentProps) {
       if (allRowsWithLeastChecks.length > 1) {
         toast({
           title: 'You may add two checks to one of the lowest rows',
-          description: `Choose either the ${chain(allRowsWithLeastChecks.map(({color}) => color))} row`,
+          description: `Choose either the ${chain(allRowsWithLeastChecks.map(({row}) => rowToColor(row)))} row`,
         })
       } else {
         checkLowestRowTwice();

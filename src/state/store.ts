@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { create, StateCreator } from 'zustand';
 import { BonusBox } from '@/app/[gameId]/bonus-a/variant-a.config';
 import { checkLowestRowTwice, checkOneInEachRow, checkTile, undo } from '@/state/reducers';
-import { Color, colors, Row, rows } from '@/data/color';
+import { Color, Row, rows } from '@/data/color';
 import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from '@/data/tile.model';
 import { getScores } from "@/actions/game.actions";
 
@@ -19,10 +19,10 @@ export interface State {
   };
 
   locked: {
-    red: boolean;
-    yellow: boolean;
-    green: boolean;
-    blue: boolean;
+    a: boolean;
+    b: boolean;
+    c: boolean;
+    d: boolean;
   };
 
   bonus: BonusBox[];
@@ -42,7 +42,7 @@ interface Reducers {
   roundFailed: () => void;
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
-  lockColor: (color: Color) => void;
+  lockRow: (row: Row) => void;
   toggleScoreVisibility: () => void;
   fetchScore: (pin: number) => void;
 }
@@ -57,7 +57,7 @@ export enum ActionType {
 
 export type Change = { type: NumericTileType; row: Row, color: Color; value: number; actionType: ActionType } |
   { type: FailedTileType; actionType: ActionType.user } |
-  { type: LockTileType; color: Color; actionType: ActionType };
+  { type: LockTileType; row: Row; actionType: ActionType };
 
 const initialState: State = {
   gameCompleted: false,
@@ -71,10 +71,10 @@ const initialState: State = {
   },
 
   locked: {
-    [colors.red]: false,
-    [colors.yellow]: false,
-    [colors.green]: false,
-    [colors.blue]: false,
+    [rows.a]: false,
+    [rows.b]: false,
+    [rows.c]: false,
+    [rows.d]: false,
   },
 
   bonus: [],
@@ -97,12 +97,12 @@ const state: StateCreator<Store> = (set) => ({
     ...initialState
   })),
 
-  lockColor: (color: Color) => set((state): Partial<Store> => ({
+  lockRow: (row: Row) => set((state): Partial<Store> => ({
     ...state,
-    changes: [...state.changes, {color, type: tileType.lock, actionType: ActionType.user}],
+    changes: [...state.changes, {row, type: tileType.lock, actionType: ActionType.user}],
     locked: {
       ...state.locked,
-      [color]: true,
+      [row]: true,
     }
   })),
 
