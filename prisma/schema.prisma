@@ -1,10 +1,12 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["multiSchema"]
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  schemas  = ["qwixx"]
 }
 
 model Game {
@@ -14,6 +16,8 @@ model Game {
   createdAt  DateTime          @default(now())
   finishedAt DateTime?
   scores     PlayerGameScore[]
+
+  @@schema("qwixx")
 }
 
 model PlayerGameScore {
@@ -25,4 +29,5 @@ model PlayerGameScore {
   Game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@unique([gameId, nickname], name: "unique_player_game")
+  @@schema("qwixx")
 }
