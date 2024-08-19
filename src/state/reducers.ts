@@ -163,6 +163,10 @@ export const checkLowestRowTwice = (state: Store): Store => {
 
   const secondCheck = getNextTile(variantBTiles[lowestRow.row], state.selection[lowestRow.row]) as TileModel; // Cannot be undefined;
 
+  if (!secondCheck) {
+    return state;
+  }
+
   return {
     ...state,
     selection: {

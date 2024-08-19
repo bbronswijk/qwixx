@@ -52,7 +52,7 @@ test('should not automatically add 2 checks if there are multiple rows with the 
   await expectToast(page, 'Choose either the red or blue row');
 });
 
-test('should not lock the lowest row when it is locked', async ({page}) => {
+test('should not check the lowest row when it is locked', async ({page}) => {
   await startGame(page, Variant.BONUS_B);
 
   const rows = page.locator('section');
@@ -83,3 +83,28 @@ test('should not lock the lowest row when it is locked', async ({page}) => {
   await expectButtonToHaveState(blueRow, 10, buttonState.checked);
 });
 
+
+test('should not check tiles if only the 12 is left', async ({page}) => {
+  await startGame(page, Variant.BONUS_B);
+
+  const rows = page.locator('section');
+  const redRow = rows.nth(0);
+  const yellowRow = rows.nth(1);
+  const greenRow = rows.nth(2);
+  const blueRow = rows.nth(3);
+
+  await clickButton(redRow, 2);
+  await clickButton(redRow, 3);
+
+  await clickButton(greenRow, 12);
+  await clickButton(greenRow, 11);
+  await clickButton(greenRow, 9);
+
+  await clickButton(blueRow, 12);
+  await clickButton(blueRow, 11);
+
+  await clickButton(yellowRow, 11);
+
+  await expectButtonToHaveState(yellowRow, 11, buttonState.checked);
+  await expectButtonToHaveState(yellowRow, 12, buttonState.checked);
+});
