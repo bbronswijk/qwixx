@@ -22,10 +22,15 @@ export const GameEndedBanner = ({totalScore}: { totalScore: number }) => {
   useEffect(() => {
     if (userCompleted2Rows) {
       markAsGameCompleted();
+    }
+  }, [markAsGameCompleted, userCompleted2Rows]);
+
+  useEffect(() => {
+    if (gameCompleted) {
       notifyScoreSharedAction(variant, pin, store, totalScore, nickname as string);
       setShowScoreDialog(true);
     }
-  }, [pin, userCompleted2Rows]);
+  }, [gameCompleted]);
 
   return (
     <>

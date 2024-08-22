@@ -15,15 +15,15 @@ export default async function Page() {
   })
 
   return (
-    <main className="min-h-full gap-y-4 w-full flex flex-col justify-center items-center bg-slate-100 p-4">
-      <header className="w-full grid grid-cols-3 items-center justify-between ">
+    <main className="min-h-full space-y-4 w-full bg-slate-100 p-4">
+      <header className="w-full grid grid-cols-3 items-center justify-between">
         <BackButton/>
         <h1 className="text-2xl font-bold text-center ">History</h1>
       </header>
 
 
       {games.map((game) => (
-        <article key={game.id} className="border rounded-2xl p-8 bg-white max-w-96 w-full">
+        <article key={game.id} className="border rounded-2xl p-8 bg-white max-w-96 w-full mx-auto">
           <h2 className="flex font-bold text-2xl items-center justify-between leading-none">
             {humanReadableVariant(game.variant)}
             <span className="rounded bg-slate-200 px-2 text-lg">{game.pin}</span>
