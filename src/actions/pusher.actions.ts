@@ -15,6 +15,7 @@ export async function notifyImmediateEndOfGameAction(variant: Variant, gamePin: 
 
 export async function notifyScoreSharedAction(variant: Variant, pin: number, store: State, score: number, nickname: string) {
   await saveScore(pin, nickname, score, store);
+  await endGameAction(pin);
 
   await pusher.trigger(`presence-${pin}-${variant}`, PusherEvent.shareScore, {nickname, score});
 }

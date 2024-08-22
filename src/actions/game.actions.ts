@@ -86,7 +86,6 @@ export async function leaveGameAction(pin: number, nickname: string) {
   const game = await prisma.game.findFirst({
     where: {pin, finishedAt: null},
     orderBy: {createdAt: 'desc'},
-    include: {scores: true}
   });
 
   if (!game) {
