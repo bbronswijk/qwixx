@@ -6,7 +6,7 @@ import { useVariant } from "@/context/variant.context";
 import { Dialog } from "@/ui/dialog";
 import { GameScoresDialogContent } from "@/ui/game-scores-dialog-content";
 import React, { useEffect, useState } from "react";
-import { stateSelector } from "@/state/selectors";
+import { stateSelector, usersCompleted2RowsSelector } from "@/state/selectors";
 import { Button } from "@/ui/button";
 
 export const GameEndedBanner = ({totalScore}: { totalScore: number }) => {
@@ -15,15 +15,17 @@ export const GameEndedBanner = ({totalScore}: { totalScore: number }) => {
   const variant = useVariant();
   const store = QwixxStore(stateSelector);
   const gameCompleted = QwixxStore.use.gameCompleted();
+  const userCompleted2Rows = QwixxStore(usersCompleted2RowsSelector);
+  const markAsGameCompleted = QwixxStore.use.markAsGameCompleted();
   const [showScoreDialog, setShowScoreDialog] = useState(false)
 
-
   useEffect(() => {
-    if (gameCompleted) {
+    if (userCompleted2Rows) {
+      markAsGameCompleted();
       notifyScoreSharedAction(variant, pin, store, totalScore, nickname as string);
       setShowScoreDialog(true);
     }
-  }, [gameCompleted]);
+  }, [pin, userCompleted2Rows]);
 
   return (
     <>
