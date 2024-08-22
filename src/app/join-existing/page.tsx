@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/ui/input-otp';
 import { Button } from "@/ui/button";
 import { useRouter } from "next/navigation";
@@ -9,6 +9,7 @@ import { joinGameAction } from "@/actions/game.actions";
 import { useAuth } from "@/auth/authentication.context";
 import { useToast } from "@/ui/use-toast";
 import QwixxStore from "@/state/store";
+import { GamePadIcon } from "@/ui/icons";
 
 export default function Page() {
   const ref = useRef<HTMLInputElement>(null);
@@ -16,6 +17,7 @@ export default function Page() {
   const {nickname} = useAuth()
   const {toast} = useToast()
   const reset = QwixxStore.use.reset();
+  const [joining, setJoining] = useState(false);
 
   useEffect(() => {
     ref.current?.focus();
@@ -34,6 +36,7 @@ export default function Page() {
       toast({title: 'Enter a game pin of 4 numbers', variant: 'destructive'});
       return
     }
+    setJoining(true);
 
     const response = await joinGameAction(Number(gamePin), nickname as string);
 
@@ -43,6 +46,7 @@ export default function Page() {
         description: response.error.description,
         variant: 'destructive'
       });
+      setJoining(false);
       return;
     }
 
@@ -68,7 +72,9 @@ export default function Page() {
           </InputOTP>
           <div className="text-center w-full leading-loose">Enter game pin</div>
         </div>
-        <Button className="w-full" type="submit">Join other player</Button>
+        <Button className="w-full" type="submit" disabled={joining}>
+          {joining ? <GamePadIcon className="h-7 w-7 animate-bounce"/> : 'Join other player'}
+        </Button>
       </form>
     </main>
   );
