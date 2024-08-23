@@ -155,6 +155,13 @@ export const checkLowestRowTwice = (state: Store): Store => {
 
   state = {
     ...state,
+    changes: [...state.changes, {
+      type: firstCheck.type,
+      row: lowestRow.row,
+      color: firstCheck.color,
+      value: firstCheck.value,
+      actionType: ActionType.game
+    }],
     selection: {
       ...state.selection,
       [lowestRow.row]: [...state.selection[lowestRow.row], firstCheck.value]
@@ -169,6 +176,13 @@ export const checkLowestRowTwice = (state: Store): Store => {
 
   return {
     ...state,
+    changes: [...state.changes, {
+      type: secondCheck.type,
+      row: lowestRow.row,
+      color: secondCheck.color,
+      value: secondCheck.value,
+      actionType: ActionType.game
+    }],
     selection: {
       ...state.selection,
       [lowestRow.row]: [...state.selection[lowestRow.row], secondCheck.value]
