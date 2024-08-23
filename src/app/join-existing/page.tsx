@@ -9,7 +9,7 @@ import { joinGameAction } from "@/actions/game.actions";
 import { useAuth } from "@/auth/authentication.context";
 import { useToast } from "@/ui/use-toast";
 import QwixxStore from "@/state/store";
-import { GamePadIcon } from "@/ui/icons";
+import { LoaderIcon } from "@/ui/icons";
 
 export default function Page() {
   const ref = useRef<HTMLInputElement>(null);
@@ -73,7 +73,7 @@ export default function Page() {
           <div className="text-center w-full leading-loose">Enter game pin</div>
         </div>
         <Button className="w-full" type="submit" disabled={joining}>
-          {joining ? <GamePadIcon className="h-7 w-7 animate-bounce"/> : 'Join other player'}
+          {joining ? <LoaderIcon className="h-7 w-7 animate-spin"/> : 'Join other player'}
         </Button>
       </form>
     </main>
