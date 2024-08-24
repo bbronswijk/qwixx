@@ -24,7 +24,7 @@ export const UnExpectedError = ({variant, totalScore, reset}: ComponentProps) =>
   const pin = useGamePin();
   const undo = QwixxStore.use.undo();
 
-  const handleUndp = () => {
+  const handleUndo = () => {
     undo();
     reset();
   }
@@ -40,7 +40,7 @@ export const UnExpectedError = ({variant, totalScore, reset}: ComponentProps) =>
   }
 
   let content = <>
-    <Button variant="default" className="w-full" onClick={handleUndp}>Undo last action</Button>
+    <Button variant="default" className="w-full" onClick={handleUndo}>Undo last action</Button>
     <Button variant="ghost" className="w-full" onClick={handleEndGame}>End the game</Button>
   </>;
 
