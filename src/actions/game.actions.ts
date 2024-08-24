@@ -130,6 +130,32 @@ export async function saveScore(pin: number, nickname: string, score: number, st
 }
 
 /**
+ * Publish changes a user of the game for debugging purposes in case something went wrong.
+ */
+export async function saveChanges(pin: number, nickname: string, state: State) {
+  const game = await prisma.game.findFirst({
+    where: {pin},
+    orderBy: {createdAt: 'desc'}
+  });
+
+  if (!game) {
+    return;
+  }
+
+  await prisma.playerGameScore.update({
+    where: {
+      unique_player_game: {
+        gameId: game.id,
+        nickname,
+      },
+    },
+    data: {
+      state: JSON.stringify(state),
+    }
+  });
+}
+
+/**
  * Fetch the latest state from the DB.
  */
 export async function getScores(pin: number) {
