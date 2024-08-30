@@ -1,10 +1,10 @@
-import { createSelectors } from '@/utils/create-selector';
-import { devtools, persist } from 'zustand/middleware';
-import { create, StateCreator } from 'zustand';
-import { BonusBox } from '@/app/[gameId]/bonus-a/variant-a.config';
-import { checkLowestRowTwice, checkOneInEachRow, checkTile, undo } from '@/state/reducers';
-import { Color, Row, rows } from '@/data/color';
-import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from '@/data/tile.model';
+import { createSelectors } from "@/utils/create-selector";
+import { devtools, persist } from "zustand/middleware";
+import { create, StateCreator } from "zustand";
+import { BonusBox } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { checkLowestRowTwice, checkOneInEachRow, checkTile, undo } from "@/state/reducers";
+import { Color, Row, rows } from "@/data/color";
+import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from "@/data/tile.model";
 import { getScores } from "@/actions/game.actions";
 
 export interface State {
@@ -26,10 +26,10 @@ export interface State {
   };
 
   bonus: BonusBox[];
-  failed: number,
+  failed: number;
   showScore: boolean;
 
-  scores: { nickname: string; score: number | null }[],
+  scores: { nickname: string; score: number | null }[];
 }
 
 export type CheckTileFn = (tile: TileModel, row: Row) => void;
@@ -50,14 +50,21 @@ interface Reducers {
 export type Store = State & Reducers;
 
 export enum ActionType {
-  user = 'user',
-  pusher = 'pusher',
-  game = 'game',
+  user = "user",
+  pusher = "pusher",
+  game = "game",
 }
 
-export type Change = { type: NumericTileType; row: Row, color: Color; value: number; actionType: ActionType } |
-  { type: FailedTileType; actionType: ActionType.user } |
-  { type: LockTileType; row: Row; actionType: ActionType };
+export type Change =
+  | {
+      type: NumericTileType;
+      row: Row;
+      color: Color;
+      value: number;
+      actionType: ActionType;
+    }
+  | { type: FailedTileType; actionType: ActionType.user }
+  | { type: LockTileType; row: Row; actionType: ActionType };
 
 const initialState: State = {
   gameCompleted: false,
@@ -88,60 +95,80 @@ const initialState: State = {
 const state: StateCreator<Store> = (set) => ({
   ...initialState,
 
-  markAsGameCompleted: () => set((): Partial<Store> => ({
-    gameCompleted: true,
-    showScore: true,
-  })),
+  markAsGameCompleted: () =>
+    set(
+      (): Partial<Store> => ({
+        gameCompleted: true,
+        showScore: true,
+      })
+    ),
 
-  reset: () => set((): Partial<Store> => ({
-    ...initialState
-  })),
+  reset: () =>
+    set(
+      (): Partial<Store> => ({
+        ...initialState,
+      })
+    ),
 
-  lockRow: (row: Row) => set((state): Partial<Store> => ({
-    ...state,
-    changes: [...state.changes, {row, type: tileType.lock, actionType: ActionType.user}],
-    locked: {
-      ...state.locked,
-      [row]: true,
-    }
-  })),
+  lockRow: (row: Row) =>
+    set(
+      (state): Partial<Store> => ({
+        ...state,
+        changes: [...state.changes, { row, type: tileType.lock, actionType: ActionType.user }],
+        locked: {
+          ...state.locked,
+          [row]: true,
+        },
+      })
+    ),
 
-  checkTile: ({color, type, value}, row) => set((state): Partial<Store> => {
-    return checkTile(state, color, row, type, value, ActionType.user);
-  }),
+  checkTile: ({ color, type, value }, row) =>
+    set((state): Partial<Store> => {
+      return checkTile(state, color, row, type, value, ActionType.user);
+    }),
 
-  roundFailed: () => set((state): Partial<Store> => ({
-    failed: state.failed + 1,
-    changes: [...state.changes, {type: tileType.failed, actionType: ActionType.user}],
-  })),
+  roundFailed: () =>
+    set(
+      (state): Partial<Store> => ({
+        failed: state.failed + 1,
+        changes: [...state.changes, { type: tileType.failed, actionType: ActionType.user }],
+      })
+    ),
 
-  undo: () => set((state): Partial<Store> => {
-    return undo({...state,}, [...state.changes].at(-1) as Change);
-  }),
+  undo: () =>
+    set((state): Partial<Store> => {
+      return undo({ ...state }, [...state.changes].at(-1) as Change);
+    }),
 
-  checkOneInEachRow: () => set((state): Partial<Store> => {
-    return checkOneInEachRow(state);
-  }),
+  checkOneInEachRow: () =>
+    set((state): Partial<Store> => {
+      return checkOneInEachRow(state);
+    }),
 
-  checkLowestRowTwice: () => set((state): Partial<Store> => {
-    return checkLowestRowTwice(state);
-  }),
+  checkLowestRowTwice: () =>
+    set((state): Partial<Store> => {
+      return checkLowestRowTwice(state);
+    }),
 
-  toggleScoreVisibility: () => set((state): Partial<Store> => ({
-    showScore: !state.showScore,
-  })),
+  toggleScoreVisibility: () =>
+    set(
+      (state): Partial<Store> => ({
+        showScore: !state.showScore,
+      })
+    ),
 
   fetchScore: async (pin) => {
     const scores = await getScores(pin);
-    set({scores})
-  }
+    set({ scores });
+  },
 });
 
-const QwixxStore = createSelectors(create<Store>()(
-  persist(
-    devtools(state, {store: 'QwixxStore', enabled: true}),
-    {name: 'QwixxStore'}
+const QwixxStore = createSelectors(
+  create<Store>()(
+    persist(devtools(state, { store: "QwixxStore", enabled: true }), {
+      name: "QwixxStore",
+    })
   )
-));
+);
 
 export default QwixxStore;

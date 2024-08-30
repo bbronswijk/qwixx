@@ -1,8 +1,8 @@
-import { calculateTotalPointsForRow } from '@/utils/map-number-checked-to-score';
-import QwixxStore, { State, Store } from '@/state/store';
-import { Row, rows } from '@/data/color';
-import { tileType } from '@/data/tile.model';
-import { hasMetRequirements } from '@/utils/has-met-requirements';
+import { calculateTotalPointsForRow } from "@/utils/map-number-checked-to-score";
+import QwixxStore, { State, Store } from "@/state/store";
+import { Row, rows } from "@/data/color";
+import { tileType } from "@/data/tile.model";
+import { hasMetRequirements } from "@/utils/has-met-requirements";
 import { Config } from "@/data/config.model";
 
 /**
@@ -20,59 +20,61 @@ export const stateSelector = (state: Store): State => ({
   scores: state.scores,
 });
 
-export const selectionForRow = (row: Row) => (state: Store): number[] => state.selection[row];
+export const selectionForRow =
+  (row: Row) =>
+  (state: Store): number[] =>
+    state.selection[row];
 
 /**
  * Check if users completed 2 rows, so we can end the game.
  */
 export const usersCompleted2RowsSelector = (state: Store): boolean => {
-  const completionCounts = [
-    state.selection.a.includes(12),
-    state.selection.b.includes(12),
-    state.selection.c.includes(2),
-    state.selection.d.includes(2)
-  ].filter(isComplete => isComplete).length;
+  const completionCounts = [state.selection.a.includes(12), state.selection.b.includes(12), state.selection.c.includes(2), state.selection.d.includes(2)].filter(
+    (isComplete) => isComplete
+  ).length;
 
-  const lockedRows = Object.values(state.locked).filter(locked => locked).length;
+  const lockedRows = Object.values(state.locked).filter((locked) => locked).length;
 
   // return (lockedRows) >= 2;
-  return (completionCounts + lockedRows) >= 2;
+  return completionCounts + lockedRows >= 2;
 };
 
 /**
  * Return all rows that are not locked by someone else.
  */
-export const unLockedRowsSelector = (state: Store): { row: Row, value: number }[] => [
-  {row: rows.a, value: state.selection.a.length},
-  {row: rows.b, value: state.selection.b.length},
-  {row: rows.c, value: state.selection.c.length},
-  {row: rows.d, value: state.selection.d.length},
-].filter(({row}) => !state.locked[row])
+export const unLockedRowsSelector = (state: Store): { row: Row; value: number }[] =>
+  [
+    { row: rows.a, value: state.selection.a.length },
+    { row: rows.b, value: state.selection.b.length },
+    { row: rows.c, value: state.selection.c.length },
+    { row: rows.d, value: state.selection.d.length },
+  ].filter(({ row }) => !state.locked[row]);
 
 /**
  * Return the first lowest color.
  * There could possibly be more.
  */
-export const lowestRowSelector = (state: Store): { row: Row, value: number } => {
+export const lowestRowSelector = (state: Store): { row: Row; value: number } => {
   const unLockedColors = unLockedRowsSelector(state);
-  return unLockedColors.reduce((lowest, row) => lowest.value >= row.value ? row : lowest, unLockedColors[0]);
-}
+  return unLockedColors.reduce((lowest, row) => (lowest.value >= row.value ? row : lowest), unLockedColors[0]);
+};
 
 /**
  * Return all rows with the lowest amount of checks.
  */
-export const allRowsWithLeastChecksSelector = (state: Store): { row: Row, value: number }[] => {
+export const allRowsWithLeastChecksSelector = (state: Store): { row: Row; value: number }[] => {
   const unLockedRows = unLockedRowsSelector(state);
   const rowWithLeastChecks = lowestRowSelector(state);
-  return unLockedRows.filter(({value}) => value === rowWithLeastChecks.value);
-}
+  return unLockedRows.filter(({ value }) => value === rowWithLeastChecks.value);
+};
 
 /**
  * Calculate the total score for a single row.
  */
-export const useTotalForRowSelector = (tiles: Config, row: Row) => QwixxStore((state) => {
-  return calculateTotalPointsForRow(tiles[row], state.selection[row]);
-});
+export const useTotalForRowSelector = (tiles: Config, row: Row) =>
+  QwixxStore((state) => {
+    return calculateTotalPointsForRow(tiles[row], state.selection[row]);
+  });
 
 /**
  * Add the total sum of all rows and include failed rows.

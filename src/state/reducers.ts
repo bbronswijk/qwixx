@@ -1,8 +1,8 @@
-import { bonusBoxes, variantATiles } from '@/app/[gameId]/bonus-a/variant-a.config';
-import { ActionType, Change, Store } from '@/state/store';
-import { Color, colorToRow, Row } from '@/data/color';
-import { NumericTileType, TileModel, tileType } from '@/data/tile.model';
-import { getNextTile } from '@/utils/get-next-tile';
+import { bonusBoxes, variantATiles } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { ActionType, Change, Store } from "@/state/store";
+import { Color, colorToRow, Row } from "@/data/color";
+import { NumericTileType, TileModel, tileType } from "@/data/tile.model";
+import { getNextTile } from "@/utils/get-next-tile";
 import { variantBTiles } from "@/app/[gameId]/bonus-b/variant-b.config";
 import { lowestRowSelector } from "@/state/selectors";
 
@@ -18,7 +18,7 @@ export const checkTile = (state: Store, color: Color, row: Row, type: NumericTil
   if (type !== tileType.bonus) {
     return {
       ...state,
-      changes: [...state.changes, {color, row, value, type, actionType}],
+      changes: [...state.changes, { color, row, value, type, actionType }],
       selection: {
         ...state.selection,
         [row]: [...state.selection[row], value],
@@ -37,7 +37,7 @@ export const checkTile = (state: Store, color: Color, row: Row, type: NumericTil
       [row]: [...state.selection[row], value],
     },
     bonus: [...state.bonus, bonusBox],
-    changes: [...state.changes, {color, row, value, type, actionType}],
+    changes: [...state.changes, { color, row, value, type, actionType }],
   };
 
   // Get next color to be checked
@@ -67,30 +67,32 @@ export const undo = (state: Store, change: Change): Store => {
       ...state,
       failed: state.failed - 1,
       // Undo last change.
-      changes: state.changes.slice(0, -1)
+      changes: state.changes.slice(0, -1),
     };
   } else if (change.type === tileType.lock) {
     state = {
       ...state,
       locked: {
         ...state.locked,
-        [change.row]: !state.locked[change.row]
+        [change.row]: !state.locked[change.row],
       },
       // Undo last change.
-      changes: state.changes.slice(0, -1)
+      changes: state.changes.slice(0, -1),
     };
   } else {
     state = {
       ...state,
       // If the change was caused by a bonus box uncheck the last bonus box.
-      ...change.type === tileType.bonus && {bonus: state.bonus.slice(0, -1)},
+      ...(change.type === tileType.bonus && {
+        bonus: state.bonus.slice(0, -1),
+      }),
       // Deselect last box in the row.
       selection: {
         ...state.selection,
         [change.row]: state.selection[change.row].slice(0, -1),
       },
       // Undo last change.
-      changes: state.changes.slice(0, -1)
+      changes: state.changes.slice(0, -1),
     };
   }
 
@@ -117,18 +119,20 @@ export const checkOneInEachRow = (state: Store): Store => {
   const nextGreen = getNextTile(variantBTiles.c, state.selection.c);
   const nextBlue = getNextTile(variantBTiles.d, state.selection.d);
 
-  const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce((changes, nextTile) => !!nextTile && !state.locked[colorToRow(nextTile.color)]
-      ? [
-        ...changes,
-        {
-          color: nextTile.color,
-          value: nextTile.value,
-          row: colorToRow(nextTile.color),
-          type: nextTile.type,
-          actionType: ActionType.game
-        }
-      ]
-      : changes,
+  const changes = [nextRed, nextYellow, nextGreen, nextBlue].reduce(
+    (changes, nextTile) =>
+      !!nextTile && !state.locked[colorToRow(nextTile.color)]
+        ? [
+            ...changes,
+            {
+              color: nextTile.color,
+              value: nextTile.value,
+              row: colorToRow(nextTile.color),
+              type: nextTile.type,
+              actionType: ActionType.game,
+            },
+          ]
+        : changes,
     state.changes
   );
 
@@ -137,13 +141,13 @@ export const checkOneInEachRow = (state: Store): Store => {
     changes,
     selection: {
       ...state.selection,
-      ...(nextRed && !state.locked.a) && {a: [...state.selection.a, nextRed.value]},
-      ...(nextYellow && !state.locked.b) && {b: [...state.selection.b, nextYellow.value]},
-      ...(nextGreen && !state.locked.c) && {c: [...state.selection.c, nextGreen.value]},
-      ...(nextBlue && !state.locked.d) && {d: [...state.selection.d, nextBlue.value]},
+      ...(nextRed && !state.locked.a && { a: [...state.selection.a, nextRed.value] }),
+      ...(nextYellow && !state.locked.b && { b: [...state.selection.b, nextYellow.value] }),
+      ...(nextGreen && !state.locked.c && { c: [...state.selection.c, nextGreen.value] }),
+      ...(nextBlue && !state.locked.d && { d: [...state.selection.d, nextBlue.value] }),
     },
   };
-}
+};
 
 /**
  * Only used by bonus variant B.
@@ -155,17 +159,20 @@ export const checkLowestRowTwice = (state: Store): Store => {
 
   state = {
     ...state,
-    changes: [...state.changes, {
-      type: firstCheck.type,
-      row: lowestRow.row,
-      color: firstCheck.color,
-      value: firstCheck.value,
-      actionType: ActionType.game
-    }],
+    changes: [
+      ...state.changes,
+      {
+        type: firstCheck.type,
+        row: lowestRow.row,
+        color: firstCheck.color,
+        value: firstCheck.value,
+        actionType: ActionType.game,
+      },
+    ],
     selection: {
       ...state.selection,
-      [lowestRow.row]: [...state.selection[lowestRow.row], firstCheck.value]
-    }
+      [lowestRow.row]: [...state.selection[lowestRow.row], firstCheck.value],
+    },
   };
 
   const secondCheck = getNextTile(variantBTiles[lowestRow.row], state.selection[lowestRow.row]) as TileModel; // Cannot be undefined;
@@ -176,16 +183,19 @@ export const checkLowestRowTwice = (state: Store): Store => {
 
   return {
     ...state,
-    changes: [...state.changes, {
-      type: secondCheck.type,
-      row: lowestRow.row,
-      color: secondCheck.color,
-      value: secondCheck.value,
-      actionType: ActionType.game
-    }],
+    changes: [
+      ...state.changes,
+      {
+        type: secondCheck.type,
+        row: lowestRow.row,
+        color: secondCheck.color,
+        value: secondCheck.value,
+        actionType: ActionType.game,
+      },
+    ],
     selection: {
       ...state.selection,
-      [lowestRow.row]: [...state.selection[lowestRow.row], secondCheck.value]
-    }
+      [lowestRow.row]: [...state.selection[lowestRow.row], secondCheck.value],
+    },
   };
-}
+};
