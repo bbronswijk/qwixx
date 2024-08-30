@@ -5,10 +5,10 @@ import React from "react";
 import { LeaveGameButton } from "@/ui/leave-game-button";
 
 export const GameHeader = () => (
-  <header className="fixed top-3 left-3 right-3 gap-3 flex items-center justify-between">
-    <LeaveGameButton/>
-    <GamePin/>
-    <UndoButton/>
-    <ToggleScoreButton/>
+  <header className='fixed left-3 right-3 top-3 flex items-center justify-between gap-3'>
+    <LeaveGameButton />
+    <GamePin />
+    <UndoButton />
+    <ToggleScoreButton />
   </header>
-)
+);

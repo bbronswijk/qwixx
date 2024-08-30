@@ -1,4 +1,4 @@
-import { TileModel } from '@/data/tile.model';
+import { TileModel } from "@/data/tile.model";
 
 export const calculateTotalPointsForRow = (tiles: TileModel[], selection: number[]): number => {
   const last = tiles.at(-1) as TileModel;
@@ -39,4 +39,4 @@ export const mapNumberCheckedToScore = (amountChecked: number): number => {
     default:
       return 0;
   }
-}
+};

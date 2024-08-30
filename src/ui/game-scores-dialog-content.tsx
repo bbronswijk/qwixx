@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { DialogContent, DialogFooter } from "@/ui/dialog";
 import Image from "next/image";
@@ -13,25 +13,24 @@ export const GameScoresDialogContent = () => {
 
   return (
     <DialogContent>
-      <h1 className="text-3xl font-bold text-center">Game over 🏆</h1>
+      <h1 className='text-center text-3xl font-bold'>Game over 🏆</h1>
       {scores
         .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
         .map((member) => (
-          <div key={member.nickname} className="flex items-center gap-4 font-bold text-xl ">
-            <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`}
-                   alt={member.nickname}
-                   height={40} width={40}/>
+          <div key={member.nickname} className='flex items-center gap-4 text-xl font-bold'>
+            <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname} height={40} width={40} />
             <span>{member.nickname}</span>
-            {member.score !== null
-              ? <span className="ml-auto">{member.score} punten</span>
-              : <span className="ml-auto">waiting...</span>
-            }
+            {member.score !== null ? <span className='ml-auto'>{member.score} punten</span> : <span className='ml-auto'>waiting...</span>}
           </div>
         ))}
       <DialogFooter>
-        <Link href="/create" className={cn(buttonVariants({variant: "default"}), 'w-full')}>Create new game</Link>
-        <Link href="/join-existing" className={cn(buttonVariants({variant: "outline"}), 'w-full')}>Join new game</Link>
+        <Link href='/create' className={cn(buttonVariants({ variant: "default" }), "w-full")}>
+          Create new game
+        </Link>
+        <Link href='/join-existing' className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+          Join new game
+        </Link>
       </DialogFooter>
     </DialogContent>
   );
-}
+};

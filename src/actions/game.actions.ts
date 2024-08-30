@@ -1,4 +1,4 @@
-'use server'
+"use server";
 
 import { Variant } from "@/context/variant.context";
 import prisma from "../../prisma/db";
@@ -14,21 +14,21 @@ function generateGamePin(): number {
  */
 export async function createGameAction(variant: Variant, nickname: string): Promise<Game> {
   if (!variant) {
-    throw new Error('No variant provided');
+    throw new Error("No variant provided");
   }
 
   const game = await prisma.game.create({
     data: {
       pin: generateGamePin(),
-      variant: variant
-    }
+      variant: variant,
+    },
   });
 
   await prisma.playerGameScore.create({
     data: {
       gameId: game.id,
       nickname,
-    }
+    },
   });
 
   return game;
@@ -39,17 +39,17 @@ export async function createGameAction(variant: Variant, nickname: string): Prom
  */
 export async function joinGameAction(pin: number, nickname: string) {
   const game = await prisma.game.findFirst({
-    where: {pin, finishedAt: null},
-    orderBy: {createdAt: 'desc'}
+    where: { pin, finishedAt: null },
+    orderBy: { createdAt: "desc" },
   });
 
   if (!game) {
     return {
       error: {
-        title: 'Game not found',
-        description: 'Use the game pin provided by the host, or create a new game.'
-      }
-    }
+        title: "Game not found",
+        description: "Use the game pin provided by the host, or create a new game.",
+      },
+    };
   }
 
   try {
@@ -57,23 +57,23 @@ export async function joinGameAction(pin: number, nickname: string) {
       data: {
         gameId: game.id,
         nickname,
-      }
+      },
     });
   } catch (e: any) {
-    if (e.code === 'P2002') {
+    if (e.code === "P2002") {
       return {
         error: {
           title: `"${nickname}" is already taken`,
-          description: 'Go back and use a different user name.'
-        }
-      }
+          description: "Go back and use a different user name.",
+        },
+      };
     }
     return {
       error: {
         title: `Something went wrong, but we don't know what`,
-        description: e?.message ?? null
-      }
-    }
+        description: e?.message ?? null,
+      },
+    };
   }
 
   return game;
@@ -84,8 +84,8 @@ export async function joinGameAction(pin: number, nickname: string) {
  */
 export async function leaveGameAction(pin: number, nickname: string) {
   const game = await prisma.game.findFirst({
-    where: {pin, finishedAt: null},
-    orderBy: {createdAt: 'desc'},
+    where: { pin, finishedAt: null },
+    orderBy: { createdAt: "desc" },
   });
 
   if (!game) {
@@ -97,8 +97,8 @@ export async function leaveGameAction(pin: number, nickname: string) {
       unique_player_game: {
         gameId: game.id,
         nickname,
-      }
-    }
+      },
+    },
   });
 }
 
@@ -107,8 +107,8 @@ export async function leaveGameAction(pin: number, nickname: string) {
  */
 export async function saveScore(pin: number, nickname: string, score: number, state: State) {
   const game = await prisma.game.findFirst({
-    where: {pin},
-    orderBy: {createdAt: 'desc'}
+    where: { pin },
+    orderBy: { createdAt: "desc" },
   });
 
   if (!game) {
@@ -125,7 +125,7 @@ export async function saveScore(pin: number, nickname: string, score: number, st
     data: {
       score,
       state: JSON.stringify(state),
-    }
+    },
   });
 }
 
@@ -134,8 +134,8 @@ export async function saveScore(pin: number, nickname: string, score: number, st
  */
 export async function saveChanges(pin: number, nickname: string, state: State) {
   const game = await prisma.game.findFirst({
-    where: {pin},
-    orderBy: {createdAt: 'desc'}
+    where: { pin },
+    orderBy: { createdAt: "desc" },
   });
 
   if (!game) {
@@ -151,7 +151,7 @@ export async function saveChanges(pin: number, nickname: string, state: State) {
     },
     data: {
       state: JSON.stringify(state),
-    }
+    },
   });
 }
 
@@ -160,8 +160,8 @@ export async function saveChanges(pin: number, nickname: string, state: State) {
  */
 export async function getScores(pin: number) {
   const game = await prisma.game.findFirst({
-    where: {pin},
-    orderBy: {createdAt: 'desc'}
+    where: { pin },
+    orderBy: { createdAt: "desc" },
   });
 
   if (!game) {
@@ -175,7 +175,7 @@ export async function getScores(pin: number) {
     select: {
       nickname: true,
       score: true,
-    }
+    },
   });
 }
 
@@ -184,8 +184,8 @@ export async function getScores(pin: number) {
  */
 export async function endGameAction(pin: number) {
   const game = await prisma.game.findFirst({
-    where: {pin, finishedAt: null},
-    orderBy: {createdAt: 'desc'}
+    where: { pin, finishedAt: null },
+    orderBy: { createdAt: "desc" },
   });
 
   // Return if the game was already marked as finished.
@@ -194,7 +194,7 @@ export async function endGameAction(pin: number) {
   }
 
   return prisma.game.update({
-    where: {id: game.id},
-    data: {finishedAt: new Date()}
+    where: { id: game.id },
+    data: { finishedAt: new Date() },
   });
 }

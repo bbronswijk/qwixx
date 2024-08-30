@@ -13,7 +13,7 @@ export const useAuth = () => {
   const context = useContext(AuthenticationContext);
 
   if (!context) {
-    throw new Error('MemberContext has not been initialized.');
+    throw new Error("MemberContext has not been initialized.");
   }
 
   return context;

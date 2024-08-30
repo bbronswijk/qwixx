@@ -1,8 +1,8 @@
-import { Color } from '@/data/color';
+import { Color } from "@/data/color";
 
 export enum PusherEvent {
-  endGame = 'game-end',
-  shareScore = 'send-score',
+  endGame = "game-end",
+  shareScore = "send-score",
 }
 
 export interface PusherLockRowPayload {

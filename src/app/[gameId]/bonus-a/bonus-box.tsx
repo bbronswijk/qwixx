@@ -1,5 +1,5 @@
-import { cn } from '@/utils/cn';
-import { XIcon } from '@/ui/icons';
+import { cn } from "@/utils/cn";
+import { XIcon } from "@/ui/icons";
 
 interface ComponentProps {
   className: string;
@@ -7,15 +7,18 @@ interface ComponentProps {
 }
 
 export const bonusBoxState = {
-  checked: 'checked',
-  unchecked: 'unchecked',
+  checked: "checked",
+  unchecked: "unchecked",
 } as const;
 
 export default function BonusBox({ checked, className }: ComponentProps) {
-  return <div
-    data-testid="bonus-box"
-    data-state={checked ? bonusBoxState.checked : bonusBoxState.unchecked}
-    className={cn(className, 'border-4 lg:border-[6px] shadow border-white rounded font-bold h-5 w-5 lg:w-8 lg:h-8')}>
-    {checked && <XIcon className="text-white"/>}
-  </div>
+  return (
+    <div
+      data-testid='bonus-box'
+      data-state={checked ? bonusBoxState.checked : bonusBoxState.unchecked}
+      className={cn(className, "h-5 w-5 rounded border-4 border-white font-bold shadow lg:h-8 lg:w-8 lg:border-[6px]")}
+    >
+      {checked && <XIcon className='text-white' />}
+    </div>
+  );
 }
