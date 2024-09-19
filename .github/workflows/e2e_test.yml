@@ -1,0 +1,51 @@
+name: E2E Test
+
+on: [ push, pull_request ]
+
+jobs:
+  e2e_test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:11.3
+        env:
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    container:
+      image: mcr.microsoft.com/playwright:v1.39.0-jammy
+
+    env:
+      POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+      POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      DATABASE_URL: postgres://${{ secrets.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@localhost:5432/${{ secrets.POSTGRES_DB }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Copy .env.ci to .env
+        run: cp .env.ci .env
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Prisma migrations
+        run: yarn prisma migrate deploy
+
+      - name: Run E2E tests
+        run: yarn e2e
