@@ -4,7 +4,7 @@ interface AuthenticationContextValue {
   authenticate: (nickname: string) => void;
   logOut: () => void;
   isAuthenticated: boolean;
-  nickname: string | undefined;
+  nickname: string;
 }
 
 export const AuthenticationContext = createContext<AuthenticationContextValue | null>(null);

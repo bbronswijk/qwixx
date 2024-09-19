@@ -3,7 +3,7 @@ import { BugIcon, LoaderIcon } from "@/ui/icons";
 import { Button, buttonVariants } from "@/ui/button";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
-import { notifyImmediateEndOfGameAction, notifyScoreSharedAction } from "@/actions/pusher.actions";
+import { notifyUserEndedGameAction } from "@/actions/pusher.actions";
 import { useAuth } from "@/auth/authentication.context";
 import QwixxStore from "@/state/store";
 import { stateSelector } from "@/state/selectors";
@@ -36,7 +36,7 @@ export const UnExpectedError = ({ variant, totalScore, reset }: ComponentProps) 
 
   const handleEndGame = async () => {
     setLoading(true);
-    await Promise.all([notifyImmediateEndOfGameAction(variant, pin), notifyScoreSharedAction(variant, pin, store, totalScore, nickname as string)]);
+    await notifyUserEndedGameAction(variant, pin, store, totalScore, nickname as string);
     setLoading(false);
     setGameEnded(true);
   };

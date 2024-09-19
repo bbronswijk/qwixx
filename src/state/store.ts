@@ -9,6 +9,7 @@ import { getScores } from "@/actions/game.actions";
 
 export interface State {
   gameCompleted: boolean;
+  otherUserCompletedGame: boolean;
   changes: Change[];
 
   selection: {
@@ -36,6 +37,7 @@ export type CheckTileFn = (tile: TileModel, row: Row) => void;
 
 interface Reducers {
   markAsGameCompleted: () => void;
+  setOtherUserCompletedGame: () => void;
   checkTile: CheckTileFn;
   reset: () => void;
   undo: () => void;
@@ -68,6 +70,7 @@ export type Change =
 
 const initialState: State = {
   gameCompleted: false,
+  otherUserCompletedGame: false,
   changes: [],
 
   selection: {
@@ -99,6 +102,14 @@ const state: StateCreator<Store> = (set) => ({
     set(
       (): Partial<Store> => ({
         gameCompleted: true,
+        showScore: true,
+      })
+    ),
+
+  setOtherUserCompletedGame: () =>
+    set(
+      (): Partial<Store> => ({
+        otherUserCompletedGame: true,
         showScore: true,
       })
     ),

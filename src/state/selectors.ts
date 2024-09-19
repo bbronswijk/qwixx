@@ -11,6 +11,7 @@ import { Config } from "@/data/config.model";
  */
 export const stateSelector = (state: Store): State => ({
   gameCompleted: state.gameCompleted,
+  otherUserCompletedGame: state.otherUserCompletedGame,
   changes: state.changes,
   selection: state.selection,
   locked: state.locked,
@@ -35,7 +36,6 @@ export const usersCompleted2RowsSelector = (state: Store): boolean => {
 
   const lockedRows = Object.values(state.locked).filter((locked) => locked).length;
 
-  // return (lockedRows) >= 2;
   return completionCounts + lockedRows >= 2;
 };
 

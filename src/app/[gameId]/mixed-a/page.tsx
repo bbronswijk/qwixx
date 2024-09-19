@@ -9,6 +9,7 @@ import { Variant, VariantContext } from "@/context/variant.context";
 import { mixedATiles } from "@/app/[gameId]/mixed-a/mixed-a.config";
 import { GameHeader } from "@/ui/game-header";
 import type { Viewport } from "next";
+import { TotalScoreContext } from "@/context/total-score.context";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -23,13 +24,15 @@ export default function Home() {
 
   return (
     <VariantContext.Provider value={Variant.DEFAULT}>
-      <Pusher>
-        <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
-          <GameHeader />
-          <Members />
-          <Board config={mixedATiles} totalScore={totalScore} />
-        </main>
-      </Pusher>
+      <TotalScoreContext.Provider value={totalScore}>
+        <Pusher>
+          <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
+            <GameHeader />
+            <Members />
+            <Board config={mixedATiles} />
+          </main>
+        </Pusher>
+      </TotalScoreContext.Provider>
     </VariantContext.Provider>
   );
 }

@@ -5,7 +5,7 @@ import { pusherClient } from "@/pusher/pusher.client";
 import { PresenceChannel } from "pusher-js";
 import { Member, MemberInfo } from "@/pusher/member.model";
 import { useToast } from "@/ui/use-toast";
-import { PusherEvent } from "@/pusher/pusher.model";
+import { PusherEvent } from "@/pusher/pusher-event.enum";
 import QwixxStore from "@/state/store";
 import { useVariant } from "@/context/variant.context";
 import { useGamePin } from "@/utils/use-game-pin.hook";
@@ -31,7 +31,7 @@ export const Pusher = ({ children }: PropsWithChildren) => {
   const channel = useRef<PresenceChannel>();
   const { toast } = useToast();
   const variant = useVariant();
-  const markAsGameCompleted = QwixxStore.use.markAsGameCompleted();
+  const setOtherUserCompletedGame = QwixxStore.use.setOtherUserCompletedGame();
   const fetchScore = QwixxStore.use.fetchScore();
   const pin = useGamePin();
 
@@ -51,8 +51,11 @@ export const Pusher = ({ children }: PropsWithChildren) => {
       .bind("pusher:member_removed", (member: Member) => {
         setMembers((members) => members.filter((m: MemberInfo) => m.nickname !== member.info.nickname));
       })
-      .bind(PusherEvent.shareScore, () => fetchScore(pin))
-      .bind(PusherEvent.endGame, () => markAsGameCompleted());
+      .bind(PusherEvent.userSharedScore, () => fetchScore(pin))
+      .bind(PusherEvent.userEndedGame, () => {
+        fetchScore(pin);
+        setOtherUserCompletedGame();
+      });
 
     return () => {
       channel.current?.unbind_all();

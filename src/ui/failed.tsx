@@ -1,24 +1,13 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { XIcon } from "@/ui/icons";
 import { cn } from "@/utils/cn";
 import QwixxStore from "@/state/store";
-import { notifyImmediateEndOfGameAction } from "@/actions/pusher.actions";
-import { useVariant } from "@/context/variant.context";
-import { useGamePin } from "@/utils/use-game-pin.hook";
 
 export default function Failed() {
   const failedRounds = QwixxStore.use.failed();
   const onFailRound = QwixxStore.use.roundFailed();
-  const pin = useGamePin();
-  const variant = useVariant();
   const gameCompleted = QwixxStore.use.gameCompleted();
   const disabled = failedRounds >= 4 || gameCompleted;
-
-  useEffect(() => {
-    if (failedRounds >= 4) {
-      notifyImmediateEndOfGameAction(variant, pin);
-    }
-  }, [pin, failedRounds]);
 
   return (
     <>
