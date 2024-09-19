@@ -27,7 +27,7 @@ jobs:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres?schema=qwixxAdd"
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres?schema=qwixx"
 
     steps:
       - name: Checkout code
@@ -40,13 +40,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-
-      - name: Wait for PostgreSQL to be ready
-        run: |
-          until pg_isready -h localhost -p 5432; do
-            echo "Waiting for PostgreSQL to be ready..."
-            sleep 5
-          done
 
       - name: Run Prisma migrations
         run: yarn prisma migrate deploy
