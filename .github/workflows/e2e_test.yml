@@ -38,9 +38,6 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Copy .env.ci to .env
-        run: cp .env.ci .env
-
       - name: Install dependencies
         run: yarn install
 
