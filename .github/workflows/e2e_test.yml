@@ -27,7 +27,7 @@ jobs:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres"
+      DATABASE_URL: "postgres://postgres:postgres@localhost:5432/postgres?schema=qwixxAdd"
 
     steps:
       - name: Checkout code
