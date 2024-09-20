@@ -42,10 +42,10 @@ jobs:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: yarn playwright install --with-deps
 
       - name: Run Playwright tests
-        run: npx playwright test
+        run: yarn e2e
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
           PUSHER_APP_ID: ${{ secrets.PUSHER_APP_ID }}
