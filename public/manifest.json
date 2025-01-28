@@ -34,6 +34,7 @@
   "background_color": "#FFFFFF",
   "start_url": "/",
   "display": "standalone",
+  "orientation": "landscape",
   "handle_links": "preferred",
   "url_handlers": [
     {
