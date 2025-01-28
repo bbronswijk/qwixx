@@ -27,6 +27,10 @@ export default function Page() {
     e.preventDefault();
     const gamePin = ref.current?.value;
 
+    if (joining) {
+      return;
+    }
+
     if (!gamePin) {
       toast({ title: "Enter a game pin", variant: "destructive" });
       return;
