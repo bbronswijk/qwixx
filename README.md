@@ -15,6 +15,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 First, run the development server:
 
 ```bash
+pnpm i
+cp .env.example .env
+pnpm 
 yarn dev
 ```
 
