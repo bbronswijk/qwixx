@@ -1,8 +1,8 @@
-import { expect, test } from '@playwright/test';
-import { clickButton, selectors, startGame } from '../util';
+import { expect, test } from "@playwright/test";
+import { clickButton, selectors, startGame } from "../util";
 import { Variant } from "@/context/variant.context";
 
-test('Should show a dialog that the game has ended when the user completed 2 rows', async ({page}) => {
+test("Should show a dialog that the game has ended when the user completed 2 rows", async ({ page }) => {
   await startGame(page, Variant.DEFAULT);
 
   const rows = page.locator(selectors.ROWS);
@@ -33,32 +33,31 @@ test('Should show a dialog that the game has ended when the user completed 2 row
   await clickButton(yellowRow, 11);
   await clickButton(yellowRow, 12);
 
-  await expect(page.getByText('Game over')).toBeVisible();
-  await expect(page.getByText('156 punten')).toBeVisible();
+  await expect(page.getByText("Game over")).toBeVisible();
+  await expect(page.getByText("156 punten")).toBeVisible();
 });
 
-test('Should show a dialog that the game has ended when the user failed 4 turns', async ({page}) => {
+test("Should show a dialog that the game has ended when the user failed 4 turns", async ({ page }) => {
   await startGame(page, Variant.DEFAULT);
 
-  const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
+  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
 
   await failedButton.click();
   await failedButton.click();
   await failedButton.click();
   await failedButton.click();
 
-  await expect(page.getByText('Game over')).toBeVisible();
-  await expect(page.getByText('-20 punten')).toBeVisible();
+  await expect(page.getByText("Game over")).toBeVisible();
+  await expect(page.getByText("-20 punten")).toBeVisible();
 });
 
-
-test('Should end the game a soon as someone else completes a row and the current user completes another row', async ({page}) => {
+test("Should end the game a soon as someone else completes a row and the current user completes another row", async ({ page }) => {
   await startGame(page, Variant.BONUS_B);
 
-  const rows = page.locator('section');
+  const rows = page.locator("section");
   const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
-  const lock = redRow.getByTestId('lock');
+  const lock = redRow.getByTestId("lock");
 
   await lock.click();
 
@@ -70,5 +69,5 @@ test('Should end the game a soon as someone else completes a row and the current
   await clickButton(yellowRow, 6);
   await clickButton(yellowRow, 12);
 
-  await expect(page.getByText('Game over')).toBeVisible();
+  await expect(page.getByText("Game over")).toBeVisible();
 });

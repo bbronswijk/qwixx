@@ -1,15 +1,15 @@
-import { test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState, startGame } from '../util';
+import { test } from "@playwright/test";
+import { clickButton, expectButtonToHaveState, startGame } from "../util";
 
 import { buttonState } from "@/data/tile.model";
 import { Variant } from "@/context/variant.context";
 
-test('should be able to undo a checked tile', async ({page}) => {
+test("should be able to undo a checked tile", async ({ page }) => {
   await startGame(page, Variant.BONUS_B);
 
-  const rows = page.locator('section');
+  const rows = page.locator("section");
   const redRow = rows.nth(0);
-  const undoButton = page.getByTestId('undo');
+  const undoButton = page.getByTestId("undo");
 
   await clickButton(redRow, 3);
 
@@ -24,16 +24,16 @@ test('should be able to undo a checked tile', async ({page}) => {
   await expectButtonToHaveState(redRow, 4, buttonState.unchecked);
 });
 
-test('should be able to undo a check lowest type twice', async ({page}) => {
+test("should be able to undo a check lowest type twice", async ({ page }) => {
   await startGame(page, Variant.BONUS_B);
 
-  const rows = page.locator('section');
+  const rows = page.locator("section");
   const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
   const greenRow = rows.nth(2);
   const blueRow = rows.nth(3);
 
-  const undoButton = page.getByTestId('undo');
+  const undoButton = page.getByTestId("undo");
 
   await clickButton(redRow, 2);
   await clickButton(redRow, 3);
@@ -58,16 +58,16 @@ test('should be able to undo a check lowest type twice', async ({page}) => {
   await expectButtonToHaveState(greenRow, 7, buttonState.unchecked);
 });
 
-test('should be able to undo check every row once', async ({page}) => {
+test("should be able to undo check every row once", async ({ page }) => {
   await startGame(page, Variant.BONUS_B);
 
-  const rows = page.locator('section');
+  const rows = page.locator("section");
   const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
   const greenRow = rows.nth(2);
   const blueRow = rows.nth(3);
 
-  const undoButton = page.getByTestId('undo');
+  const undoButton = page.getByTestId("undo");
 
   await clickButton(yellowRow, 7);
   await clickButton(blueRow, 7);

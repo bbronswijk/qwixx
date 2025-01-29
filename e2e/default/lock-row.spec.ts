@@ -1,13 +1,13 @@
-import { expect, test } from '@playwright/test';
-import { clickButton, startGame } from '../util';
+import { expect, test } from "@playwright/test";
+import { clickButton, startGame } from "../util";
 import { Variant } from "@/context/variant.context";
 
-test('should not be able to unlock a row when all items are completed', async ({ page }) => {
+test("should not be able to unlock a row when all items are completed", async ({ page }) => {
   await startGame(page, Variant.DEFAULT);
 
-  const rows = page.locator('section');
+  const rows = page.locator("section");
   const redRow = rows.first();
-  const lock = redRow.getByTestId('lock');
+  const lock = redRow.getByTestId("lock");
 
   await clickButton(redRow, 2);
   await clickButton(redRow, 3);
