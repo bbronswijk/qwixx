@@ -59,6 +59,7 @@ test("Should end the game a soon as someone else completes a row and the current
   const yellowRow = rows.nth(1);
   const lock = redRow.getByTestId("lock");
 
+  // Lock the red row.
   await lock.click();
 
   // Complete yellow row

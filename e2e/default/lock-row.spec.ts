@@ -1,6 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { clickButton, startGame } from "../util";
 import { Variant } from "@/context/variant.context";
+import { lockState } from "@/ui/lock";
 
 test("should not be able to unlock a row when all items are completed", async ({ page }) => {
   await startGame(page, Variant.DEFAULT);
@@ -21,5 +22,6 @@ test("should not be able to unlock a row when all items are completed", async ({
   await clickButton(redRow, 11);
   await clickButton(redRow, 12);
 
+  await expect(lock).toHaveAttribute("data-state", lockState.completed);
   await expect(lock).toBeDisabled();
 });
