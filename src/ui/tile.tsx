@@ -8,6 +8,7 @@ import { Color, getColorClasses, Row as RowType } from "@/data/color";
 import QwixxStore from "@/state/store";
 import { useToast } from "@/ui/use-toast";
 import { selectionForRow } from "@/state/selectors";
+import { useVariant, Variant } from "@/context/variant.context";
 
 interface ComponentProps extends PropsWithChildren, HTMLAttributes<HTMLButtonElement> {
   tile: TileModel;
@@ -25,6 +26,8 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
   const { toast } = useToast();
   const selection = QwixxStore(selectionForRow(row));
   const onCheckTile = QwixxStore.use.checkTile();
+  const completeBonusRow = QwixxStore.use.skipBonusBoxesOfCompleteRow();
+  const variant = useVariant();
   let state: ButtonState = buttonState.unchecked;
 
   if (checked) {
@@ -46,6 +49,10 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
           }
 
           onCheckTile(tile, row);
+
+          if (isLastItem && variant === Variant.BONUS_A) {
+            completeBonusRow(row);
+          }
         }}
         data-state={state}
         className={cn(

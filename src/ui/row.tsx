@@ -57,7 +57,7 @@ export default function Row({ row, tiles, ...props }: ComponentProps) {
       })}
 
       <div className={cn(getColorClasses(last.color), "flex items-center self-stretch rounded-r-lg pr-2")}>
-        <Lock lockedBySomeoneElse={lockedBySomeoneElse} completedRow={lastItemIsSelected} onClick={() => lockRow(row)} />
+        <Lock lockedBySomeoneElse={lockedBySomeoneElse} lastItemIsSelected={lastItemIsSelected} onClick={() => lockRow(row)} />
         <TotalRowScore tiles={tiles} selection={selection} />
       </div>
     </section>

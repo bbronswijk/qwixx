@@ -24,7 +24,7 @@ export default function Page() {
   const totalScore = useTotalSelector(variantATiles);
 
   return (
-    <VariantContext.Provider value={Variant.BONUS_B}>
+    <VariantContext.Provider value={Variant.BONUS_A}>
       <TotalScoreContext.Provider value={totalScore}>
         <Pusher>
           <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>

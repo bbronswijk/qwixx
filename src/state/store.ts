@@ -1,9 +1,9 @@
 import { createSelectors } from "@/utils/create-selector";
 import { devtools, persist } from "zustand/middleware";
 import { create, StateCreator } from "zustand";
-import { BonusBox } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { BonusBox, bonusBoxes } from "@/app/[gameId]/bonus-a/variant-a.config";
 import { checkLowestRowTwice, checkOneInEachRow, checkTile, undo } from "@/state/reducers";
-import { Color, Row, rows } from "@/data/color";
+import { Color, Row, rows, rowToColor } from "@/data/color";
 import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from "@/data/tile.model";
 import { getScores } from "@/actions/game.actions";
 
@@ -45,6 +45,7 @@ interface Reducers {
   checkOneInEachRow: () => void;
   checkLowestRowTwice: () => void;
   lockRow: (row: Row) => void;
+  skipBonusBoxesOfCompleteRow: (row: Row) => void;
   toggleScoreVisibility: () => void;
   fetchScore: (pin: number) => void;
 }
@@ -66,7 +67,7 @@ export type Change =
       actionType: ActionType;
     }
   | { type: FailedTileType; actionType: ActionType.user }
-  | { type: LockTileType; row: Row; actionType: ActionType };
+  | { type: LockTileType; row: Row; actionType: ActionType; bonus: number[] };
 
 const initialState: State = {
   gameCompleted: false,
@@ -122,16 +123,30 @@ const state: StateCreator<Store> = (set) => ({
     ),
 
   lockRow: (row: Row) =>
-    set(
-      (state): Partial<Store> => ({
+    set((state): Partial<Store> => {
+      const checkedIds = state.bonus.map(({ id }) => id);
+      const bonus = bonusBoxes.filter((box) => box.color === rowToColor(row)).filter((box) => !checkedIds.includes(box.id));
+      return {
         ...state,
-        changes: [...state.changes, { row, type: tileType.lock, actionType: ActionType.user }],
+        changes: [...state.changes, { row, type: tileType.lock, actionType: ActionType.user, bonus: bonus.map(({ id }) => id) }],
+        bonus: state.bonus.concat(bonus),
         locked: {
           ...state.locked,
           [row]: true,
         },
-      })
-    ),
+      };
+    }),
+
+  skipBonusBoxesOfCompleteRow: (row: Row) =>
+    set((state): Partial<Store> => {
+      const checkedIds = state.bonus.map(({ id }) => id);
+      const bonus = bonusBoxes.filter((box) => box.color === rowToColor(row)).filter((box) => !checkedIds.includes(box.id));
+      return {
+        ...state,
+        changes: [...state.changes, { row, type: tileType.lock, actionType: ActionType.game, bonus: bonus.map(({ id }) => id) }],
+        bonus: state.bonus.concat(bonus),
+      };
+    }),
 
   checkTile: ({ color, type, value }, row) =>
     set((state): Partial<Store> => {

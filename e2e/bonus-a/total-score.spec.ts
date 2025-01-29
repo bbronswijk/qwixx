@@ -1,17 +1,16 @@
-import { expect, test } from '@playwright/test';
-import { clickButton, selectors, startGame } from '../util';
+import { expect, test } from "@playwright/test";
+import { clickButton, selectors, startGame } from "../util";
 import { Variant } from "@/context/variant.context";
 
-
-test('should reflect the correct total score all selected cells', async ({page}) => {
+test("should reflect the correct total score all selected cells", async ({ page }) => {
   await startGame(page, Variant.BONUS_A);
 
   const toggleScoreVisibility = page.getByTestId(selectors.VISIBILITY_TOGGLE);
   const rows = page.locator(selectors.ROWS);
   const redRow = rows.nth(0);
 
-  const totalScore = page.getByTestId('score');
-  const failedButton = page.getByRole('button', {name: 'Worp mislukt'});
+  const totalScore = page.getByTestId("score");
+  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
 
   await toggleScoreVisibility.click();
 
@@ -33,7 +32,6 @@ test('should reflect the correct total score all selected cells', async ({page})
   await failedButton.click();
   await failedButton.click();
 
-  await expect(page.getByText('Game over')).toBeVisible();
-  await expect(page.getByText('60 punten')).toBeVisible();
+  await expect(page.getByText("Game over")).toBeVisible();
+  await expect(page.getByText("60 punten")).toBeVisible();
 });
-

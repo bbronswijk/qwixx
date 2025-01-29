@@ -1,33 +1,31 @@
-import { expect, test } from '@playwright/test';
-import { clickButton, expectButtonToHaveState, startGame } from '../util';
-import { bonusBoxState } from '@/app/[gameId]/bonus-a/bonus-box';
+import { expect, test } from "@playwright/test";
+import { clickButton, expectButtonToHaveState, startGame } from "../util";
+import { bonusBoxState } from "@/app/[gameId]/bonus-a/bonus-box";
 import { buttonState } from "@/data/tile.model";
 import { Variant } from "@/context/variant.context";
 
-
-test('should automatically select the first red box if the first bonus box is hit', async ({ page }) => {
+test("should automatically select the first red box if the first bonus box is hit", async ({ page }) => {
   await startGame(page, Variant.BONUS_A);
 
-  const rows = page.locator('section');
-  const bonus = page.getByTestId('bonus-box');
+  const rows = page.locator("section");
+  const bonus = page.getByTestId("bonus-box");
   const redRow = rows.nth(0);
   const greenRow = rows.nth(2);
 
   await clickButton(greenRow, 11);
 
   // Expect bonus box 1 to be selected
-  await expect(bonus.first()).toHaveAttribute('data-state', bonusBoxState.checked);
+  await expect(bonus.first()).toHaveAttribute("data-state", bonusBoxState.checked);
 
   // expect red 3 to be selected
   await expectButtonToHaveState(redRow, 2, buttonState.checked);
 });
 
-
-test('should automatically create a chain reaction when a bonus box is hit', async ({ page }) => {
+test("should automatically create a chain reaction when a bonus box is hit", async ({ page }) => {
   await startGame(page, Variant.BONUS_A);
 
-  const rows = page.locator('section');
-  const bonus = page.getByTestId('bonus-box');
+  const rows = page.locator("section");
+  const bonus = page.getByTestId("bonus-box");
   const redRow = rows.nth(0);
   const yellowRow = rows.nth(1);
   const greenRow = rows.nth(2);
@@ -42,8 +40,8 @@ test('should automatically create a chain reaction when a bonus box is hit', asy
   // Trigger chain reaction
   await clickButton(blueRow, 10);
 
-  await expect(bonus.nth(3)).toHaveAttribute('data-state', bonusBoxState.checked);
-  await expect(bonus.nth(4)).toHaveAttribute('data-state', bonusBoxState.unchecked);
+  await expect(bonus.nth(3)).toHaveAttribute("data-state", bonusBoxState.checked);
+  await expect(bonus.nth(4)).toHaveAttribute("data-state", bonusBoxState.unchecked);
 
   // validate if chain reaction got triggered.
   await expectButtonToHaveState(redRow, 3, buttonState.checked);
@@ -51,4 +49,3 @@ test('should automatically create a chain reaction when a bonus box is hit', asy
   await expectButtonToHaveState(greenRow, 11, buttonState.checked);
   await expectButtonToHaveState(blueRow, 9, buttonState.checked);
 });
-

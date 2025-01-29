@@ -26,8 +26,8 @@ export const checkTile = (state: Store, color: Color, row: Row, type: NumericTil
     };
   }
 
-  // Get next unchecked bonus box
-  const bonusBox = bonusBoxes[state.bonus.length];
+  const lowestChecked = findFirstEmptyBonusBox(state.bonus.map(({ id }) => id).sort());
+  const bonusBox = bonusBoxes[lowestChecked];
 
   // Check next bonus box, next color and log change.
   state = {
@@ -53,6 +53,26 @@ export const checkTile = (state: Store, color: Color, row: Row, type: NumericTil
 };
 
 /**
+ * Find the first empty bonus box.
+ * [0, 1, 2] -> 3
+ * In case a row is locked there might be gaps in the list.
+ * In that case return the first empty box.
+ * [0, 1, 6, 8] -> 2
+ */
+function findFirstEmptyBonusBox(nums: number[]): number {
+  // Iterate through the sorted array
+  for (let i = 0; i < nums.length; i++) {
+    // If the current number is not equal to the index, return the index
+    if (nums[i] !== i) {
+      return i;
+    }
+  }
+
+  // If all numbers are in sequence, return the next number
+  return nums.length;
+}
+
+/**
  * Recursively undo the last changes.
  */
 export const undo = (state: Store, change: Change): Store => {
@@ -74,8 +94,10 @@ export const undo = (state: Store, change: Change): Store => {
       ...state,
       locked: {
         ...state.locked,
-        [change.row]: !state.locked[change.row],
+        [change.row]: false,
       },
+      // Undo possibly checked bonus boxes.
+      bonus: state.bonus.filter(({ id }) => !change.bonus.includes(id)),
       // Undo last change.
       changes: state.changes.slice(0, -1),
     };
