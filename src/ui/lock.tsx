@@ -40,7 +40,7 @@ export default function Lock({ lockedBySomeoneElse, lastItemIsSelected, ...props
       className={cn(
         "relative mx-2 h-8 w-8 rounded-full bg-white/70 p-1.5 duration-200 lg:h-12 lg:w-12",
         lockedBySomeoneElse && "opacity-20",
-        !lockedBySomeoneElse && !lastItemIsSelected && "opacity-50 [transform:rotateY(180deg)]",
+        !lockedBySomeoneElse && !lastItemIsSelected && "opacity-50 [transform:rotateY(180deg)]"
       )}
     >
       {icon}
