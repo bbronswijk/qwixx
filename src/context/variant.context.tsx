@@ -8,6 +8,7 @@ export enum Variant {
   BONUS_B = "bonus-b",
   MIXED_A = "mixed-a",
   MIXED_B = "mixed-b",
+  STEPS = "steps",
 }
 
 export const VariantContext = createContext<Variant | null>(null);

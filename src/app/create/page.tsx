@@ -15,6 +15,7 @@ import { GamePadIcon } from "@/ui/icons";
 type ComponentProps = {
   image: string;
   title: string;
+  beta?: boolean;
   onClick: () => void;
 };
 
@@ -43,6 +44,7 @@ export default function Home() {
 
       <section className='mx-auto grid w-fit grid-cols-1 gap-8 p-8 md:grid-cols-2'>
         <GameCard onClick={() => createGame(Variant.DEFAULT)} image='/default.png' title='Standaard' />
+        <GameCard onClick={() => createGame(Variant.STEPS)} image='/steps.png' title='Steps' beta={true} />
         <GameCard onClick={() => createGame(Variant.BONUS_A)} image='/variant-a.png' title='Bonus variant A' />
         <GameCard onClick={() => createGame(Variant.BONUS_B)} image='/variant-b.png' title='Bonus variant B' />
         <GameCard onClick={() => createGame(Variant.MIXED_A)} image='/mixed-a.png' title='Mix variant A' />
@@ -55,10 +57,11 @@ export default function Home() {
   );
 }
 
-const GameCard = ({ onClick, image, title }: ComponentProps) => (
-  <article className='w-fit overflow-hidden rounded-xl border bg-white duration-300 hover:shadow-xl' onClick={onClick}>
+const GameCard = ({ onClick, image, title, beta }: ComponentProps) => (
+  <article className='relative w-fit overflow-hidden rounded-xl border bg-white text-center duration-300 hover:shadow-xl' onClick={onClick}>
+    {beta && <span className='absolute right-2 top-2 mx-auto rounded bg-green-600 px-3 py-1.5 text-sm leading-none text-white'>Nieuw</span>}
     <h1 className='pt-6 text-center leading-none text-slate-400'>Variant</h1>
-    <h1 className='text-center text-lg font-bold md:text-xl'>{title}</h1>
+    <h1 className='flex items-center justify-center text-center text-lg font-bold md:text-xl'>{title}</h1>
     <Image src={image} className='mb-4 flex h-36 items-center justify-center object-contain' alt={title} width={600} height={313} priority />
   </article>
 );

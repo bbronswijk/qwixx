@@ -64,6 +64,7 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
         {...props}
       >
         {tile.type === tileType.bonus && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}
+        {tile.type === tileType.step && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.checkTwoInLowestRow && <CircleIcon className='absolute h-full w-full p-[1px] text-black' />}
         {tile.type === tileType.checkOneInAllRows && <RotatedSquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.lowestRowTimesTwo && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}

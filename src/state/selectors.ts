@@ -1,4 +1,4 @@
-import { calculateTotalPointsForRow } from "@/utils/map-number-checked-to-score";
+import { calculateTotalPointsForRow, mapNumberCheckedToScore } from "@/utils/map-number-checked-to-score";
 import QwixxStore, { State, Store } from "@/state/store";
 import { Row, rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";
@@ -76,6 +76,12 @@ export const useTotalForRowSelector = (tiles: Config, row: Row) =>
     return calculateTotalPointsForRow(tiles[row], state.selection[row]);
   });
 
+const countSelectedStepsForRows = (tiles: Config, row: Row): number => {
+  const stepsInRow = tiles[row].filter((tile) => tile.type === tileType.step).map(({ value }) => value);
+  const selection = QwixxStore.use.selection();
+  return selection[row].filter((value) => stepsInRow.includes(value)).length;
+};
+
 /**
  * Add the total sum of all rows and include failed rows.
  */
@@ -89,6 +95,12 @@ export const useTotalSelector = (tiles: Config) => {
   const failed = QwixxStore.use.failed() * -5;
 
   let score = redRow + yellowRow + greenRow + blueRow;
+
+  // Add the selected steps and add them to the score
+  const numberOfSelectedSteps =
+    countSelectedStepsForRows(tiles, rows.a) + countSelectedStepsForRows(tiles, rows.b) + countSelectedStepsForRows(tiles, rows.c) + countSelectedStepsForRows(tiles, rows.d);
+
+  score += mapNumberCheckedToScore(numberOfSelectedSteps);
 
   if (hasMetRequirements(changes, tileType.lowestRowTimesTwo)) {
     const lowestRow = Math.min(redRow, yellowRow, greenRow, blueRow);

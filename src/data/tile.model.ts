@@ -20,6 +20,7 @@ export const tileType = {
   lowestRowTimesTwo: "lowestRowTimesTwo",
   plusThirteen: "plusThirteen",
   failedRoundsDontCount: "failedRoundsDontCount",
+  step: "step",
 } as const;
 
 export type TileType = keyof typeof tileType;
