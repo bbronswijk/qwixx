@@ -11,12 +11,21 @@ import { useRouter } from "next/navigation";
 import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogTitle } from "@/ui/alert-dialog";
 import { DialogHeader } from "@/ui/dialog";
 import { GamePadIcon } from "@/ui/icons";
+import type { Viewport } from "next";
 
 type ComponentProps = {
   image: string;
   title: string;
   beta?: boolean;
   onClick: () => void;
+};
+
+export const viewport: Viewport = {
+  themeColor: "black",
+  minimumScale: 1,
+  initialScale: 1,
+  width: "device-width",
+  viewportFit: "cover",
 };
 
 export default function Home() {
