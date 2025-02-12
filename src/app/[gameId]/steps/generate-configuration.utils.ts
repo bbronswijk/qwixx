@@ -10,11 +10,9 @@ import { tileType } from "@/data/tile.model";
  */
 export const generateConfiguration = (index: number): Config => {
   const baseConfig: Config = structuredClone(stepsTiles);
-  console.log(index, index % config.length);
 
   config.at(index % config.length)!.forEach((row, index) => (baseConfig[row][index].type = tileType.step));
 
-  console.log(baseConfig);
   return baseConfig;
 };
 
