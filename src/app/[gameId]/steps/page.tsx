@@ -12,6 +12,7 @@ import Board from "@/ui/board";
 import React from "react";
 import { Config } from "@/data/config.model";
 import { useAuth } from "@/auth/authentication.context";
+import { useGamePin } from "@/utils/use-game-pin.hook";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -31,11 +32,19 @@ export default function Page() {
   );
 }
 
+/**
+ * Within a single game all players should have a different configuration.
+ * However, people should get the same configuration whenever they accidentally refresh the page.
+ * Use the game pin as randomizer so people with the A or B in their name not always start with the same configuration
+ */
 const WithConfig = () => {
   const { nickname } = useAuth();
+  const pin = useGamePin(); //
   const { members } = usePusher();
   const names = members.map((member) => member.nickname).toSorted();
-  return <Game config={generateConfiguration(names.indexOf(nickname))} />;
+  const configurationIndex = names.indexOf(nickname) + Number(pin.toString()[0]);
+
+  return <Game config={generateConfiguration(configurationIndex)} />;
 };
 
 const Game = ({ config }: { config: Config }) => {
