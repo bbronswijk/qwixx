@@ -17,6 +17,9 @@ export const humanReadableVariant = (variant: Variant | string): string => {
     case Variant.MIXED_B:
     case "mixed-b":
       return "Mix variant B";
+    case Variant.STEPS:
+    case "steps":
+      return "Steps";
     default:
       return "Onbekend";
   }
