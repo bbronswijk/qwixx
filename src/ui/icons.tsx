@@ -200,6 +200,12 @@ export const CircleIcon = ({ className, ...props }: HTMLAttributes<SVGSVGElement
   </svg>
 );
 
+export const DottedCircleIcon = ({ className, ...props }: HTMLAttributes<SVGSVGElement>) => (
+  <svg className={cn(className)} {...props} xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='currentColor' strokeWidth='2'>
+    <circle cx='16' cy='16' r='14' strokeDasharray='1,4' strokeLinecap='square' />
+  </svg>
+);
+
 export const SquareIcon = ({ className, ...props }: HTMLAttributes<SVGSVGElement>) => (
   <svg className={cn(className)} {...props} xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' fill='none' stroke='currentColor' strokeWidth='2'>
     <rect x='1' y='1' width='30' height='30' rx='5' />

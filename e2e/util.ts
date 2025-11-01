@@ -41,3 +41,7 @@ export const expectToast = async (page: Page, content: string) => {
 
   await expect(toast).toContainText(content);
 };
+
+export const openWithDefaultConfiguration = async (page: Page, configuration = 0) => {
+  await page.goto(`${page.url()}?forceConfiguration=${configuration}`);
+};

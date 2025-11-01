@@ -14,7 +14,7 @@ interface ComponentProps extends PropsWithChildren {
 
 export default function Board({ config, children }: ComponentProps) {
   return (
-    <div className='m-3 space-y-2 rounded-xl bg-slate-200 px-8 py-4 lg:p-8'>
+    <div className='m-3 space-y-0.5 rounded-xl bg-slate-200 px-8 py-4 lg:p-8'>
       <Row row={rows.a} tiles={config.a} />
       <Row row={rows.b} tiles={config.b} />
       <Row row={rows.c} tiles={config.c} />
@@ -22,7 +22,7 @@ export default function Board({ config, children }: ComponentProps) {
 
       {children}
 
-      <footer className='flex items-center gap-2 py-0 lg:gap-4 lg:py-2'>
+      <footer className='flex items-center gap-2 py-0 pt-2 lg:gap-4 lg:py-2'>
         <Failed />
         <TotalScore />
       </footer>

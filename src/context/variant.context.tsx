@@ -9,6 +9,7 @@ export enum Variant {
   MIXED_A = "mixed-a",
   MIXED_B = "mixed-b",
   STEPS = "steps",
+  CONNECTED = "connected",
 }
 
 export const VariantContext = createContext<Variant | null>(null);

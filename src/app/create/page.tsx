@@ -53,7 +53,8 @@ export default function Home() {
 
       <section className='mx-auto grid w-fit grid-cols-1 gap-8 p-8 md:grid-cols-2'>
         <GameCard onClick={() => createGame(Variant.DEFAULT)} image='/default.png' title='Standaard' />
-        <GameCard onClick={() => createGame(Variant.STEPS)} image='/steps.png' title='Steps' beta={true} />
+        <GameCard onClick={() => createGame(Variant.CONNECTED)} image='/connected.png' title='Connected' beta />
+        <GameCard onClick={() => createGame(Variant.STEPS)} image='/steps.png' title='Steps' />
         <GameCard onClick={() => createGame(Variant.BONUS_A)} image='/variant-a.png' title='Bonus variant A' />
         <GameCard onClick={() => createGame(Variant.BONUS_B)} image='/variant-b.png' title='Bonus variant B' />
         <GameCard onClick={() => createGame(Variant.MIXED_A)} image='/mixed-a.png' title='Mix variant A' />

@@ -20,6 +20,9 @@ export const humanReadableVariant = (variant: Variant | string): string => {
     case Variant.STEPS:
     case "steps":
       return "Steps";
+    case Variant.CONNECTED:
+    case "connected":
+      return "Connected";
     default:
       return "Onbekend";
   }

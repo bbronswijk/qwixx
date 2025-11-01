@@ -148,9 +148,9 @@ const state: StateCreator<Store> = (set) => ({
       };
     }),
 
-  checkTile: ({ color, type, value }, row) =>
+  checkTile: (tile, row) =>
     set((state): Partial<Store> => {
-      return checkTile(state, color, row, type, value, ActionType.user);
+      return checkTile(state, tile.color, row, tile.type, tile.value, tile.type === tileType.connected ? tile.connectedTo : undefined, ActionType.user);
     }),
 
   roundFailed: () =>

@@ -2,8 +2,8 @@
 
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "@/utils/cn";
-import { CheckedIcon, CircleIcon, OctagonIcon, RotatedSquareIcon, SkippedIcon, SquareIcon, StarIcon } from "@/ui/icons";
-import { buttonState, TileModel, tileType } from "@/data/tile.model";
+import { CheckedIcon, CircleIcon, DottedCircleIcon, OctagonIcon, RotatedSquareIcon, SkippedIcon, SquareIcon, StarIcon } from "@/ui/icons";
+import { buttonState, Direction, TileModel, tileType } from "@/data/tile.model";
 import { Color, getColorClasses, Row as RowType } from "@/data/color";
 import QwixxStore from "@/state/store";
 import { useToast } from "@/ui/use-toast";
@@ -66,6 +66,7 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
         {tile.type === tileType.bonus && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.step && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.checkTwoInLowestRow && <CircleIcon className='absolute h-full w-full p-[1px] text-black' />}
+        {tile.type === tileType.connected && <CircleIcon className='absolute h-full w-full text-black' />}
         {tile.type === tileType.checkOneInAllRows && <RotatedSquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.lowestRowTimesTwo && <SquareIcon className='absolute h-full w-full p-[2px] text-black' />}
         {tile.type === tileType.plusThirteen && <OctagonIcon className='absolute h-full w-full p-[1px] text-black' />}
@@ -73,6 +74,14 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
 
         {skipped && <SkippedIcon className='absolute -z-10 h-full w-full' />}
         {checked && <CheckedIcon className='absolute -z-10 h-full w-full' />}
+        {tile.type === tileType.connected && (
+          <div
+            className={cn(
+              "absolute left-1/2 h-[12px] w-[8px] -translate-x-1/2 border-x-2 border-slate-200 bg-black",
+              tile.connectedTo.direction === Direction.up ? "bottom-[54px]" : "top-[54px]"
+            )}
+          />
+        )}
         {children}
       </button>
     </div>

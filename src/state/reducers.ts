@@ -1,7 +1,7 @@
 import { bonusBoxes, variantATiles } from "@/app/[gameId]/bonus-a/variant-a.config";
 import { ActionType, Change, Store } from "@/state/store";
-import { Color, colorToRow, Row } from "@/data/color";
-import { NumericTileType, TileModel, tileType } from "@/data/tile.model";
+import { Color, colorToRow, Row, rows } from "@/data/color";
+import { ConnectedTo, NumericTileType, TileModel, tileType } from "@/data/tile.model";
 import { getNextTile } from "@/utils/get-next-tile";
 import { variantBTiles } from "@/app/[gameId]/bonus-b/variant-b.config";
 import { lowestRowSelector } from "@/state/selectors";
@@ -9,9 +9,35 @@ import { lowestRowSelector } from "@/state/selectors";
 /**
  * Recursively trigger the tiles.
  */
-export const checkTile = (state: Store, color: Color, row: Row, type: NumericTileType, value: number, actionType: ActionType): Partial<Store> => {
+export const checkTile = (
+  state: Store,
+  color: Color,
+  row: Row,
+  type: NumericTileType,
+  value: number,
+  connectedTo: undefined | ConnectedTo,
+  actionType: ActionType
+): Partial<Store> => {
   if (state.locked[row]) {
     return state;
+  }
+
+  if (type === tileType.connected && connectedTo) {
+    const connectedSelection = [...state.selection[connectedTo.row], connectedTo.value].toSorted((a, b) => a - b);
+
+    return {
+      ...state,
+      changes: [
+        ...state.changes,
+        { color, row, value, type, actionType },
+        { color: connectedTo.color, row: connectedTo.row, value: connectedTo.value, type, actionType: ActionType.game },
+      ],
+      selection: {
+        ...state.selection,
+        [row]: [...state.selection[row], value],
+        [connectedTo.row]: rows.a === connectedTo.row || rows.b === connectedTo.row ? connectedSelection : connectedSelection.toReversed(),
+      },
+    };
   }
 
   // Check next color if we have a normal tile.
@@ -49,7 +75,7 @@ export const checkTile = (state: Store, color: Color, row: Row, type: NumericTil
   }
 
   // Pass next color data to next function in case next color is a bonus box.
-  return checkTile(state, bonusBox.color, colorToRow(bonusBox.color), nextColor.type, nextColor.value, ActionType.game);
+  return checkTile(state, bonusBox.color, colorToRow(bonusBox.color), nextColor.type, nextColor.value, undefined, ActionType.game);
 };
 
 /**
@@ -111,7 +137,7 @@ export const undo = (state: Store, change: Change): Store => {
       // Deselect last box in the row.
       selection: {
         ...state.selection,
-        [change.row]: state.selection[change.row].slice(0, -1),
+        [change.row]: state.selection[change.row].filter((value) => value !== change.value),
       },
       // Undo last change.
       changes: state.changes.slice(0, -1),

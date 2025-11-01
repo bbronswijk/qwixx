@@ -3,11 +3,6 @@ import { Config } from "@/data/config.model";
 import { rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";
 
-/**
- * Loops over the board configuration and assigns 11 random tiles spread over the board with type tileType.step.
- * - There should be 2 - 4 steps per row.
- * - 2 steps should not be adjacent to each other.
- */
 export const generateConfiguration = (index: number): Config => {
   const baseConfig: Config = structuredClone(stepsTiles);
 
