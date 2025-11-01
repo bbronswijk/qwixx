@@ -2,7 +2,7 @@
 
 import { HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "@/utils/cn";
-import { CheckedIcon, CircleIcon, DottedCircleIcon, OctagonIcon, RotatedSquareIcon, SkippedIcon, SquareIcon, StarIcon } from "@/ui/icons";
+import { CheckedIcon, CircleIcon, OctagonIcon, RotatedSquareIcon, SkippedIcon, SquareIcon, StarIcon } from "@/ui/icons";
 import { buttonState, Direction, TileModel, tileType } from "@/data/tile.model";
 import { Color, getColorClasses, Row as RowType } from "@/data/color";
 import QwixxStore from "@/state/store";
@@ -78,7 +78,7 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
           <div
             className={cn(
               "absolute left-1/2 h-[12px] w-[8px] -translate-x-1/2 border-x-2 border-slate-200 bg-black",
-              tile.connectedTo.direction === Direction.up ? "bottom-[54px]" : "top-[54px]"
+              tile.connectedTo.direction === Direction.up ? "bottom-[31px] lg:bottom-[54px]" : "top-[31px] lg:top-[54px]"
             )}
           />
         )}
