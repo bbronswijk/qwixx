@@ -5,16 +5,14 @@ import { generateConfiguration } from "@/app/[gameId]/connected/generate-configu
 import { useTotalSelector } from "@/state/selectors";
 import { Variant, VariantContext } from "@/context/variant.context";
 import { TotalScoreContext } from "@/context/total-score.context";
-import { Pusher, usePusher } from "@/pusher/pusher.context";
+import { Pusher } from "@/pusher/pusher.context";
 import { GameHeader } from "@/ui/game-header";
 import { Members } from "@/ui/members";
 import Board from "@/ui/board";
 import React from "react";
 import { Config } from "@/data/config.model";
-import { useAuth } from "@/auth/authentication.context";
-import { useGamePin } from "@/utils/use-game-pin.hook";
-import { useParams } from "next/navigation";
 import { useConfigurationIndexHook } from "@/utils/use-configuration-index.hook";
+import { StoreProvider } from "@/state/store";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -26,19 +24,16 @@ export const viewport: Viewport = {
 
 export default function Page() {
   return (
-    <VariantContext.Provider value={Variant.STEPS}>
-      <Pusher>
-        <WithConfig />
-      </Pusher>
-    </VariantContext.Provider>
+    <StoreProvider>
+      <VariantContext.Provider value={Variant.STEPS}>
+        <Pusher>
+          <WithConfig />
+        </Pusher>
+      </VariantContext.Provider>
+    </StoreProvider>
   );
 }
 
-/**
- * Within a single game all players should have a different configuration.
- * However, people should get the same configuration whenever they accidentally refresh the page.
- * Use the game pin as randomizer so people with the A or B in their name not always start with the same configuration
- */
 const WithConfig = () => {
   const configurationIndex = useConfigurationIndexHook();
 

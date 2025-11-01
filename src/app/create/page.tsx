@@ -3,7 +3,7 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import BackButton from "@/ui/back-button";
-import QwixxStore from "@/state/store";
+import { useActions } from "@/state/store";
 import { useAuth } from "@/auth/authentication.context";
 import { createGameAction } from "@/actions/game.actions";
 import { Variant } from "@/context/variant.context";
@@ -31,7 +31,6 @@ export const viewport: Viewport = {
 
 export default function Home() {
   const { nickname } = useAuth();
-  const reset = QwixxStore.use.reset();
   const [pin, setPin] = useState<number | null>(null);
   const [variant, setVariant] = useState<Variant | undefined>();
 
@@ -39,7 +38,6 @@ export default function Home() {
     setVariant(variant);
 
     const game = await createGameAction(variant, nickname as string);
-    reset();
 
     setPin(game.pin);
   };

@@ -1,12 +1,11 @@
 import { notifyScoreSavedAction, notifyUserEndedGameAction } from "@/actions/pusher.actions";
-import QwixxStore from "@/state/store";
+import { useActions, useFailed, useGameCompleted, useGameState, useOtherUserCompletedGame, useUsersCompleted2RowsSelector } from "@/state/store";
 import { useGamePin } from "@/utils/use-game-pin.hook";
 import { useAuth } from "@/auth/authentication.context";
 import { useVariant } from "@/context/variant.context";
 import { Dialog } from "@/ui/dialog";
 import { GameScoresDialogContent } from "@/ui/game-scores-dialog-content";
 import React, { useEffect, useState } from "react";
-import { stateSelector, usersCompleted2RowsSelector } from "@/state/selectors";
 import { Button } from "@/ui/button";
 import { useTotalScore } from "@/context/total-score.context";
 
@@ -14,14 +13,14 @@ export const GameEndedBanner = () => {
   const pin = useGamePin();
   const { nickname } = useAuth();
   const variant = useVariant();
-  const state = QwixxStore(stateSelector);
-  const gameCompleted = QwixxStore.use.gameCompleted();
-  const otherUserCompletedGame = QwixxStore.use.otherUserCompletedGame();
-  const userCompleted2Rows = QwixxStore(usersCompleted2RowsSelector);
-  const markAsGameCompleted = QwixxStore.use.markAsGameCompleted();
+  const state = useGameState();
+  const gameCompleted = useGameCompleted();
+  const otherUserCompletedGame = useOtherUserCompletedGame();
+  const userCompleted2Rows = useUsersCompleted2RowsSelector();
+  const { markAsGameCompleted } = useActions();
   const [showScoreDialog, setShowScoreDialog] = useState(false);
   const totalScore = useTotalScore();
-  const failedRounds = QwixxStore.use.failed();
+  const failedRounds = useFailed();
 
   useEffect(() => {
     if (failedRounds >= 4 || userCompleted2Rows) {

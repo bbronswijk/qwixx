@@ -2,8 +2,7 @@
 
 import React, { useEffect } from "react";
 import { CircleIcon, XIcon } from "@/ui/icons";
-import QwixxStore from "@/state/store";
-import { allRowsWithLeastChecksSelector } from "@/state/selectors";
+import { useActions, useAllRowsWithLeastChecksSelector } from "@/state/store";
 import { useToast } from "@/ui/use-toast";
 import { rowToColor } from "@/data/color";
 
@@ -19,8 +18,8 @@ interface ComponentProps {
 const chain = (items: string[]): string => `${items.slice(0, -1).join(", ")} or ${items[items.length - 1]}`;
 
 export default function CheckTwoInLowestRow({ checked }: ComponentProps) {
-  const checkLowestRowTwice = QwixxStore.use.checkLowestRowTwice();
-  const allRowsWithLeastChecks = QwixxStore(allRowsWithLeastChecksSelector);
+  const { checkLowestRowTwice } = useActions();
+  const allRowsWithLeastChecks = useAllRowsWithLeastChecksSelector();
   const { toast } = useToast();
 
   useEffect(() => {

@@ -6,9 +6,9 @@ import { PresenceChannel } from "pusher-js";
 import { Member, MemberInfo } from "@/pusher/member.model";
 import { useToast } from "@/ui/use-toast";
 import { PusherEvent } from "@/pusher/pusher-event.enum";
-import QwixxStore from "@/state/store";
 import { useVariant } from "@/context/variant.context";
 import { useGamePin } from "@/utils/use-game-pin.hook";
+import { useActions } from "@/state/store";
 
 interface PusherContextValue {
   members: MemberInfo[];
@@ -31,8 +31,7 @@ export const Pusher = ({ children }: PropsWithChildren) => {
   const channel = useRef<PresenceChannel>();
   const { toast } = useToast();
   const variant = useVariant();
-  const setOtherUserCompletedGame = QwixxStore.use.setOtherUserCompletedGame();
-  const fetchScore = QwixxStore.use.fetchScore();
+  const { setOtherUserCompletedGame, fetchScore } = useActions();
   const pin = useGamePin();
 
   useEffect(() => {

@@ -8,15 +8,15 @@ import BackButton from "@/ui/back-button";
 import { joinGameAction } from "@/actions/game.actions";
 import { useAuth } from "@/auth/authentication.context";
 import { useToast } from "@/ui/use-toast";
-import QwixxStore from "@/state/store";
 import { LoaderIcon } from "@/ui/icons";
+import { useActions } from "@/state/store";
 
 export default function Page() {
   const ref = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { nickname } = useAuth();
   const { toast } = useToast();
-  const reset = QwixxStore.use.reset();
+  const { reset } = useActions();
   const [joining, setJoining] = useState(false);
 
   useEffect(() => {

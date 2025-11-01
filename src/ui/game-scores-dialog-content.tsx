@@ -3,13 +3,13 @@
 import { DialogContent, DialogFooter } from "@/ui/dialog";
 import Image from "next/image";
 import React from "react";
-import QwixxStore from "@/state/store";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { buttonVariants } from "@/ui/button";
+import { useScores } from "@/state/store";
 
 export const GameScoresDialogContent = () => {
-  const scores = QwixxStore.use.scores();
+  const scores = useScores();
 
   return (
     <DialogContent>

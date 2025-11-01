@@ -5,9 +5,8 @@ import { cn } from "@/utils/cn";
 import { CheckedIcon, CircleIcon, OctagonIcon, RotatedSquareIcon, SkippedIcon, SquareIcon, StarIcon } from "@/ui/icons";
 import { buttonState, Direction, TileModel, tileType } from "@/data/tile.model";
 import { Color, getColorClasses, Row as RowType } from "@/data/color";
-import QwixxStore from "@/state/store";
+import { useActions, useSelectionForRow } from "@/state/store";
 import { useToast } from "@/ui/use-toast";
-import { selectionForRow } from "@/state/selectors";
 import { useVariant, Variant } from "@/context/variant.context";
 
 interface ComponentProps extends PropsWithChildren, HTMLAttributes<HTMLButtonElement> {
@@ -24,9 +23,8 @@ export type ButtonState = keyof typeof buttonState;
 
 export default function Tile({ children, tile, row, disabled, checked, skipped, isLastItem, color, ...props }: ComponentProps) {
   const { toast } = useToast();
-  const selection = QwixxStore(selectionForRow(row));
-  const onCheckTile = QwixxStore.use.checkTile();
-  const completeBonusRow = QwixxStore.use.skipBonusBoxesOfCompleteRow();
+  const { checkTile, completeBonusRow } = useActions();
+  const selection = useSelectionForRow(row);
   const variant = useVariant();
   let state: ButtonState = buttonState.unchecked;
 
@@ -48,7 +46,7 @@ export default function Tile({ children, tile, row, disabled, checked, skipped, 
             return;
           }
 
-          onCheckTile(tile, row);
+          checkTile(tile, row);
 
           if (isLastItem && variant === Variant.BONUS_A) {
             completeBonusRow(row);

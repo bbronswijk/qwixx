@@ -1,10 +1,10 @@
-import QwixxStore from "@/state/store";
 import { cn } from "@/utils/cn";
 import React from "react";
 import { useTotalScore } from "@/context/total-score.context";
+import { useShowScore } from "@/state/store";
 
 export const TotalScore = () => {
-  const showScore = QwixxStore.use.showScore();
+  const showScore = useShowScore();
   const totalScore = useTotalScore();
 
   return (

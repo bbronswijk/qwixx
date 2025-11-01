@@ -6,12 +6,12 @@ import CheckOneInAllRows from "@/app/[gameId]/bonus-b/extra/check-one-all-rows";
 import LowestRowTimesTwo from "@/app/[gameId]/bonus-b/extra/lowest-row-times-two";
 import FailedRoundsDontCount from "@/app/[gameId]/bonus-b/extra/failed-rounds-dont-count";
 import PlusThirteen from "@/app/[gameId]/bonus-b/extra/plus-thirteen";
-import QwixxStore from "@/state/store";
+import { useChanges } from "@/state/store";
 import { tileType } from "@/data/tile.model";
 import { hasMetRequirements } from "@/utils/has-met-requirements";
 
 export default function ExtraPoints() {
-  const changes = QwixxStore.use.changes();
+  const changes = useChanges();
 
   return (
     <div data-testid='bonus' className='flex items-center justify-between rounded-lg border-2 border-slate-400 p-2 lg:p-3'>

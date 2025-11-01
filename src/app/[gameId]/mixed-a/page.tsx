@@ -10,6 +10,7 @@ import { mixedATiles } from "@/app/[gameId]/mixed-a/mixed-a.config";
 import { GameHeader } from "@/ui/game-header";
 import type { Viewport } from "next";
 import { TotalScoreContext } from "@/context/total-score.context";
+import { StoreProvider } from "@/state/store";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -20,19 +21,27 @@ export const viewport: Viewport = {
 };
 
 export default function Home() {
+  return (
+    <StoreProvider>
+      <VariantContext.Provider value={Variant.DEFAULT}>
+        <Pusher>
+          <Game />
+        </Pusher>
+      </VariantContext.Provider>
+    </StoreProvider>
+  );
+}
+
+export function Game() {
   const totalScore = useTotalSelector(mixedATiles);
 
   return (
-    <VariantContext.Provider value={Variant.DEFAULT}>
-      <TotalScoreContext.Provider value={totalScore}>
-        <Pusher>
-          <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
-            <GameHeader />
-            <Members />
-            <Board config={mixedATiles} />
-          </main>
-        </Pusher>
-      </TotalScoreContext.Provider>
-    </VariantContext.Provider>
+    <TotalScoreContext.Provider value={totalScore}>
+      <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
+        <GameHeader />
+        <Members />
+        <Board config={mixedATiles} />
+      </main>
+    </TotalScoreContext.Provider>
   );
 }

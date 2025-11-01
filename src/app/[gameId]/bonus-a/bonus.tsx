@@ -4,10 +4,11 @@ import BonusBox from "@/app/[gameId]/bonus-a/bonus-box";
 import { TriangleIcon } from "@/ui/icons";
 import React, { Fragment } from "react";
 import { bonusBoxes } from "@/app/[gameId]/bonus-a/variant-a.config";
-import QwixxStore from "@/state/store";
+import { useBonus } from "@/state/store";
 
 export default function Bonus() {
-  const selected = QwixxStore(({ bonus }) => bonus.map(({ id }) => id));
+  const bonus = useBonus();
+  const selected = bonus.map(({ id }) => id);
 
   return (
     <div data-testid='bonus' className='flex items-center rounded-lg border-slate-400 py-2 lg:py-4'>

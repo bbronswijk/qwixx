@@ -1,7 +1,7 @@
-import QwixxStore from "@/state/store";
 import { calculateTotalPointsForRow } from "@/utils/map-number-checked-to-score";
 import { EyeOffIcon } from "@/ui/icons";
 import { TileModel } from "@/data/tile.model";
+import { useActions, useShowScore } from "@/state/store";
 
 interface ComponentProps {
   tiles: TileModel[];
@@ -9,8 +9,8 @@ interface ComponentProps {
 }
 
 export default function TotalRowScore({ tiles, selection }: ComponentProps) {
-  const toggleScoreVisibility = QwixxStore.use.toggleScoreVisibility();
-  const showScore = QwixxStore.use.showScore();
+  const { toggleScoreVisibility } = useActions();
+  const showScore = useShowScore();
 
   return (
     <div

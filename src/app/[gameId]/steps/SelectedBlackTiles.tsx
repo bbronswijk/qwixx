@@ -1,14 +1,13 @@
 import { Config } from "@/data/config.model";
-import { getTotalNumberOfSelectedSteps } from "@/utils/getTotalNumberOfSelectedSteps";
 import React, { Fragment } from "react";
 import BonusBox from "@/app/[gameId]/bonus-a/bonus-box";
 import { TriangleIcon } from "@/ui/icons";
 import { mapNumberCheckedToScore } from "@/utils/map-number-checked-to-score";
-import QwixxStore from "@/state/store";
+import { useShowScore, useTotalNumberOfSelectedSteps } from "@/state/store";
 
 export const SelectedBlackTiles = ({ config }: { config: Config }) => {
-  const numberOfSelectedSteps = getTotalNumberOfSelectedSteps(config);
-  const showScore = QwixxStore.use.showScore();
+  const numberOfSelectedSteps = useTotalNumberOfSelectedSteps(config);
+  const showScore = useShowScore();
 
   return (
     <div className='flex items-center rounded-lg py-2 lg:py-4'>

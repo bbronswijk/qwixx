@@ -8,8 +8,7 @@ import TotalRowScore from "@/ui/totalRowScore";
 import Lock from "@/ui/lock";
 import { getColorClasses, Row as RowType } from "@/data/color";
 import { TileModel } from "@/data/tile.model";
-import QwixxStore from "@/state/store";
-import { selectionForRow } from "@/state/selectors";
+import { useActions, useGameCompleted, useLocked, useSelectionForRow } from "@/state/store";
 
 interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
   row: RowType;
@@ -17,14 +16,14 @@ interface ComponentProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 export default function Row({ row, tiles, ...props }: ComponentProps) {
-  const selection = QwixxStore(selectionForRow(row));
-  const lockedState = QwixxStore.use.locked();
+  const selection = useSelectionForRow(row);
+  const lockedState = useLocked();
   const last = tiles.at(-1) as TileModel;
   const lastSelected = selection.at(-1) as number;
   const lastItemIsSelected = selection.includes(last.value);
   const lastSelectedIndex = tiles.findIndex(({ value }) => value === lastSelected);
-  const lockRow = QwixxStore.use.lockRow();
-  const gameCompleted = QwixxStore.use.gameCompleted();
+  const { lockRow } = useActions();
+  const gameCompleted = useGameCompleted();
   const lockedBySomeoneElse = lockedState[row];
 
   return (

@@ -1,44 +1,9 @@
-import { calculateTotalPointsForRow, mapNumberCheckedToScore } from "@/utils/map-number-checked-to-score";
-import QwixxStore, { State, Store } from "@/state/store";
+import { mapNumberCheckedToScore } from "@/utils/map-number-checked-to-score";
+import { Store, useChanges, useFailed, useTotalForRowSelector, useTotalNumberOfSelectedSteps } from "@/state/store";
 import { Row, rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";
 import { hasMetRequirements } from "@/utils/has-met-requirements";
 import { Config } from "@/data/config.model";
-import { getTotalNumberOfSelectedSteps } from "@/utils/getTotalNumberOfSelectedSteps";
-
-/**
- * Only select the data not the re
- * @param state
- */
-export const stateSelector = (state: Store): State => ({
-  gameCompleted: state.gameCompleted,
-  otherUserCompletedGame: state.otherUserCompletedGame,
-  changes: state.changes,
-  selection: state.selection,
-  locked: state.locked,
-  bonus: state.bonus,
-  failed: state.failed,
-  showScore: state.showScore,
-  scores: state.scores,
-});
-
-export const selectionForRow =
-  (row: Row) =>
-  (state: Store): number[] =>
-    state.selection[row];
-
-/**
- * Check if users completed 2 rows, so we can end the game.
- */
-export const usersCompleted2RowsSelector = (state: Store): boolean => {
-  const completionCounts = [state.selection.a.includes(12), state.selection.b.includes(12), state.selection.c.includes(2), state.selection.d.includes(2)].filter(
-    (isComplete) => isComplete
-  ).length;
-
-  const lockedRows = Object.values(state.locked).filter((locked) => locked).length;
-
-  return completionCounts + lockedRows >= 2;
-};
 
 /**
  * Return all rows that are not locked by someone else.
@@ -61,38 +26,21 @@ export const lowestRowSelector = (state: Store): { row: Row; value: number } => 
 };
 
 /**
- * Return all rows with the lowest amount of checks.
- */
-export const allRowsWithLeastChecksSelector = (state: Store): { row: Row; value: number }[] => {
-  const unLockedRows = unLockedRowsSelector(state);
-  const rowWithLeastChecks = lowestRowSelector(state);
-  return unLockedRows.filter(({ value }) => value === rowWithLeastChecks.value);
-};
-
-/**
- * Calculate the total score for a single row.
- */
-export const useTotalForRowSelector = (tiles: Config, row: Row) =>
-  QwixxStore((state) => {
-    return calculateTotalPointsForRow(tiles[row], state.selection[row]);
-  });
-
-/**
  * Add the total sum of all rows and include failed rows.
  */
 export const useTotalSelector = (tiles: Config) => {
-  const changes = QwixxStore.use.changes();
+  const changes = useChanges();
 
   const redRow = useTotalForRowSelector(tiles, rows.a);
   const yellowRow = useTotalForRowSelector(tiles, rows.b);
   const greenRow = useTotalForRowSelector(tiles, rows.c);
   const blueRow = useTotalForRowSelector(tiles, rows.d);
-  const failed = QwixxStore.use.failed() * -5;
+  const failed = useFailed() * -5;
 
   let score = redRow + yellowRow + greenRow + blueRow;
 
   // Add the selected steps and add them to the score
-  const numberOfSelectedSteps = getTotalNumberOfSelectedSteps(tiles);
+  const numberOfSelectedSteps = useTotalNumberOfSelectedSteps(tiles);
   score += mapNumberCheckedToScore(numberOfSelectedSteps);
 
   if (hasMetRequirements(changes, tileType.lowestRowTimesTwo)) {

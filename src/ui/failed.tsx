@@ -1,18 +1,18 @@
 import React from "react";
 import { XIcon } from "@/ui/icons";
 import { cn } from "@/utils/cn";
-import QwixxStore from "@/state/store";
+import { useActions, useFailed, useGameCompleted } from "@/state/store";
 
 export default function Failed() {
-  const failedRounds = QwixxStore.use.failed();
-  const onFailRound = QwixxStore.use.roundFailed();
-  const gameCompleted = QwixxStore.use.gameCompleted();
+  const failedRounds = useFailed();
+  const { roundFailed } = useActions();
+  const gameCompleted = useGameCompleted();
   const disabled = failedRounds >= 4 || gameCompleted;
 
   return (
     <>
       <button
-        onClick={onFailRound}
+        onClick={roundFailed}
         disabled={disabled}
         className={cn("h-8 whitespace-nowrap rounded border-2 border-slate-600 px-2 font-bold text-slate-600 lg:h-10 lg:border-4 lg:px-5", disabled && "opacity-40")}
       >

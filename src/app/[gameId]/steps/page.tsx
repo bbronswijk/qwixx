@@ -13,6 +13,7 @@ import React from "react";
 import { Config } from "@/data/config.model";
 import { useConfigurationIndexHook } from "@/utils/use-configuration-index.hook";
 import { SelectedBlackTiles } from "@/app/[gameId]/steps/SelectedBlackTiles";
+import { StoreProvider } from "@/state/store";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -24,11 +25,13 @@ export const viewport: Viewport = {
 
 export default function Page() {
   return (
-    <VariantContext.Provider value={Variant.STEPS}>
-      <Pusher>
-        <WithConfig />
-      </Pusher>
-    </VariantContext.Provider>
+    <StoreProvider>
+      <VariantContext.Provider value={Variant.STEPS}>
+        <Pusher>
+          <WithConfig />
+        </Pusher>
+      </VariantContext.Provider>
+    </StoreProvider>
   );
 }
 

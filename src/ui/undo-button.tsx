@@ -1,12 +1,11 @@
 import { UndoIcon } from "@/ui/icons";
 import { cn } from "@/utils/cn";
-import QwixxStore, { ActionType } from "@/state/store";
-import { useToast } from "@/ui/use-toast";
+import { useActions, useChanges, useGameCompleted } from "@/state/store";
 
 export default function UndoButton() {
-  const undo = QwixxStore.use.undo();
-  const userActions = QwixxStore.use.changes();
-  const gameCompleted = QwixxStore.use.gameCompleted();
+  const { undo } = useActions();
+  const userActions = useChanges();
+  const gameCompleted = useGameCompleted();
   const disabled = userActions.length === 0 || gameCompleted;
 
   return (

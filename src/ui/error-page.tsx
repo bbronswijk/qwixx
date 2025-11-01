@@ -5,8 +5,7 @@ import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { notifyUserEndedGameAction } from "@/actions/pusher.actions";
 import { useAuth } from "@/auth/authentication.context";
-import QwixxStore from "@/state/store";
-import { stateSelector } from "@/state/selectors";
+import { useActions, useGameState } from "@/state/store";
 import { useGamePin } from "@/utils/use-game-pin.hook";
 import { useEffect, useState } from "react";
 import { saveChanges } from "@/actions/game.actions";
@@ -21,9 +20,9 @@ export const UnExpectedError = ({ variant, totalScore, reset }: ComponentProps) 
   const [gameEnded, setGameEnded] = useState(false);
   const [loading, setLoading] = useState(false);
   const { nickname } = useAuth();
-  const store = QwixxStore(stateSelector);
+  const { undo } = useActions();
+  const store = useGameState();
   const pin = useGamePin();
-  const undo = QwixxStore.use.undo();
 
   useEffect(() => {
     saveChanges(pin, nickname as string, store);
