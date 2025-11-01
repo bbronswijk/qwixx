@@ -54,7 +54,6 @@ export type Store = State & Reducers;
 
 export enum ActionType {
   user = "user",
-  pusher = "pusher",
   game = "game",
 }
 

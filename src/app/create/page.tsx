@@ -12,6 +12,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescript
 import { DialogHeader } from "@/ui/dialog";
 import { GamePadIcon } from "@/ui/icons";
 import type { Viewport } from "next";
+import { Trophy } from "lucide-react";
 
 type ComponentProps = {
   image: string;
@@ -49,14 +50,14 @@ export default function Home() {
         <BackButton />
       </header>
 
-      <h1 className='col-span-2 pt-8 text-center text-2xl font-bold'>Choose a variant</h1>
+      <h1 className='col-span-2 pt-8 text-center text-2xl font-bold'>Choose a game</h1>
 
       <section className='mx-auto grid w-fit grid-cols-1 gap-8 p-8 md:grid-cols-2'>
-        <GameCard onClick={() => createGame(Variant.DEFAULT)} image='/default.png' title='Standaard' />
+        <GameCard onClick={() => createGame(Variant.DEFAULT)} image='/default.png' title='Default' />
         <GameCard onClick={() => createGame(Variant.CONNECTED)} image='/connected.png' title='Connected' beta />
-        <GameCard onClick={() => createGame(Variant.STEPS)} image='/steps.png' title='Steps' />
         <GameCard onClick={() => createGame(Variant.BONUS_A)} image='/variant-a.png' title='Bonus variant A' />
         <GameCard onClick={() => createGame(Variant.BONUS_B)} image='/variant-b.png' title='Bonus variant B' />
+        <GameCard onClick={() => createGame(Variant.STEPS)} image='/steps.png' title='Steps' />
         <GameCard onClick={() => createGame(Variant.MIXED_A)} image='/mixed-a.png' title='Mix variant A' />
       </section>
 
@@ -69,8 +70,13 @@ export default function Home() {
 
 const GameCard = ({ onClick, image, title, beta }: ComponentProps) => (
   <article className='relative w-fit overflow-hidden rounded-xl border bg-white text-center duration-300 hover:shadow-xl' onClick={onClick}>
-    {beta && <span className='absolute right-2 top-2 mx-auto rounded bg-green-600 px-3 py-1.5 text-sm leading-none text-white'>Nieuw</span>}
-    <h1 className='pt-6 text-center leading-none text-slate-400'>Variant</h1>
+    {beta && (
+      <span className='absolute right-2 top-2 mx-auto flex items-center gap-2 rounded-full bg-blue-600 px-3 py-1.5 text-sm leading-none text-white'>
+        <Trophy className='h-4 w-4' />
+        New
+      </span>
+    )}
+    <h1 className='pt-6 text-center leading-none text-slate-400'>Game</h1>
     <h1 className='flex items-center justify-center text-center text-lg font-bold md:text-xl'>{title}</h1>
     <Image src={image} className='mb-4 flex h-36 items-center justify-center object-contain' alt={title} width={600} height={313} priority />
   </article>

@@ -40,7 +40,7 @@ test("Should show a dialog that the game has ended when the user completed 2 row
 test("Should show a dialog that the game has ended when the user failed 4 turns", async ({ page }) => {
   await startGame(page, Variant.DEFAULT);
 
-  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
+  const failedButton = page.getByRole("button", { name: "Penalty" });
 
   await failedButton.click();
   await failedButton.click();

@@ -102,11 +102,6 @@ function findFirstEmptyBonusBox(nums: number[]): number {
  * Recursively undo the last changes.
  */
 export const undo = (state: Store, change: Change): Store => {
-  // If the last change came from pusher (from another user) undoing is disabled.
-  if (change.actionType === ActionType.pusher) {
-    return state;
-  }
-
   // Undo last change
   if (change.type === tileType.failed) {
     state = {
@@ -149,7 +144,7 @@ export const undo = (state: Store, change: Change): Store => {
 
   // If the change was triggered by a user finish undoing.
   // Or in case all changes have already been undone.
-  if ([ActionType.user, ActionType.pusher].includes(change.actionType) || !nextChange) {
+  if (ActionType.user === change.actionType || !nextChange) {
     return state;
   }
 

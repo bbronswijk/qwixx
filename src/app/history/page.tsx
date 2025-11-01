@@ -39,7 +39,7 @@ export default async function Page() {
               <div key={member.nickname} className='mt-2 flex items-center gap-4 text-xl font-bold'>
                 <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname} height={40} width={40} />
                 <span>{member.nickname}</span>
-                {member.score !== null ? <span className='ml-auto'>{member.score} punten</span> : <span className='ml-auto'>unknown</span>}
+                {member.score !== null ? <span className='ml-auto'>{member.score} points</span> : <span className='ml-auto'>unknown</span>}
               </div>
             ))}
         </article>

@@ -4,7 +4,7 @@ export const humanReadableVariant = (variant: Variant | string): string => {
   switch (variant) {
     case Variant.DEFAULT:
     case "default":
-      return "Standaard";
+      return "Default";
     case Variant.BONUS_A:
     case "bonus-a":
       return "Bonus variant A";
@@ -24,6 +24,6 @@ export const humanReadableVariant = (variant: Variant | string): string => {
     case "connected":
       return "Connected";
     default:
-      return "Onbekend";
+      return "Unknown variant";
   }
 };

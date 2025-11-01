@@ -12,7 +12,7 @@ test("should reflect the correct total score all selected cells", async ({ page 
   const yellowRow = rows.nth(1);
 
   const totalScore = page.getByTestId("score");
-  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
+  const failedButton = page.getByRole("button", { name: "Penalty" });
 
   await toggleScoreVisibility.click();
 

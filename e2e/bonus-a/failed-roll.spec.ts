@@ -5,7 +5,7 @@ import { Variant } from "@/context/variant.context";
 test("should reflect the correct total count for the failed roll", async ({ page }) => {
   await startGame(page, Variant.BONUS_A);
 
-  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
+  const failedButton = page.getByRole("button", { name: "Penalty" });
   const total = page.getByTestId("failed-total");
   const totalScore = page.getByTestId("score");
 
@@ -29,7 +29,7 @@ test("should reflect the correct total count for the failed roll", async ({ page
 test("should be able to undo a failed roll", async ({ page }) => {
   await startGame(page, Variant.BONUS_A);
 
-  const failedButton = page.getByRole("button", { name: "Worp mislukt" });
+  const failedButton = page.getByRole("button", { name: "Penalty" });
   const total = page.getByTestId("failed-total");
   const undoButton = page.getByTestId("undo");
 

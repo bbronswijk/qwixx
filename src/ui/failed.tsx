@@ -16,7 +16,7 @@ export default function Failed() {
         disabled={disabled}
         className={cn("h-8 whitespace-nowrap rounded border-2 border-slate-600 px-2 font-bold text-slate-600 lg:h-10 lg:border-4 lg:px-5", disabled && "opacity-40")}
       >
-        Worp mislukt
+        Penalty
       </button>
 
       {[1, 2, 3, 4].map((points) => (
