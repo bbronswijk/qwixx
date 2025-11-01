@@ -16,9 +16,9 @@ export default function BonusBox({ checked, className }: ComponentProps) {
     <div
       data-testid='bonus-box'
       data-state={checked ? bonusBoxState.checked : bonusBoxState.unchecked}
-      className={cn(className, "h-5 w-5 rounded border-4 border-white font-bold shadow lg:h-8 lg:w-8 lg:border-[6px]")}
+      className={cn("h-5 w-5 rounded border-4 border-white font-bold text-white shadow lg:h-8 lg:w-8 lg:border-[6px]", className)}
     >
-      {checked && <XIcon className='text-white' />}
+      {checked && <XIcon />}
     </div>
   );
 }

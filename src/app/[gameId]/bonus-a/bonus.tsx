@@ -10,7 +10,7 @@ export default function Bonus() {
   const selected = QwixxStore(({ bonus }) => bonus.map(({ id }) => id));
 
   return (
-    <div data-testid='bonus' className='flex items-center rounded-lg border-2 border-slate-400 p-2 lg:p-4'>
+    <div data-testid='bonus' className='flex items-center rounded-lg border-slate-400 py-2 lg:py-4'>
       {bonusBoxes.map((item, index) => (
         <Fragment key={item.id}>
           <BonusBox checked={selected.includes(item.id)} className={item.className} />

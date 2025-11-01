@@ -12,6 +12,7 @@ import Board from "@/ui/board";
 import React from "react";
 import { Config } from "@/data/config.model";
 import { useConfigurationIndexHook } from "@/utils/use-configuration-index.hook";
+import { SelectedBlackTiles } from "@/app/[gameId]/steps/SelectedBlackTiles";
 
 export const viewport: Viewport = {
   themeColor: "black",
@@ -45,7 +46,9 @@ const Game = ({ config }: { config: Config }) => {
       <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
         <GameHeader />
         <Members />
-        <Board config={config} />
+        <Board config={config}>
+          <SelectedBlackTiles config={config} />
+        </Board>
       </main>
     </TotalScoreContext.Provider>
   );

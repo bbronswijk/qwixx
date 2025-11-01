@@ -4,6 +4,7 @@ import { Row, rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";
 import { hasMetRequirements } from "@/utils/has-met-requirements";
 import { Config } from "@/data/config.model";
+import { getTotalNumberOfSelectedSteps } from "@/utils/getTotalNumberOfSelectedSteps";
 
 /**
  * Only select the data not the re
@@ -76,12 +77,6 @@ export const useTotalForRowSelector = (tiles: Config, row: Row) =>
     return calculateTotalPointsForRow(tiles[row], state.selection[row]);
   });
 
-const countSelectedStepsForRows = (tiles: Config, row: Row): number => {
-  const stepsInRow = tiles[row].filter((tile) => tile.type === tileType.step).map(({ value }) => value);
-  const selection = QwixxStore.use.selection();
-  return selection[row].filter((value) => stepsInRow.includes(value)).length;
-};
-
 /**
  * Add the total sum of all rows and include failed rows.
  */
@@ -97,9 +92,7 @@ export const useTotalSelector = (tiles: Config) => {
   let score = redRow + yellowRow + greenRow + blueRow;
 
   // Add the selected steps and add them to the score
-  const numberOfSelectedSteps =
-    countSelectedStepsForRows(tiles, rows.a) + countSelectedStepsForRows(tiles, rows.b) + countSelectedStepsForRows(tiles, rows.c) + countSelectedStepsForRows(tiles, rows.d);
-
+  const numberOfSelectedSteps = getTotalNumberOfSelectedSteps(tiles);
   score += mapNumberCheckedToScore(numberOfSelectedSteps);
 
   if (hasMetRequirements(changes, tileType.lowestRowTimesTwo)) {
