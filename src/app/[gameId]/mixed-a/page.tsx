@@ -32,7 +32,7 @@ export default function Home() {
   );
 }
 
-export function Game() {
+function Game() {
   const totalScore = useTotalSelector(mixedATiles);
 
   return (
