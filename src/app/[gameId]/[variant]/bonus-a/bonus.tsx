@@ -1,9 +1,9 @@
 "use client";
 
-import BonusBox from "@/app/[gameId]/bonus-a/bonus-box";
+import BonusBox from "@/app/[gameId]/[variant]/bonus-a/bonus-box";
 import { TriangleIcon } from "@/ui/icons";
 import React, { Fragment } from "react";
-import { bonusBoxes } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { bonusBoxes } from "@/app/[gameId]/[variant]/bonus-a/variant-a.config";
 import { useBonus } from "@/state/store";
 
 export default function Bonus() {

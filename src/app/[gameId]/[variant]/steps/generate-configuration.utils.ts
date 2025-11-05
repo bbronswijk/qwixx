@@ -1,4 +1,4 @@
-import { stepsTiles } from "@/app/[gameId]/steps/steps.config";
+import { stepsTiles } from "@/app/[gameId]/[variant]/steps/steps.config";
 import { Config } from "@/data/config.model";
 import { rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";

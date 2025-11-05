@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { clickButton, expectButtonToHaveState, startGame } from "../util";
-import { bonusBoxState } from "@/app/[gameId]/bonus-a/bonus-box";
+import { bonusBoxState } from "@/app/[gameId]/[variant]/bonus-a/bonus-box";
 import { buttonState } from "@/data/tile.model";
 import { Variant } from "@/context/variant.context";
 

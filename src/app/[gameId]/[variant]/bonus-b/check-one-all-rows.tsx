@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { RotatedSquareIcon, XIcon } from "@/ui/icons";
-import { useActions } from "@/state/store";
+import { useActions, useGameCompleted } from "@/state/store";
 
 interface ComponentProps {
   checked: boolean;
@@ -10,9 +10,10 @@ interface ComponentProps {
 
 export default function CheckOneAllRows({ checked }: ComponentProps) {
   const { checkOneInEachRow } = useActions();
+  const gameHasEnded = useGameCompleted();
 
   useEffect(() => {
-    if (checked) {
+    if (checked && !gameHasEnded) {
       checkOneInEachRow();
     }
   }, [checked]);

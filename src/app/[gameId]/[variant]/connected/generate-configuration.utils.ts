@@ -1,4 +1,4 @@
-import { connectedTiles } from "@/app/[gameId]/connected/connected.config";
+import { connectedTiles } from "@/app/[gameId]/[variant]/connected/connected.config";
 import { Config } from "@/data/config.model";
 import { colors, rows } from "@/data/color";
 import { Direction, tileType } from "@/data/tile.model";
@@ -168,13 +168,6 @@ const configB = [
     connectedTo: { color: colors.green, row: rows.c, value: 6, direction: Direction.up },
   },
 ] as const;
-
-// {
-//   row: rows.,
-//     value: ,
-//   index: ,
-//   connectedTo: { color: colors., row: rows., value: , direction: Direction. },
-// },
 
 const configC = [
   {

@@ -1,4 +1,4 @@
-import { Variant, VariantContext } from "@/context/variant.context";
+import { useVariant } from "@/context/variant.context";
 import { BugIcon, LoaderIcon } from "@/ui/icons";
 import { Button, buttonVariants } from "@/ui/button";
 import Link from "next/link";
@@ -6,17 +6,14 @@ import { cn } from "@/utils/cn";
 import { notifyUserEndedGameAction } from "@/actions/pusher.actions";
 import { useAuth } from "@/auth/authentication.context";
 import { useActions, useGameState } from "@/state/store";
-import { useGamePin } from "@/utils/use-game-pin.hook";
 import { useEffect, useState } from "react";
-import { saveChanges } from "@/actions/game.actions";
+import { notifyAdminAboutError, saveChanges } from "@/actions/game.actions";
+import { useTotalSelector } from "@/state/selectors";
+import { useGamePin } from "@/context/game-pin.context";
 
-interface ComponentProps {
-  variant: Variant;
-  totalScore: number;
-  reset: () => void;
-}
-
-export const UnExpectedError = ({ variant, totalScore, reset }: ComponentProps) => {
+export const UnExpectedError = ({ onReset }: { onReset: () => void }) => {
+  const totalScore = useTotalSelector();
+  const variant = useVariant();
   const [gameEnded, setGameEnded] = useState(false);
   const [loading, setLoading] = useState(false);
   const { nickname } = useAuth();
@@ -25,12 +22,13 @@ export const UnExpectedError = ({ variant, totalScore, reset }: ComponentProps) 
   const pin = useGamePin();
 
   useEffect(() => {
-    saveChanges(pin, nickname as string, store);
+    notifyAdminAboutError(pin);
+    saveChanges(pin, nickname, store);
   }, []);
 
   const handleUndo = () => {
     undo();
-    reset();
+    onReset();
   };
 
   const handleEndGame = async () => {
@@ -69,20 +67,18 @@ export const UnExpectedError = ({ variant, totalScore, reset }: ComponentProps) 
   }
 
   return (
-    <VariantContext.Provider value={variant}>
-      <main className='flex h-full w-full items-center justify-center bg-red-600 p-4'>
-        <div className='m-3 space-y-2 rounded-xl border bg-white px-12 py-4 text-center'>
-          <BugIcon className='mx-auto mt-4 h-16 w-16 rotate-12 opacity-30' />
-          <section className='space-y-4 pb-4'>
-            <h1 className='text-4xl font-bold'>Unexpected Error</h1>
-            <p className='max-w-96 leading-relaxed'>
-              It looks like you&lsquo;ve encountered an unexpected bug. You can try undoing your last action and choosing a different one, or you can choose to end the game.
-            </p>
-          </section>
+    <main className='flex h-full w-full items-center justify-center bg-red-600 p-4'>
+      <div className='m-3 space-y-2 rounded-xl border bg-white px-12 py-4 text-center'>
+        <BugIcon className='mx-auto mt-4 h-16 w-16 rotate-12 opacity-30' />
+        <section className='space-y-4 pb-4'>
+          <h1 className='text-4xl font-bold'>Unexpected Error</h1>
+          <p className='max-w-96 leading-relaxed'>
+            It looks like you&lsquo;ve encountered an unexpected bug. You can try undoing your last action and choosing a different one, or you can choose to end the game.
+          </p>
+        </section>
 
-          {content}
-        </div>
-      </main>
-    </VariantContext.Provider>
+        {content}
+      </div>
+    </main>
   );
 };

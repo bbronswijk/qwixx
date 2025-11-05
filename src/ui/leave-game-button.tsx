@@ -1,8 +1,8 @@
 import { leaveGameAction } from "@/actions/game.actions";
 import { useAuth } from "@/auth/authentication.context";
-import { useGamePin } from "@/utils/use-game-pin.hook";
 import BackButton from "@/ui/back-button";
 import { useEffect, useRef } from "react";
+import { useGamePin } from "@/context/game-pin.context";
 
 const isDevelopment = process.env.NODE_ENV === "development";
 

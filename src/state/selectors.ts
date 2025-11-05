@@ -3,7 +3,7 @@ import { Store, useChanges, useFailed, useTotalForRowSelector, useTotalNumberOfS
 import { Row, rows } from "@/data/color";
 import { tileType } from "@/data/tile.model";
 import { hasMetRequirements } from "@/utils/has-met-requirements";
-import { Config } from "@/data/config.model";
+import { useConfiguration } from "@/context/configuration.context";
 
 /**
  * Return all rows that are not locked by someone else.
@@ -28,7 +28,8 @@ export const lowestRowSelector = (state: Store): { row: Row; value: number } => 
 /**
  * Add the total sum of all rows and include failed rows.
  */
-export const useTotalSelector = (tiles: Config) => {
+export const useTotalSelector = () => {
+  const tiles = useConfiguration();
   const changes = useChanges();
 
   const redRow = useTotalForRowSelector(tiles, rows.a);

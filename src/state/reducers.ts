@@ -1,9 +1,9 @@
-import { bonusBoxes, variantATiles } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { bonusBoxes, variantATiles } from "@/app/[gameId]/[variant]/bonus-a/variant-a.config";
 import { ActionType, Change, Store } from "@/state/store";
 import { Color, colorToRow, Row, rows } from "@/data/color";
 import { ConnectedTo, NumericTileType, TileModel, tileType } from "@/data/tile.model";
 import { getNextTile } from "@/utils/get-next-tile";
-import { variantBTiles } from "@/app/[gameId]/bonus-b/variant-b.config";
+import { variantBTiles } from "@/app/[gameId]/[variant]/bonus-b/variant-b.config";
 import { lowestRowSelector } from "@/state/selectors";
 
 /**

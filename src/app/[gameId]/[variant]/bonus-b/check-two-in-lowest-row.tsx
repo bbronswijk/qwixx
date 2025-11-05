@@ -2,7 +2,7 @@
 
 import React, { useEffect } from "react";
 import { CircleIcon, XIcon } from "@/ui/icons";
-import { useActions, useAllRowsWithLeastChecksSelector } from "@/state/store";
+import { useActions, useAllRowsWithLeastChecksSelector, useGameCompleted } from "@/state/store";
 import { useToast } from "@/ui/use-toast";
 import { rowToColor } from "@/data/color";
 
@@ -21,9 +21,10 @@ export default function CheckTwoInLowestRow({ checked }: ComponentProps) {
   const { checkLowestRowTwice } = useActions();
   const allRowsWithLeastChecks = useAllRowsWithLeastChecksSelector();
   const { toast } = useToast();
+  const gameHasEnded = useGameCompleted();
 
   useEffect(() => {
-    if (checked) {
+    if (checked && !gameHasEnded) {
       if (allRowsWithLeastChecks.length > 1) {
         toast({
           title: "You may add two checks to one of the lowest rows",

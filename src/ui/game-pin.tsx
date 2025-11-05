@@ -1,5 +1,6 @@
 import React from "react";
-import { useGamePin } from "@/utils/use-game-pin.hook";
+
+import { useGamePin } from "@/context/game-pin.context";
 
 export const GamePin = () => {
   const pin = useGamePin();

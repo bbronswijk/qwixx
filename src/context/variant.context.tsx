@@ -7,11 +7,13 @@ export enum Variant {
   BONUS_A = "bonus-a",
   BONUS_B = "bonus-b",
   MIXED_A = "mixed-a",
-  MIXED_B = "mixed-b",
   STEPS = "steps",
   CONNECTED = "connected",
 }
 
+/**
+ * Create a separate context, because the variant can come from the DB or from the url.
+ */
 export const VariantContext = createContext<Variant | null>(null);
 
 export const useVariant = () => {

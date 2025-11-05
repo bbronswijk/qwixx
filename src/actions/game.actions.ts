@@ -4,6 +4,8 @@ import { Variant } from "@/context/variant.context";
 import prisma from "../../prisma/db";
 import { State } from "@/state/store";
 import { Game } from "@prisma/client";
+import { env } from "@/env";
+import { Resend } from "resend";
 
 function generateGamePin(): number {
   return Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
@@ -196,5 +198,20 @@ export async function endGameAction(pin: number) {
   return prisma.game.update({
     where: { id: game.id },
     data: { finishedAt: new Date() },
+  });
+}
+
+export async function notifyAdminAboutError(pin: number) {
+  const resend = new Resend(env.RESEND);
+
+  if (env.VERCEL_ENV !== "production") {
+    return;
+  }
+
+  await resend.emails.send({
+    from: "noreply@qwixx-eight.app",
+    to: "brambronswijk@gmail.com",
+    subject: "An unexpected error occurred",
+    html: `<p>Something happend for game ${pin}!</p>`,
   });
 }

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
 import BackButton from "@/ui/back-button";
-import { useActions } from "@/state/store";
 import { useAuth } from "@/auth/authentication.context";
 import { createGameAction } from "@/actions/game.actions";
 import { Variant } from "@/context/variant.context";

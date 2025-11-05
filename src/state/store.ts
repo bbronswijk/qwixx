@@ -1,5 +1,5 @@
 import { StateCreator } from "zustand";
-import { BonusBox, bonusBoxes } from "@/app/[gameId]/bonus-a/variant-a.config";
+import { BonusBox, bonusBoxes } from "@/app/[gameId]/[variant]/bonus-a/variant-a.config";
 import { checkLowestRowTwice, checkOneInEachRow, checkTile, undo } from "@/state/reducers";
 import { Color, Row, rows, rowToColor } from "@/data/color";
 import { FailedTileType, LockTileType, NumericTileType, TileModel, tileType } from "@/data/tile.model";

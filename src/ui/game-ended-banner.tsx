@@ -1,13 +1,13 @@
 import { notifyScoreSavedAction, notifyUserEndedGameAction } from "@/actions/pusher.actions";
 import { useActions, useFailed, useGameCompleted, useGameState, useOtherUserCompletedGame, useUsersCompleted2RowsSelector } from "@/state/store";
-import { useGamePin } from "@/utils/use-game-pin.hook";
 import { useAuth } from "@/auth/authentication.context";
 import { useVariant } from "@/context/variant.context";
 import { Dialog } from "@/ui/dialog";
 import { GameScoresDialogContent } from "@/ui/game-scores-dialog-content";
 import React, { useEffect, useState } from "react";
 import { Button } from "@/ui/button";
-import { useTotalScore } from "@/context/total-score.context";
+import { useTotalSelector } from "@/state/selectors";
+import { useGamePin } from "@/context/game-pin.context";
 
 export const GameEndedBanner = () => {
   const pin = useGamePin();
@@ -19,7 +19,7 @@ export const GameEndedBanner = () => {
   const userCompleted2Rows = useUsersCompleted2RowsSelector();
   const { markAsGameCompleted } = useActions();
   const [showScoreDialog, setShowScoreDialog] = useState(false);
-  const totalScore = useTotalScore();
+  const totalScore = useTotalSelector();
   const failedRounds = useFailed();
 
   useEffect(() => {

@@ -1,11 +1,12 @@
-import { Config } from "@/data/config.model";
 import React, { Fragment } from "react";
-import BonusBox from "@/app/[gameId]/bonus-a/bonus-box";
+import BonusBox from "@/app/[gameId]/[variant]/bonus-a/bonus-box";
 import { TriangleIcon } from "@/ui/icons";
 import { mapNumberCheckedToScore } from "@/utils/map-number-checked-to-score";
 import { useShowScore, useTotalNumberOfSelectedSteps } from "@/state/store";
+import { useConfiguration } from "@/context/configuration.context";
 
-export const SelectedBlackTiles = ({ config }: { config: Config }) => {
+export const SelectedBlackTiles = () => {
+  const config = useConfiguration();
   const numberOfSelectedSteps = useTotalNumberOfSelectedSteps(config);
   const showScore = useShowScore();
 

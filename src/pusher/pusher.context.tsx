@@ -7,8 +7,8 @@ import { Member, MemberInfo } from "@/pusher/member.model";
 import { useToast } from "@/ui/use-toast";
 import { PusherEvent } from "@/pusher/pusher-event.enum";
 import { useVariant } from "@/context/variant.context";
-import { useGamePin } from "@/utils/use-game-pin.hook";
 import { useActions } from "@/state/store";
+import { useGamePin } from "@/context/game-pin.context";
 
 interface PusherContextValue {
   members: MemberInfo[];
@@ -20,7 +20,7 @@ export const usePusher = () => {
   const context = useContext(PusherContext);
 
   if (!context) {
-    throw new Error("MemberContext has not been initialized.");
+    throw new Error("PusherContext has not been initialized.");
   }
 
   return context;
