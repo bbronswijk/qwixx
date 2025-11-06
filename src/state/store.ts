@@ -8,6 +8,7 @@ import { createZustandStoreAndContext } from "@/utils/createZustandStoreAndConte
 import { lowestRowSelector, unLockedRowsSelector } from "@/state/selectors";
 import { Config } from "@/data/config.model";
 import { calculateTotalPointsForRow } from "@/utils/map-number-checked-to-score";
+import { persist } from "zustand/middleware";
 
 export interface State {
   gameCompleted: boolean;
@@ -41,7 +42,7 @@ interface Actions {
   markAsGameCompleted: () => void;
   setOtherUserCompletedGame: () => void;
   checkTile: CheckTileFn;
-  reset: () => void; // TODO is this still required?
+  reset: () => void;
   undo: () => void;
   roundFailed: () => void;
   checkOneInEachRow: () => void;
@@ -212,7 +213,13 @@ const state: StateCreator<Store> = (set) => ({
   },
 });
 
-const { Provider, useStore } = createZustandStoreAndContext(state, "QwixxStore");
+const { Provider, useStore } = createZustandStoreAndContext(
+  persist(state, {
+    name: "QwixxStore",
+    partialize: ({ actions, ...state }) => ({ ...state }),
+  }),
+  "QwixxStore"
+);
 
 export const useActions = () => useStore(({ actions }) => actions);
 

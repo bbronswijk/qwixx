@@ -6,10 +6,11 @@ import React from "react";
 import Link from "next/link";
 import { cn } from "@/utils/cn";
 import { buttonVariants } from "@/ui/button";
-import { useScores } from "@/state/store";
+import { useActions, useScores } from "@/state/store";
 
 export const GameScoresDialogContent = () => {
   const scores = useScores();
+  const { reset } = useActions();
 
   return (
     <DialogContent>
@@ -24,10 +25,10 @@ export const GameScoresDialogContent = () => {
           </div>
         ))}
       <DialogFooter>
-        <Link href='/create' className={cn(buttonVariants({ variant: "default" }), "w-full")}>
+        <Link onClick={() => reset()} href='/create' className={cn(buttonVariants({ variant: "default" }), "w-full")}>
           Create new game
         </Link>
-        <Link href='/join-existing' className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
+        <Link onClick={() => reset()} href='/join-existing' className={cn(buttonVariants({ variant: "outline" }), "w-full")}>
           Join new game
         </Link>
       </DialogFooter>

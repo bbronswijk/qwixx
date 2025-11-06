@@ -14,7 +14,7 @@ export default function Failed() {
       <button
         onClick={roundFailed}
         disabled={disabled}
-        className={cn("h-8 whitespace-nowrap rounded border-2 border-slate-600 px-2 font-bold text-slate-600 lg:h-10 lg:border-4 lg:px-5", disabled && "opacity-40")}
+        className={cn("h-8 whitespace-nowrap rounded-lg border-2 bg-slate-400 px-2 font-medium text-white lg:h-10 lg:border-4 lg:px-5", disabled && "opacity-40")}
       >
         Penalty
       </button>

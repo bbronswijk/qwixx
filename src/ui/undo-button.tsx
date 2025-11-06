@@ -13,9 +13,10 @@ export default function UndoButton() {
       data-testid='undo'
       onClick={undo}
       disabled={disabled}
-      className={cn("ml-auto flex items-center justify-center rounded-lg bg-slate-200 p-1.5", disabled && "opacity-30")}
+      className={cn("ml-auto flex items-center justify-center gap-2 rounded-lg bg-slate-200 px-3 py-1.5 font-bold", disabled && "opacity-30")}
     >
-      <UndoIcon />
+      <UndoIcon className='h-5 w-5' />
+      Undo
     </button>
   );
 }
