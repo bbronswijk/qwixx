@@ -9,14 +9,12 @@ import { joinGameAction } from "@/actions/game.actions";
 import { useAuth } from "@/auth/authentication.context";
 import { useToast } from "@/ui/use-toast";
 import { LoaderIcon } from "@/ui/icons";
-import { useActions } from "@/state/store";
 
 export default function Page() {
   const ref = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const { nickname } = useAuth();
   const { toast } = useToast();
-  const { reset } = useActions();
   const [joining, setJoining] = useState(false);
 
   useEffect(() => {
@@ -54,7 +52,6 @@ export default function Page() {
       return;
     }
 
-    reset();
     router.push(`/${response.pin}/${response.variant}`);
   };
 

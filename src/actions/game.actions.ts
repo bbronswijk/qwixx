@@ -202,11 +202,11 @@ export async function endGameAction(pin: number) {
 }
 
 export async function notifyAdminAboutError(pin: number) {
-  const resend = new Resend(env.RESEND);
-
-  if (env.VERCEL_ENV !== "production") {
+  if (env.VERCEL_ENV !== "production" || !env.RESEND) {
     return;
   }
+
+  const resend = new Resend(env.RESEND);
 
   await resend.emails.send({
     from: "noreply@qwixx-eight.app",

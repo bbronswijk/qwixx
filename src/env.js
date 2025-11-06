@@ -10,8 +10,8 @@ export const env = createEnv({
     PUSHER_APP_ID: z.string(),
     NEXT_PUBLIC_PUSHER_APP_KEY: z.string(),
     PUSHER_APP_SECRET: z.string(),
-    RESEND: z.string(),
-    VERCEL_ENV: z.enum(["development", "preview", "production"]),
+    RESEND: z.string().optional(),
+    VERCEL_ENV: z.enum(["development", "preview", "production"]).optional().default("development"),
   },
 
   /**
