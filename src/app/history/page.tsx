@@ -1,10 +1,12 @@
-import Image from "next/image";
 import BackButton from "@/ui/back-button";
 import db from "../../../prisma/db";
 import { differenceInMinutes, format } from "date-fns";
 import { nl } from "date-fns/locale/nl";
 import { humanReadableVariant } from "@/utils/human-readable-variant";
-import { Previews } from "@/app/history/Previews";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/accordion";
+import { Preview } from "@/app/history/Preview";
+import { getMemberIndex } from "@/utils/use-configuration-index.hook";
+import { Variant } from "@/context/variant.context";
 
 export default async function Page() {
   const games = await db.game.findMany({
@@ -14,15 +16,15 @@ export default async function Page() {
   });
 
   return (
-    <main className='min-h-full w-full bg-slate-100 p-4'>
-      <header className='grid w-full grid-cols-3 items-center justify-between'>
+    <main className='min-h-full w-[100vw] bg-slate-100 p-4'>
+      <header className='mb-6 grid w-full grid-cols-3 items-center justify-between'>
         <BackButton />
         <h1 className='text-center text-2xl font-bold'>Leaderboard</h1>
       </header>
 
-      <div className='mx-auto w-fit space-y-4'>
+      <div className='max-w-full space-y-4'>
         {games.map((game) => (
-          <article key={game.id} className='mx-auto w-full max-w-[] rounded-2xl border bg-white p-8'>
+          <Accordion type='multiple' key={game.id} className='max-w-full rounded-2xl border bg-white p-8'>
             <h2 className='flex items-center justify-between text-2xl font-bold leading-none'>
               {humanReadableVariant(game.variant)}
               <span className='rounded bg-slate-200 px-2 text-lg'>{game.pin}</span>
@@ -36,16 +38,23 @@ export default async function Page() {
 
             {game.scores
               .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-              .map((member) => (
-                <div key={member.nickname} className='mt-2 flex items-center gap-4 text-xl font-bold'>
-                  <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname} height={40} width={40} />
-                  <span>{member.nickname}</span>
-                  {member.score !== null ? <span className='ml-auto'>{member.score} points</span> : <span className='ml-auto'>unknown</span>}
-                </div>
+              .map((score, index) => (
+                <AccordionItem value={score.nickname} key={score.nickname} className='mt-2 rounded-2xl border bg-slate-100'>
+                  <AccordionTrigger className='flex items-center gap-2 rounded-2xl p-4 text-2xl font-black'>
+                    <div className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-3xl font-bold text-slate-400'>
+                      {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
+                    </div>
+                    <span className='mr-auto text-2xl font-black'>{score.nickname}</span>
+                    <span className='text-2xl font-black'>{score.score !== null ? `${score.score} points` : "unknown"}</span>
+                  </AccordionTrigger>
+                  <AccordionContent className='flex justify-center'>
+                    <Preview playerGameScore={score} configIndex={getMemberIndex(score.nickname, game.scores, game.pin)} variant={game.variant as Variant} gamePin={game.pin} />
+                  </AccordionContent>
+                </AccordionItem>
               ))}
 
-            <Previews game={game} />
-          </article>
+            {/*<Previews game={game} />*/}
+          </Accordion>
         ))}
       </div>
     </main>

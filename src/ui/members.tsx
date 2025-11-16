@@ -12,7 +12,7 @@ export const Members = () => {
         <Image
           key={member.nickname}
           className='relative h-10 w-10'
-          src={`https://avatar.iran.liara.run/username?username=${member.nickname}`}
+          src={`https://api.dicebear.com/9.x/thumbs/png?seed=${member.nickname}`}
           alt={member.nickname}
           height={48}
           width={48}

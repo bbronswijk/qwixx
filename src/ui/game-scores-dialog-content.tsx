@@ -19,7 +19,7 @@ export const GameScoresDialogContent = () => {
         .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
         .map((member) => (
           <div key={member.nickname} className='flex items-center gap-4 text-xl font-bold'>
-            <Image src={`https://avatar.iran.liara.run/username?username=${member.nickname}`} alt={member.nickname} height={40} width={40} />
+            <Image src={`https://api.dicebear.com/9.x/thumbs/png?seed=${member.nickname}`} alt={member.nickname} height={40} width={40} />
             <span>{member.nickname}</span>
             {member.score !== null ? <span className='ml-auto'>{member.score} punten</span> : <span className='ml-auto'>waiting...</span>}
           </div>

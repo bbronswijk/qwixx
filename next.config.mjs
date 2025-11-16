@@ -7,7 +7,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "avatar.iran.liara.run",
+        hostname: "api.dicebear.com",
         port: "",
       },
     ],
