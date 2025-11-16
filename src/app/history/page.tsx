@@ -4,9 +4,7 @@ import db from "../../../prisma/db";
 import { differenceInMinutes, format } from "date-fns";
 import { nl } from "date-fns/locale/nl";
 import { humanReadableVariant } from "@/utils/human-readable-variant";
-import { Preview } from "@/app/history/Preview";
-import { getMemberIndex } from "@/utils/use-configuration-index.hook";
-import { Variant } from "@/context/variant.context";
+import { Previews } from "@/app/history/Previews";
 
 export default async function Page() {
   const games = await db.game.findMany({
@@ -46,17 +44,7 @@ export default async function Page() {
                 </div>
               ))}
 
-            {game.scores
-              .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
-              .map((playerGameScore) => (
-                <Preview
-                  key={playerGameScore.nickname}
-                  playerGameScore={playerGameScore}
-                  configIndex={getMemberIndex(playerGameScore.nickname, game.scores, game.pin)}
-                  variant={game.variant as Variant}
-                  gamePin={game.pin}
-                />
-              ))}
+            <Previews game={game} />
           </article>
         ))}
       </div>
