@@ -8,7 +8,6 @@ import { createZustandStoreAndContext } from "@/utils/createZustandStoreAndConte
 import { lowestRowSelector, unLockedRowsSelector } from "@/state/selectors";
 import { Config } from "@/data/config.model";
 import { calculateTotalPointsForRow } from "@/utils/map-number-checked-to-score";
-import { persist } from "zustand/middleware";
 
 export interface State {
   gameCompleted: boolean;
@@ -213,13 +212,7 @@ const state: StateCreator<Store> = (set) => ({
   },
 });
 
-const { Provider, useStore } = createZustandStoreAndContext(
-  persist(state, {
-    name: "QwixxStore",
-    partialize: ({ actions, ...state }) => ({ ...state }),
-  }),
-  "QwixxStore"
-);
+const { Provider, useStore } = createZustandStoreAndContext(state, "QwixxStore");
 
 export const useActions = () => useStore(({ actions }) => actions);
 

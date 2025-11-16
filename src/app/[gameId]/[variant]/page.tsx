@@ -27,7 +27,7 @@ export default function Page() {
   const { gameId, variant } = useParams<{ gameId: string; variant: Variant }>();
 
   return (
-    <StoreProvider>
+    <StoreProvider enablePersist>
       <VariantContext.Provider value={variant}>
         <GamePinProvider gameId={Number(gameId)}>
           <Pusher>

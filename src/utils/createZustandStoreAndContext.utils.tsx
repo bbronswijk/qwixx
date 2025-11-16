@@ -1,6 +1,6 @@
 import { createContext, type PropsWithChildren, useContext, useRef } from "react";
 import { createStore, type StateCreator, type StoreApi, type StoreMutators, useStore as useZustandStore } from "zustand";
-import { devtools } from "zustand/middleware";
+import { devtools, persist } from "zustand/middleware";
 
 export type StateCreatorFn<T> = StateCreator<T, [], Array<[keyof StoreMutators<unknown, unknown>, unknown]>>;
 
@@ -29,15 +29,26 @@ export type StateCreatorFn<T> = StateCreator<T, [], Array<[keyof StoreMutators<u
  * 		<FilterComponent />
  * 	</TrafficFilterStoreProvider>;
  */
-export function createZustandStoreAndContext<T>(stateCreatorFn: StateCreatorFn<T>, devtoolsName: string) {
+export function createZustandStoreAndContext<T extends Record<string, any>>(stateCreatorFn: StateCreatorFn<T>, devtoolsName: string) {
   const StoreContext = createContext<null | StoreApi<T>>(null);
 
   /** Provider component to wrap the application and provide the store */
-  function Provider({ children, initialState }: PropsWithChildren<{ initialState?: Partial<T> }>) {
+  function Provider({ children, initialState, enablePersist }: PropsWithChildren<{ initialState?: Partial<T>; enablePersist?: boolean }>) {
     const storeRef = useRef<StoreApi<T>>();
 
     /** Initializes the store only once, when the component is mounted. */
-    storeRef.current ??= InitializeStore(stateCreatorFn, devtoolsName, initialState);
+    if (enablePersist) {
+      storeRef.current ??= InitializeStore(
+        persist(stateCreatorFn, {
+          name: devtoolsName,
+          partialize: ({ actions, ...state }: T) => ({ ...state }),
+        }),
+        devtoolsName,
+        initialState
+      );
+    } else {
+      storeRef.current ??= InitializeStore(stateCreatorFn, devtoolsName, initialState);
+    }
 
     return <StoreContext.Provider value={storeRef.current}>{children}</StoreContext.Provider>;
   }

@@ -7,16 +7,6 @@ import { Game, PlayerGameScore } from "@prisma/client";
 import { useEffect, useState } from "react";
 
 export function Previews({ game }: { game: Game & { scores: PlayerGameScore[] } }) {
-  const [client, setClient] = useState<boolean>(false);
-
-  useEffect(() => {
-    setClient(true);
-  });
-
-  if (!client) {
-    return null;
-  }
-
   return (
     <>
       {game.scores
