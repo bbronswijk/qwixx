@@ -15,7 +15,7 @@ export default function Board() {
   const config = useConfiguration();
 
   return (
-    <div className='m-3 space-y-0.5 rounded-xl bg-slate-200 px-8 py-4 lg:p-8'>
+    <div className='m-3 space-y-0.5 rounded-xl bg-slate-200 px-8 py-4 lg:p-8 portrait:scale-50'>
       <Row row={rows.a} tiles={config.a} />
       <Row row={rows.b} tiles={config.b} />
       <Row row={rows.c} tiles={config.c} />

@@ -16,7 +16,7 @@ export default async function Page() {
   });
 
   return (
-    <main className='min-h-full w-[100vw] bg-slate-100 p-4'>
+    <main className='min-h-full bg-slate-100 p-4'>
       <header className='mb-6 grid w-full grid-cols-3 items-center justify-between'>
         <BackButton />
         <h1 className='text-center text-2xl font-bold'>Leaderboard</h1>
@@ -40,7 +40,7 @@ export default async function Page() {
               .sort((a, b) => (b.score ?? 0) - (a.score ?? 0))
               .map((score, index) => (
                 <AccordionItem value={score.nickname} key={score.nickname} className='mt-2 rounded-2xl border bg-slate-100'>
-                  <AccordionTrigger className='flex items-center gap-2 rounded-2xl p-4 text-2xl font-black'>
+                  <AccordionTrigger className='flex items-center gap-2 rounded-2xl p-4 text-2xl font-black hover:no-underline active:no-underline'>
                     <div className='flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 text-3xl font-bold text-slate-400'>
                       {index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : index + 1}
                     </div>
@@ -52,8 +52,6 @@ export default async function Page() {
                   </AccordionContent>
                 </AccordionItem>
               ))}
-
-            {/*<Previews game={game} />*/}
           </Accordion>
         ))}
       </div>
