@@ -6,6 +6,9 @@ import { useCookies } from "next-client-cookies";
 import { AuthenticationContext } from "@/auth/authentication.context";
 import { NICKNAME_COOKIE_KEY } from "@/auth/nickname-cookie.key";
 
+/**
+ * Using cookies since localStorage is not available on the server side.
+ */
 export const Authenticate = ({ children }: PropsWithChildren) => {
   const { replace } = useRouter();
   const pathName = usePathname();
