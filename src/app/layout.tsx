@@ -3,6 +3,7 @@ import "../styles/globals.css";
 import { Authenticate } from "@/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
 import { Toaster } from "@/ui/toaster";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -24,17 +25,17 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "black",
+  themeColor: "#f1f5f9",
   // minimumScale: 1,
-  // initialScale: 1,
-  // width: "device-width",
+  initialScale: 1,
+  width: "device-width",
   // // viewportFit: "cover",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) {
   return (
     <html lang='en'>
