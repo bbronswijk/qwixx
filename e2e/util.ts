@@ -23,7 +23,8 @@ export enum selectors {
 
 export const startGame = async (page: Page, variant: Variant) => {
   await page.goto(routes.create);
-  await page.getByText(humanReadableVariant(variant)).click();
+  const card = page.getByTestId("create-game-card").filter({ hasText: humanReadableVariant(variant) });
+  await card.getByRole("button", { name: "Create game" }).click();
   await page.getByText("Start game").click();
 };
 

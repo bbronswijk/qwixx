@@ -15,12 +15,12 @@ type Props = {
 
 export const GameCard = ({ onClick, image, title, beta, stats }: Props) => (
   <CarouselItem className='h-[80dvh] basis-4/5 landscape:h-[70dvh]'>
-    <Card className='relative h-full overflow-hidden rounded-3xl bg-slate-100'>
+    <Card className='relative h-full overflow-hidden rounded-3xl bg-slate-100' data-testId='create-game-card'>
       <Image
         src={image}
         alt=''
         className='absolute bottom-1/3 min-w-[350%] -rotate-[15deg] landscape:hidden'
-        style={{ maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 70%, rgba(0,0,0,0) 100%)" }}
+        style={{ maskImage: "linear-gradient(to bottom, rgba(0,0,0,1) 60%, rgba(0,0,0,0) 100%)" }}
         width={382 * 3}
         height={173 * 3}
         priority
@@ -42,7 +42,7 @@ export const GameCard = ({ onClick, image, title, beta, stats }: Props) => (
         )}
 
         <Button className='z-10 mt-7' onClick={onClick}>
-          Create
+          Create game
         </Button>
       </CardContent>
     </Card>
