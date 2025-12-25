@@ -19,7 +19,7 @@ export default async function Page() {
     <main className='min-h-full bg-slate-100 p-4'>
       <header className='mb-6 grid w-full grid-cols-3 items-center justify-between'>
         <BackButton />
-        <h1 className='text-center text-2xl font-bold'>Leaderboard</h1>
+        <h1 className='text-center text-2xl font-bold'>Scores</h1>
       </header>
 
       <div className='max-w-full space-y-4'>

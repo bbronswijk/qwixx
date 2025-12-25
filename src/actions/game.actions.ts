@@ -2,6 +2,7 @@
 
 import { Variant } from "@/context/variant.context";
 import prisma from "../../prisma/db";
+import db from "../../prisma/db";
 import { State } from "@/state/store";
 import { Game } from "@prisma/client";
 import { env } from "@/env";
@@ -214,4 +215,35 @@ export async function notifyAdminAboutError(pin: number) {
     subject: "An unexpected error occurred",
     html: `<p>Something happend for game ${pin}!</p>`,
   });
+}
+
+export type GameStats = {
+  variant: Variant;
+  highestScore: number;
+  nickname: string;
+};
+
+export async function getGameStats(): Promise<GameStats[]> {
+  return (await db.$queryRaw`
+    WITH RankedScores AS (
+      SELECT
+          ROW_NUMBER() OVER (
+            PARTITION BY innerGame.variant
+            ORDER BY innerScore.score DESC, innerGame."finishedAt"
+          ) AS rowNumber,
+          innerGame.variant,
+          innerScore.nickname,
+          innerScore.score,
+          innerGame."finishedAt"
+      FROM qwixx."PlayerGameScore" innerScore
+             JOIN qwixx."Game" innerGame ON innerScore."gameId" = innerGame.id
+      WHERE innerGame."finishedAt" IS NOT NULL and score is not null
+    )
+    SELECT variant,
+           MAX(score)  as "highestScore",
+           nickname
+    FROM  RankedScores
+    WHERE rowNumber = 1
+    GROUP BY variant, nickname
+  `) as GameStats[];
 }

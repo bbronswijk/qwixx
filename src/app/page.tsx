@@ -29,6 +29,9 @@ export default function Page() {
         <Link href='/join-existing' className={cn(buttonVariants({ variant: "outline" }), "w-full")} type='submit'>
           Or join an existing game
         </Link>
+        <Link href='/history' className={cn(buttonVariants({ variant: "ghost" }), "w-full")} type='submit'>
+          Game scores
+        </Link>
       </div>
     </main>
   );
