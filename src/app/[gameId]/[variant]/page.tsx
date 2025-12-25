@@ -15,14 +15,6 @@ import { GamePinProvider } from "@/context/game-pin.context";
 import { ErrorBoundary } from "@/app/[gameId]/[variant]/ErrorBoundary";
 import { GameEndedBanner } from "@/ui/game-ended-banner";
 
-export const viewport: Viewport = {
-  themeColor: "black",
-  minimumScale: 1,
-  initialScale: 1,
-  width: "device-width",
-  viewportFit: "cover",
-};
-
 export default function Page() {
   const { gameId, variant } = useParams<{ gameId: string; variant: Variant }>();
 
