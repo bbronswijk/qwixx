@@ -15,7 +15,7 @@ type Props = {
 
 export const GameCard = ({ onClick, image, title, beta, stats }: Props) => (
   <CarouselItem className='h-[80dvh] basis-4/5 landscape:h-[70dvh]'>
-    <Card className='relative h-full overflow-hidden rounded-3xl bg-slate-100' data-testId='create-game-card'>
+    <Card className='relative h-full overflow-hidden rounded-3xl bg-slate-100' data-testid='create-game-card'>
       <Image
         src={image}
         alt=''

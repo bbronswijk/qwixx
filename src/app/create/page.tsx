@@ -1,15 +1,6 @@
 import BackButton from "@/ui/back-button";
-import type { Viewport } from "next";
 import { Games } from "@/app/create/Games";
 import { getGameStats } from "@/actions/game.actions";
-
-export const viewport: Viewport = {
-  themeColor: "black",
-  minimumScale: 1,
-  initialScale: 1,
-  width: "device-width",
-  viewportFit: "cover",
-};
 
 export default async function Home() {
   const gameStats = await getGameStats();
