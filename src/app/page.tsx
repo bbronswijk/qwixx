@@ -13,7 +13,7 @@ export default function Page() {
   const { logOut } = useAuth();
 
   return (
-    <main className='flex min-h-svh flex-col items-center justify-center bg-slate-100 p-4'>
+    <main className='flex h-svh flex-col items-center justify-center bg-slate-100 p-4'>
       <header className='fixed left-3 right-3 top-3 flex items-center justify-between gap-3'>
         <button className='flex items-center justify-center rounded-lg bg-slate-200 p-1.5' onClick={() => logOut()}>
           <ChevronLeftIcon />
