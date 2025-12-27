@@ -1,3 +1,5 @@
+"use client";
+
 import { useAuth } from "@/auth/authentication.context";
 import { usePusher } from "@/pusher/pusher.context";
 import { useSearchParams } from "next/navigation";
