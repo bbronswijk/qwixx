@@ -5,8 +5,8 @@ import { nl } from "date-fns/locale/nl";
 import { humanReadableVariant } from "@/utils/human-readable-variant";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/ui/accordion";
 import { Preview } from "@/app/history/Preview";
+import { getMemberIndex } from "@/utils/use-configuration-index.hook";
 import { Variant } from "@/context/variant.context";
-import { getMemberIndex } from "@/utils/get-member.index";
 
 export default async function Page() {
   const games = await db.game.findMany({
