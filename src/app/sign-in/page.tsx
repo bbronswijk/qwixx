@@ -48,8 +48,8 @@ export default function Page() {
   };
 
   return (
-    <main className='flex min-h-screen w-full items-center justify-center bg-slate-100 p-4'>
-      <div className='w-full max-w-96 rounded-2xl border bg-white p-8'>
+    <main className='flex min-h-screen items-center justify-center bg-slate-100 p-4'>
+      <div className='w-full rounded-2xl border bg-white p-8'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 text-center'>
             <Image src='/icons/256.png' height={100} width={100} alt='qwixx logo' className='mx-auto rounded-2xl' />
