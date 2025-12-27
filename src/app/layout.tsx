@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Authenticate } from "@/auth/authenticate";
+import { CookiesProvider } from "next-client-cookies/server";
+import { Toaster } from "@/ui/toaster";
 import { ReactNode } from "react";
 
 export const metadata: Metadata = {
@@ -30,7 +32,10 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body>
-        <Authenticate>{children}</Authenticate>
+        <CookiesProvider>
+          <Authenticate>{children}</Authenticate>
+        </CookiesProvider>
+        <Toaster />
       </body>
     </html>
   );
