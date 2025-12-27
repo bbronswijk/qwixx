@@ -28,7 +28,7 @@ export const usePusher = () => {
 
 export const Pusher = ({ children }: PropsWithChildren) => {
   const [members, setMembers] = useState<MemberInfo[]>([]);
-  const channel = useRef<PresenceChannel>();
+  const channel = useRef<PresenceChannel | null>(null);
   const { toast } = useToast();
   const variant = useVariant();
   const { setOtherUserCompletedGame, fetchScore } = useActions();

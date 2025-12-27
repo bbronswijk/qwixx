@@ -34,7 +34,7 @@ export function createZustandStoreAndContext<T extends Record<string, any>>(stat
 
   /** Provider component to wrap the application and provide the store */
   function Provider({ children, initialState, enablePersist }: PropsWithChildren<{ initialState?: Partial<T>; enablePersist?: boolean }>) {
-    const storeRef = useRef<StoreApi<T>>();
+    const storeRef = useRef<StoreApi<T>>(null);
 
     /** Initializes the store only once, when the component is mounted. */
     if (enablePersist) {
