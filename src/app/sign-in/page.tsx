@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
@@ -24,6 +24,7 @@ export default function Page() {
   const { isAuthenticated, authenticate } = useAuth();
   const { replace } = useRouter();
   const { getItem, setItem } = useLocalStorage();
+  const [viewportSize, setViewportSize] = useState({ width: 0, height: 0 });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,6 +43,22 @@ export default function Page() {
     ref.current?.focus();
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setViewportSize({
+        width: window.innerWidth,
+        height: window.innerHeight,
+      });
+    };
+
+    // Set initial size
+    handleResize();
+
+    // Listen to resize events
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
   const onSubmit = ({ username }: z.infer<typeof formSchema>) => {
     authenticate(username);
     setItem(NICKNAME_COOKIE_KEY, username);
@@ -53,6 +70,10 @@ export default function Page() {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 text-center'>
             <Image src='/icons/256.png' height={100} width={100} alt='qwixx logo' className='mx-auto rounded-2xl' />
+
+            <div className='text-xs text-gray-500'>
+              Viewport: {viewportSize.width}x{viewportSize.height} | Zoom: {Math.round(window.devicePixelRatio * 100)}%
+            </div>
 
             <FormField
               control={form.control}
