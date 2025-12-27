@@ -30,7 +30,7 @@ export default function RootLayout({
   children: ReactNode;
 }>) {
   return (
-    <html lang='en'>
+    <html lang='en' suppressHydrationWarning>
       <body className='h-svh'>
         <CookiesProvider>
           <Authenticate>{children}</Authenticate>

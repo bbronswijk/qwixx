@@ -11,7 +11,7 @@ export async function POST(req: Request) {
   const socketId = formData.get("socket_id") as string;
   const channel = formData.get("channel_name") as string;
 
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const nickName = cookieStore.get(NICKNAME_COOKIE_KEY);
 
   if (!nickName) {
