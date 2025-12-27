@@ -48,7 +48,7 @@ export default function Page() {
   };
 
   return (
-    <main className='flex h-full w-full items-center justify-center bg-slate-100 p-4'>
+    <main className='flex min-h-svh w-full items-center justify-center bg-slate-100 p-4'>
       <div className='w-full max-w-96 rounded-2xl border bg-white p-8'>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8 text-center'>
