@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Authenticate } from "@/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
@@ -22,6 +22,13 @@ export const metadata: Metadata = {
     { rel: "apple-touch-icon", url: "256x256.jpg" },
     { rel: "icon", url: "256x256.jpg" },
   ],
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
