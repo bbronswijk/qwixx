@@ -28,6 +28,7 @@ export const GameEndedBanner = () => {
       // Notify other user that this user has completed 2 rows
       notifyUserEndedGameAction(variant, pin, state, totalScore, nickname);
       markAsGameCompleted();
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setShowScoreDialog(true);
     }
   }, [userCompleted2Rows, failedRounds]);
