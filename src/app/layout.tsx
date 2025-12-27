@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import "./globals.css";
+import "../styles/globals.css";
 import { Authenticate } from "@/auth/authenticate";
 import { CookiesProvider } from "next-client-cookies/server";
 import { Toaster } from "@/ui/toaster";
 import { ReactNode } from "react";
+import Head from "next/head";
 
 export const metadata: Metadata = {
   title: "Qwixx",
@@ -18,6 +19,7 @@ export const metadata: Metadata = {
       url: "https://brambronswijk.com",
     },
   ],
+
   icons: [
     { rel: "apple-touch-icon", url: "256x256.jpg" },
     { rel: "icon", url: "256x256.jpg" },
@@ -31,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
-      <body>
+      <Head>
+        <meta name='next-size-adjust' content='' />
+      </Head>
+      <body className='h-svh'>
         <CookiesProvider>
           <Authenticate>{children}</Authenticate>
         </CookiesProvider>
