@@ -1,12 +1,11 @@
-generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["multiSchema"]
-}
-
+// Error are caused by Prisma plugin in Intelij IDE. Does not support Prisma 7
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
-  schemas  = ["qwixx"]
+}
+
+generator client {
+  provider = "prisma-client"
+  output   = "./generated/prisma"
 }
 
 model Game {
@@ -16,8 +15,6 @@ model Game {
   createdAt  DateTime          @default(now())
   finishedAt DateTime?
   scores     PlayerGameScore[]
-
-  @@schema("qwixx")
 }
 
 model PlayerGameScore {
@@ -29,5 +26,4 @@ model PlayerGameScore {
   Game     Game   @relation(fields: [gameId], references: [id], onDelete: Cascade)
 
   @@unique([gameId, nickname], name: "unique_player_game")
-  @@schema("qwixx")
 }

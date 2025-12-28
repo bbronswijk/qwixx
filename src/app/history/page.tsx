@@ -1,5 +1,5 @@
 import BackButton from "@/ui/back-button";
-import db from "../../../prisma/db";
+import { db } from "../../../prisma/db";
 import { differenceInMinutes, format } from "date-fns";
 import { nl } from "date-fns/locale/nl";
 import { humanReadableVariant } from "@/utils/human-readable-variant";

@@ -1,8 +1,7 @@
 "use server";
 
 import { Variant } from "@/context/variant.context";
-import prisma from "../../prisma/db";
-import db from "../../prisma/db";
+import { db } from "../../prisma/db";
 import { State } from "@/state/store";
 import { Game } from "@prisma/client";
 import { env } from "@/env";
@@ -20,14 +19,14 @@ export async function createGameAction(variant: Variant, nickname: string): Prom
     throw new Error("No variant provided");
   }
 
-  const game = await prisma.game.create({
+  const game = await db.game.create({
     data: {
       pin: generateGamePin(),
       variant: variant,
     },
   });
 
-  await prisma.playerGameScore.create({
+  await db.playerGameScore.create({
     data: {
       gameId: game.id,
       nickname,
@@ -41,7 +40,7 @@ export async function createGameAction(variant: Variant, nickname: string): Prom
  * Join the game based on the provided pin
  */
 export async function joinGameAction(pin: number, nickname: string) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin, finishedAt: null },
     orderBy: { createdAt: "desc" },
   });
@@ -56,7 +55,7 @@ export async function joinGameAction(pin: number, nickname: string) {
   }
 
   try {
-    await prisma.playerGameScore.create({
+    await db.playerGameScore.create({
       data: {
         gameId: game.id,
         nickname,
@@ -86,7 +85,7 @@ export async function joinGameAction(pin: number, nickname: string) {
  * Join the game based on the provided pin
  */
 export async function leaveGameAction(pin: number, nickname: string) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin, finishedAt: null },
     orderBy: { createdAt: "desc" },
   });
@@ -95,7 +94,7 @@ export async function leaveGameAction(pin: number, nickname: string) {
     return;
   }
 
-  await prisma.playerGameScore.delete({
+  await db.playerGameScore.delete({
     where: {
       unique_player_game: {
         gameId: game.id,
@@ -109,7 +108,7 @@ export async function leaveGameAction(pin: number, nickname: string) {
  * Publish the final score of a user of the game
  */
 export async function saveScore(pin: number, nickname: string, score: number, state: State) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin },
     orderBy: { createdAt: "desc" },
   });
@@ -118,7 +117,7 @@ export async function saveScore(pin: number, nickname: string, score: number, st
     return;
   }
 
-  await prisma.playerGameScore.update({
+  await db.playerGameScore.update({
     where: {
       unique_player_game: {
         gameId: game.id,
@@ -136,7 +135,7 @@ export async function saveScore(pin: number, nickname: string, score: number, st
  * Publish changes a user of the game for debugging purposes in case something went wrong.
  */
 export async function saveChanges(pin: number, nickname: string, state: State) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin },
     orderBy: { createdAt: "desc" },
   });
@@ -145,7 +144,7 @@ export async function saveChanges(pin: number, nickname: string, state: State) {
     return;
   }
 
-  await prisma.playerGameScore.update({
+  await db.playerGameScore.update({
     where: {
       unique_player_game: {
         gameId: game.id,
@@ -162,7 +161,7 @@ export async function saveChanges(pin: number, nickname: string, state: State) {
  * Fetch the latest state from the DB.
  */
 export async function getScores(pin: number) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin },
     orderBy: { createdAt: "desc" },
   });
@@ -171,7 +170,7 @@ export async function getScores(pin: number) {
     return [];
   }
 
-  return prisma.playerGameScore.findMany({
+  return db.playerGameScore.findMany({
     where: {
       gameId: game.id,
     },
@@ -186,7 +185,7 @@ export async function getScores(pin: number) {
  * Mark the game as ended.
  */
 export async function endGameAction(pin: number) {
-  const game = await prisma.game.findFirst({
+  const game = await db.game.findFirst({
     where: { pin, finishedAt: null },
     orderBy: { createdAt: "desc" },
   });
@@ -196,7 +195,7 @@ export async function endGameAction(pin: number) {
     return;
   }
 
-  return prisma.game.update({
+  return db.game.update({
     where: { id: game.id },
     data: { finishedAt: new Date() },
   });
