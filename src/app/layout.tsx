@@ -18,10 +18,6 @@ export const metadata: Metadata = {
       url: "https://brambronswijk.com",
     },
   ],
-  icons: [
-    { rel: "apple-touch-icon", url: "256x256.jpg" },
-    { rel: "icon", url: "256x256.jpg" },
-  ],
 };
 
 export default function RootLayout({

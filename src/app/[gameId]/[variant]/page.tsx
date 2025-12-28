@@ -1,6 +1,5 @@
 "use client";
 
-import type { Viewport } from "next";
 import { useVariant, Variant, VariantContext } from "@/context/variant.context";
 import { Pusher } from "@/pusher/pusher.context";
 import { GameHeader } from "@/ui/game-header";
