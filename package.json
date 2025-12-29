@@ -9,7 +9,8 @@
     "lint": "eslint .",
     "e2e": "yarn playwright test",
     "typecheck": "tsc --noEmit",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate && npx tsx fixPrismaGenerated.ts",
+    "prisma-generate": "prisma generate && npx tsx fixPrismaGenerated.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
