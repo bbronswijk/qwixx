@@ -3,9 +3,9 @@
 import { Variant } from "@/context/variant.context";
 import { db } from "../../prisma/db";
 import { State } from "@/state/store";
-import { Game } from "@prisma/client";
 import { env } from "@/env";
 import { Resend } from "resend";
+import { Game } from "prisma/generated/prisma/client";
 
 function generateGamePin(): number {
   return Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;

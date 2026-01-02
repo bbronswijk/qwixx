@@ -2,11 +2,11 @@
 
 import { State, StoreProvider } from "@/state/store";
 import React from "react";
-import { PlayerGameScore } from "@prisma/client";
 import { Variant, VariantContext } from "@/context/variant.context";
 import { ConfigurationProvider } from "@/context/configuration.context";
 import { GamePinProvider } from "@/context/game-pin.context";
 import Board from "@/ui/board";
+import { PlayerGameScore } from "../../../prisma/generated/prisma/browser";
 
 type Props = {
   playerGameScore: PlayerGameScore;
