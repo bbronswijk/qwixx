@@ -1,6 +1,7 @@
 import { createContext, type PropsWithChildren, useContext, useRef } from "react";
 import { createStore, type StateCreator, type StoreApi, type StoreMutators, useStore as useZustandStore } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { createExpiringStorage } from "./expiring-storage";
 
 export type StateCreatorFn<T> = StateCreator<T, [], Array<[keyof StoreMutators<unknown, unknown>, unknown]>>;
 
@@ -42,6 +43,7 @@ export function createZustandStoreAndContext<T extends Record<string, any>>(stat
         persist(stateCreatorFn, {
           name: devtoolsName,
           partialize: ({ actions, ...state }: T) => ({ ...state }),
+          storage: createExpiringStorage<Omit<T, "actions">>(),
         }),
         devtoolsName,
         initialState
