@@ -13,6 +13,7 @@ import { useConfigurationIndex } from "@/utils/use-configuration-index.hook";
 import { GamePinProvider } from "@/context/game-pin.context";
 import { ErrorBoundary } from "@/app/[gameId]/[variant]/ErrorBoundary";
 import { GameEndedBanner } from "@/ui/game-ended-banner";
+import { GameRestoredNotification } from "@/ui/game-restored-notification";
 
 export default function Page() {
   const { gameId, variant } = useParams<{ gameId: string; variant: Variant }>();
@@ -37,6 +38,7 @@ function Game() {
   return (
     <ConfigurationProvider variant={variant} configurationIndex={configurationIndex}>
       <ErrorBoundary>
+        <GameRestoredNotification />
         <main className='grid h-full w-full grid-cols-[1fr_auto_1fr] items-center justify-center p-4'>
           <GameHeader />
           <Members />

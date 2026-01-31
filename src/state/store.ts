@@ -13,6 +13,7 @@ export interface State {
   gameCompleted: boolean;
   otherUserCompletedGame: boolean;
   changes: Change[];
+  restoredFromPersist: boolean;
 
   selection: {
     a: number[];
@@ -76,6 +77,7 @@ const initialState: State = {
   gameCompleted: false,
   otherUserCompletedGame: false,
   changes: [],
+  restoredFromPersist: false,
 
   selection: {
     [rows.a]: [],
@@ -237,6 +239,8 @@ export const useFailed = () => useStore((state) => state.failed);
 export const useShowScore = () => useStore((state) => state.showScore);
 
 export const useScores = () => useStore((state) => state.scores);
+
+export const useRestoredFromPersist = () => useStore((state) => state.restoredFromPersist);
 
 export const useAllRowsWithLeastChecksSelector = () =>
   useStore((state: Store): { row: Row; value: number }[] => {

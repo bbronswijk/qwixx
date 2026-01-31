@@ -1,4 +1,5 @@
 import type { PersistStorage, StorageValue } from "zustand/middleware";
+import { State } from "~/state/store";
 
 /**
  * Creates a localStorage-based storage with automatic expiration.
@@ -7,7 +8,7 @@ import type { PersistStorage, StorageValue } from "zustand/middleware";
  * @param expirationMs - Time in milliseconds before stored data expires (default: 24 hours)
  * @returns A PersistStorage compatible object with expiration functionality
  */
-export function createExpiringStorage<S>(expirationMs: number = 24 * 60 * 60 * 1000): PersistStorage<S> {
+export function createExpiringStorage<S = State>(expirationMs: number = 24 * 60 * 60 * 1000): PersistStorage<S> {
   return {
     getItem: (name) => {
       const str = localStorage.getItem(name);
@@ -17,8 +18,8 @@ export function createExpiringStorage<S>(expirationMs: number = 24 * 60 * 60 * 1
         const { state, timestamp } = JSON.parse(str);
         const now = Date.now();
 
-        // Check if the stored state has expired
-        if (timestamp && now - timestamp > expirationMs) {
+        // Check if the stored state has expired or if the loaded game was already completed.
+        if ((timestamp && now - timestamp > expirationMs) || state.state.gameCompleted) {
           localStorage.removeItem(name);
           return null;
         }

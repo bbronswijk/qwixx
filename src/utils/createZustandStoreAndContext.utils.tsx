@@ -2,6 +2,7 @@ import { createContext, type PropsWithChildren, useContext, useRef } from "react
 import { createStore, type StateCreator, type StoreApi, type StoreMutators, useStore as useZustandStore } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { createExpiringStorage } from "./expiring-storage";
+import { State, Store } from "~/state/store";
 
 export type StateCreatorFn<T> = StateCreator<T, [], Array<[keyof StoreMutators<unknown, unknown>, unknown]>>;
 
@@ -30,7 +31,7 @@ export type StateCreatorFn<T> = StateCreator<T, [], Array<[keyof StoreMutators<u
  * 		<FilterComponent />
  * 	</TrafficFilterStoreProvider>;
  */
-export function createZustandStoreAndContext<T extends Record<string, any>>(stateCreatorFn: StateCreatorFn<T>, devtoolsName: string) {
+export function createZustandStoreAndContext<T extends Store>(stateCreatorFn: StateCreatorFn<T>, devtoolsName: string) {
   const StoreContext = createContext<null | StoreApi<T>>(null);
 
   /** Provider component to wrap the application and provide the store */
@@ -44,6 +45,12 @@ export function createZustandStoreAndContext<T extends Record<string, any>>(stat
           name: devtoolsName,
           partialize: ({ actions, ...state }: T) => ({ ...state }),
           storage: createExpiringStorage<Omit<T, "actions">>(),
+          onRehydrateStorage: () => (state, error) => {
+            if (!error && state && state?.changes?.length > 0) {
+              // Set the restoredFromPersist flag if there are changes in the restored state
+              state.restoredFromPersist = true;
+            }
+          },
         }),
         devtoolsName,
         initialState
