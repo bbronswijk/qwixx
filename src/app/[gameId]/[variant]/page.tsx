@@ -14,6 +14,7 @@ import { GamePinProvider } from "@/context/game-pin.context";
 import { ErrorBoundary } from "@/app/[gameId]/[variant]/ErrorBoundary";
 import { GameEndedBanner } from "@/ui/game-ended-banner";
 import { GameRestoredNotification } from "@/ui/game-restored-notification";
+import { DiceToolbar } from "~/ui/DiceToolbar";
 
 export default function Page() {
   const { gameId, variant } = useParams<{ gameId: string; variant: Variant }>();
@@ -44,6 +45,7 @@ function Game() {
           <Members />
           <Board />
           <GameEndedBanner />
+          <DiceToolbar />
         </main>
       </ErrorBoundary>
     </ConfigurationProvider>
