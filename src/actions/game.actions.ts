@@ -6,6 +6,7 @@ import { State } from "@/state/store";
 import { env } from "@/env";
 import { Resend } from "resend";
 import { Game } from "prisma/generated/prisma/client";
+import { subDays } from "date-fns";
 
 function generateGamePin(): number {
   return Math.floor(Math.random() * (9999 - 1111 + 1)) + 1111;
@@ -18,6 +19,16 @@ export async function createGameAction(variant: Variant, nickname: string): Prom
   if (!variant) {
     throw new Error("No variant provided");
   }
+
+  // Cleanup all unfinished games older than 1 day
+  await db.game.deleteMany({
+    where: {
+      finishedAt: null,
+      createdAt: {
+        lt: subDays(new Date(), 1),
+      },
+    },
+  });
 
   const game = await db.game.create({
     data: {
@@ -91,6 +102,19 @@ export async function leaveGameAction(pin: number, nickname: string) {
   });
 
   if (!game) {
+    return;
+  }
+
+  const playerGameScore = await db.playerGameScore.findUnique({
+    where: {
+      unique_player_game: {
+        gameId: game.id,
+        nickname,
+      },
+    },
+  });
+
+  if (!playerGameScore) {
     return;
   }
 
