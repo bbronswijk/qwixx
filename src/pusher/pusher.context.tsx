@@ -5,13 +5,14 @@ import { pusherClient } from "@/pusher/pusher.client";
 import { PresenceChannel } from "pusher-js";
 import { Member, MemberInfo } from "@/pusher/member.model";
 import { useToast } from "@/ui/use-toast";
-import { PusherEvent } from "@/pusher/pusher-event.enum";
+import { PusherEvent, UserRolledDicePayload } from "@/pusher/pusher-event.enum";
 import { useVariant } from "@/context/variant.context";
 import { useActions } from "@/state/store";
 import { useGamePin } from "@/context/game-pin.context";
 
 interface PusherContextValue {
   members: MemberInfo[];
+  rolledDice: UserRolledDicePayload | null;
 }
 
 export const PusherContext = createContext<PusherContextValue | null>(null);
@@ -33,6 +34,7 @@ export const Pusher = ({ children }: PropsWithChildren) => {
   const variant = useVariant();
   const { setOtherUserCompletedGame, fetchScore } = useActions();
   const pin = useGamePin();
+  const [rolledDice, setRolledDice] = useState<null>(null);
 
   useEffect(() => {
     channel.current = pusherClient.subscribe(`presence-${pin}-${variant}`) as PresenceChannel;
@@ -50,6 +52,7 @@ export const Pusher = ({ children }: PropsWithChildren) => {
       .bind("pusher:member_removed", (member: Member) => {
         setMembers((members) => members.filter((m: MemberInfo) => m.nickname !== member.info.nickname));
       })
+      .bind(PusherEvent.userRolledDice, setRolledDice)
       .bind(PusherEvent.userSharedScore, () => fetchScore(pin))
       .bind(PusherEvent.userEndedGame, () => {
         fetchScore(pin);
@@ -62,5 +65,5 @@ export const Pusher = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  return <PusherContext.Provider value={{ members }}>{children}</PusherContext.Provider>;
+  return <PusherContext.Provider value={{ members, rolledDice }}>{children}</PusherContext.Provider>;
 };

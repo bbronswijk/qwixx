@@ -1,7 +1,7 @@
 "use server";
 
 import { pusher } from "@/pusher/pusher";
-import { PusherEvent } from "@/pusher/pusher-event.enum";
+import { PusherEvent, UserRolledDicePayload } from "@/pusher/pusher-event.enum";
 import { Variant } from "@/context/variant.context";
 import { State } from "@/state/store";
 import { endGameAction, saveScore } from "@/actions/game.actions";
@@ -21,4 +21,13 @@ export async function notifyScoreSavedAction(variant: Variant, pin: number, stor
     nickname,
     score,
   });
+}
+
+export async function notifyUserRolledDices(variant: Variant, pin: number, nickname: string, dices: [number, number], socketId: string) {
+  const payload: UserRolledDicePayload = {
+    nickname,
+    dices,
+  };
+
+  await pusher.trigger(`presence-${pin}-${variant}`, PusherEvent.userRolledDice, payload, { socket_id: socketId });
 }

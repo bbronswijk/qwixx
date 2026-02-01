@@ -15,6 +15,7 @@ import { ErrorBoundary } from "@/app/[gameId]/[variant]/ErrorBoundary";
 import { GameEndedBanner } from "@/ui/game-ended-banner";
 import { GameRestoredNotification } from "@/ui/game-restored-notification";
 import { DiceToolbar } from "~/ui/DiceToolbar";
+import { DiceThrownByOtherUser } from "~/ui/DiceThrownByOtherUser";
 
 export default function Page() {
   const { gameId, variant } = useParams<{ gameId: string; variant: Variant }>();
@@ -45,6 +46,7 @@ function Game() {
           <Members />
           <Board />
           <GameEndedBanner />
+          <DiceThrownByOtherUser />
           <DiceToolbar />
         </main>
       </ErrorBoundary>

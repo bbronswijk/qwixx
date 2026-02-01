@@ -14,6 +14,7 @@ export interface State {
   otherUserCompletedGame: boolean;
   changes: Change[];
   restoredFromPersist: boolean;
+  diceNotificationOpen: boolean;
 
   selection: {
     a: number[];
@@ -51,6 +52,7 @@ interface Actions {
   completeBonusRow: (row: Row) => void;
   toggleScoreVisibility: () => void;
   fetchScore: (pin: number) => void;
+  setDiceNotificationOpen: (open: boolean) => void;
 }
 
 export type Store = State & {
@@ -78,6 +80,7 @@ const initialState: State = {
   otherUserCompletedGame: false,
   changes: [],
   restoredFromPersist: false,
+  diceNotificationOpen: false,
 
   selection: {
     [rows.a]: [],
@@ -211,6 +214,13 @@ const state: StateCreator<Store> = (set) => ({
       const scores = await getScores(pin);
       set({ scores });
     },
+
+    setDiceNotificationOpen: (open: boolean) =>
+      set(
+        (): Partial<Store> => ({
+          diceNotificationOpen: open,
+        })
+      ),
   },
 });
 
@@ -241,6 +251,8 @@ export const useShowScore = () => useStore((state) => state.showScore);
 export const useScores = () => useStore((state) => state.scores);
 
 export const useRestoredFromPersist = () => useStore((state) => state.restoredFromPersist);
+
+export const useDiceNotificationOpen = () => useStore((state) => state.diceNotificationOpen);
 
 export const useAllRowsWithLeastChecksSelector = () =>
   useStore((state: Store): { row: Row; value: number }[] => {

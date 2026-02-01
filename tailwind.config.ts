@@ -82,11 +82,31 @@ const config = {
         },
         "slide-out-down": {
           from: {
-            transform: "translate(0)",
+            transform: "translateY(0)",
             opacity: "1",
           },
           to: {
             transform: "translateY(100%)",
+            opacity: "0",
+          },
+        },
+        "slide-in-down": {
+          from: {
+            transform: "translateY(-100%)",
+            opacity: "0",
+          },
+          to: {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+        },
+        "slide-out-up": {
+          from: {
+            transform: "translateY(0)",
+            opacity: "1",
+          },
+          to: {
+            transform: "translateY(-100%)",
             opacity: "0",
           },
         },
@@ -96,6 +116,8 @@ const config = {
         "accordion-up": "accordion-up 0.2s ease-out",
         "slide-in-up": "slide-in-up 0.3s ease-out",
         "slide-out-down": "slide-out-down 0.3s ease-out",
+        "slide-in-down": "slide-in-down 0.3s ease-out",
+        "slide-out-up": "slide-out-up 0.3s ease-out",
       },
     },
   },
